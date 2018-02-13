@@ -171,22 +171,38 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'org-mode
+
+   ;; Initial message in the scratch buffer, such as "Welcome to Spacemacs!"
+   ;; (default nil)
+   dotspacemacs-initial-scratch-message "Hi Alan, hope you're having a productive day"
+
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(doom-vibrant
                          moe-light
                          doom-nova)
+
+   ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
+   ;; `all-the-icons', `custom', `vim-powerline' and `vanilla'. The first three
+   ;; are spaceline themes. `vanilla' is default Emacs mode-line. `custom' is a
+   ;; user defined themes, refer to the DOCUMENTATION.org for more info on how
+   ;; to create your own spaceline theme. Value can be a symbol or list with\
+   ;; additional properties.
+   ;; (default '(spacemacs :separator wave :separator-scale 1.5))
+   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
+
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
+
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Iosevka Nerd Font Mono"
                                :size 18
                                :weight normal
-                               :width normal
-                               :powerline-scale 1.4)
+                               :width normal)
+
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
@@ -256,46 +272,57 @@ It should only modify the values of Spacemacs settings."
    ;; source settings. Else, disable fuzzy matching in all sources.
    ;; (default 'always)
    dotspacemacs-helm-use-fuzzy 'always
+
    ;; If non-nil, the paste transient-state is enabled. While enabled, pressing
    ;; `p' several times cycles through the elements in the `kill-ring'.
    ;; (default nil)
    dotspacemacs-enable-paste-transient-state nil
+
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
    ;; the commands bound to the current keystroke sequence. (default 0.4)
    dotspacemacs-which-key-delay 0.4
+
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
    ;; right; if there is insufficient space it displays it at the bottom.
    ;; (default 'bottom)
    dotspacemacs-which-key-position 'bottom
+
    ;; Control where `switch-to-buffer' displays the buffer. If nil,
    ;; `switch-to-buffer' displays the buffer in the current window even if
    ;; another same-purpose window is available. If non-nil, `switch-to-buffer'
    ;; displays the buffer in a same-purpose window even if the buffer can be
    ;; displayed in the current window. (default nil)
    dotspacemacs-switch-to-buffer-prefers-purpose nil
+
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
    dotspacemacs-loading-progress-bar t
+
    ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
    dotspacemacs-fullscreen-at-startup nil
+
    ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
    dotspacemacs-fullscreen-use-non-native nil
+
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
    dotspacemacs-maximized-at-startup nil
+
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-active-transparency 90
+
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-inactive-transparency 90
+
    ;; If non-nil show the titles of transient states. (default t)
    dotspacemacs-show-transient-state-title t
    ;; If non-nil show the color guide hint for transient state keys. (default t)
@@ -381,7 +408,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-whitespace-cleanup nil
    ;; Either nil or a number of seconds. If non-nil zone out after the specified
    ;; number of seconds. (default nil)
-   dotspacemacs-zone-out-when-idle nil
+   dotspacemacs-zone-out-when-idle 300
    ;; Run `spacemacs/prettify-org-buffer' when
    ;; visiting README.org files of Spacemacs.
    ;; (default nil)
@@ -441,8 +468,6 @@ before packages are loaded."
     (add-hook 'after-revert-hook #'turn-on-solaire-mode)
     (add-hook 'minibuffer-setup-hook #'solaire-mode-in-minibuffer)
     (add-hook 'ediff-prepare-buffer-hook #'solaire-mode)
-
-    (spacemacs/load-theme 'doom-vibrant)
 
     (add-hook 'js2-mode-hook 'prettier-js-mode)
     (add-hook 'react-mode-hook 'prettier-js-mode)
