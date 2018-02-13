@@ -36,7 +36,6 @@ zstyle ':prezto:load' pmodule \
 	'completion' \
 	'ruby' \
 	'node' \
-  'osx' \
 	'syntax-highlighting' \
 	'history-substring-search' \
 	'prompt'
@@ -108,7 +107,7 @@ zstyle ':prezto:module:editor' ps-context 'yes'
 #
 
 # Set the Pacman frontend.
-# zstyle ':prezto:module:pacman' frontend 'yaourt'
+zstyle ':prezto:module:pacman' frontend 'yaourt'
 
 #
 # Prompt
@@ -212,7 +211,7 @@ zstyle ':prezto:module:terminal:multiplexer-title' format '%s'
 # zstyle ':prezto:module:tmux:auto-start' remote 'yes'
 
 # Integrate with iTerm2.
-zstyle ':prezto:module:tmux:iterm' integrate 'yes'
+# zstyle ':prezto:module:tmux:iterm' integrate 'yes'
 
 # Set the default session name:
 # zstyle ':prezto:module:tmux:session' name 'YOUR DEFAULT SESSION NAME'
