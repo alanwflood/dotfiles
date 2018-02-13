@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bn/env bash
 echo 'RUNNING NEW SYSTEM SETUP'
 
 brew update
@@ -33,8 +33,9 @@ brew install woff2
 brew install dark-mode
 brew install git
 brew install git-lfs
-brew install moc
+brew install mpd
 brew install ripgrep
+brew install fzf
 brew install zplug
 brew install trash
 brew install youtube-dl
