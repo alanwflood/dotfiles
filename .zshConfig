@@ -1,4 +1,3 @@
-
 # Source zplug
 source "$HOME/.zplugrc"
 
@@ -28,9 +27,6 @@ POWERLEVEL9K_BATTERY_CHARGING_BACKGROUND="003"
 
 POWERLEVEL9K_MODE='nerdfont-complete'
 
-# Add nvm executable
-source /usr/share/nvm/init-nvm.sh
-
 # Source FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
@@ -43,7 +39,9 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   source $HOME/.linux_aliases
 fi
 
-# Add Go Modules
-export PATH="$PATH:$HOME/go/bin"
-# Add Yarn executable
-export PATH="$HOME/.yarn/bin:$PATH"
+# nvm integration
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
+# yarn integration
+export PATH="$PATH:`yarn global bin`"
