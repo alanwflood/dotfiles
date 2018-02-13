@@ -1,5 +1,6 @@
-# Source zplug
-source "$HOME/.zplugrc"
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
 
 # powerline9k theme
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(time dir vcs)
@@ -33,6 +34,8 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 
 # Source aliases file
 source $HOME/.aliases
+
+# OS Centric Stuff
 if [ "$(uname)" == "Darwin" ]; then
   source $HOME/.mac_aliases
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
