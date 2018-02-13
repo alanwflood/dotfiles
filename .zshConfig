@@ -37,7 +37,12 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 
 # Source aliases file
 source $HOME/.aliases
-source $HOME/.linux_aliases
+if [ "$(uname)" == "Darwin" ]; then
+  source $HOME/.mac_aliases
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  source $HOME/.linux_aliases
+fi
+
 # Add Go Modules
 export PATH="$PATH:$HOME/go/bin"
 # Add Yarn executable
