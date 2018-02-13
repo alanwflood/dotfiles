@@ -36,7 +36,7 @@ zstyle ':prezto:load' pmodule \
 	'completion' \
 	'ruby' \
 	'node' \
-  'osx', \
+  'osx' \
 	'syntax-highlighting' \
 	'history-substring-search' \
 	'prompt'
