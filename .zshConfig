@@ -1,6 +1,6 @@
 export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
-
+source $HOME/.zplugrc
 
 # powerline9k theme
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(time dir vcs)
@@ -44,7 +44,9 @@ fi
 
 # nvm integration
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 
 # yarn integration
 export PATH="$PATH:`yarn global bin`"
