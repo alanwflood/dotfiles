@@ -74,10 +74,14 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'conormcd/matchindent.vim'
+Plug 'w0rp/ale'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'othree/yajs.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'easymotion/vim-easymotion'
-Plug 'roxma/nvim-completion-manager'
-Plug 'roxma/nvim-cm-tern',  {'do': 'npm install'}
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -85,7 +89,6 @@ Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 
-Plug 'othree/yajs.vim'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql'] }
 call plug#end()
 
