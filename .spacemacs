@@ -98,8 +98,7 @@ This function should only modify configuration layer settings."
                                       lsp-mode
                                       lsp-ui
                                       (lsp-vue :location (recipe :fetcher github :repo "alanwflood/lsp-vue"))
-                                      company-lsp
-                                      )
+                                      company-lsp)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -468,7 +467,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Either nil or a number of seconds. If non-nil zone out after the specified
    ;; number of seconds. (default nil)
-   dotspacemacs-zone-out-when-idle 600
+   dotspacemacs-zone-out-when-idle 900
 
    ;; Run `spacemacs/prettify-org-buffer' when
    ;; visiting README.org files of Spacemacs.
