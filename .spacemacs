@@ -45,20 +45,23 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-help-tooltip t)
      better-defaults
      colors
+     neotree
+     ;; Languages
      emacs-lisp
-     treemacs
+     html
      (javascript :variables
                  node-add-modules-path t)
-     react
      typescript
      (ruby :variables
-           ruby-version-manager 'chruby
-           )
+           ruby-version-manager 'chruby)
      ruby-on-rails
      python
-     git
+     ;; elixer
+     ;; rust
      markdown
      org
+
+     git
      (ranger :variables
              ranger-cleanup-on-disable t
              )
@@ -68,20 +71,15 @@ This function should only modify configuration layer settings."
             shell-default-shell 'ansi-term
             )
      (spell-checking :variables
-                     spell-checking-enable-by-default nil
-                     )
+                     spell-checking-enable-by-default nil)
      syntax-checking
      version-control
      nlinum
      latex
-     spotify
      (wakatime :variables
                wakatime-api-key  "28debf89-1b54-4931-aebf-4d7c7640c290"
                ;; use the actual wakatime path
-               wakatime-cli-path "/usr/local/bin/wakatime"
-               )
-
-     )
+               wakatime-cli-path "/usr/local/bin/wakatime"))
 
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -92,17 +90,15 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(
                                       doom-themes
-                                      moe-theme
                                       stylus-mode
+                                      rjsx-mode
                                       prettier-js
-                                      solaire-mode
                                       all-the-icons-dired
                                       vue-mode
                                       lsp-mode
                                       lsp-ui
-                                      lsp-vue
+                                      (lsp-vue :location (recipe :fetcher github :repo "alanwflood/lsp-vue"))
                                       company-lsp
-                                      weechat
                                       )
 
    ;; A list of packages that cannot be updated.
@@ -485,8 +481,7 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (setq exec-path-from-shell-check-startup-files nil)
-  )
+  (setq exec-path-from-shell-check-startup-files nil))
 
 (defun dotspacemacs/user-config ()
   "Configuration for user code:
@@ -494,6 +489,7 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
     ;; Make rails mode enabled globally
     (projectile-rails-global-mode)
     (indent-guide-global-mode)
@@ -518,28 +514,42 @@ before packages are loaded."
 
     ;; Vue Mode Tweaks
     (require 'vue-mode)
-    (add-to-list 'vue-mode-hook #'smartparens-mode)
+    (add-to-list 'vue-mode-hook 'smartparens-mode)
     (require 'lsp-mode)
     (require 'lsp-vue)
-    (add-hook 'vue-mode-hook #'lsp-vue-mmm-enable)
+    (add-hook 'vue-mode-hook 'lsp-vue-mmm-enable)
+    (add-hook 'vue-mode-hook 'yas-minor-mode)
     (with-eval-after-load 'lsp-mode
-      (require 'lsp-ui))
+      (require 'lsp-ui-flycheck))
     (require 'company-lsp)
     (push 'company-lsp company-backends)
 
+    ;; Doom theme config
+    ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
-    (doom-themes-neotree-config)
-    (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
-    (add-hook 'after-revert-hook #'turn-on-solaire-mode)
-    (add-hook 'minibuffer-setup-hook #'solaire-mode-in-minibuffer)
-    (add-hook 'ediff-prepare-buffer-hook #'solaire-mode)
+    ;; Enable custom neotree theme
+    (doom-themes-neotree-config)  ; all-the-icons fonts must be installed!
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config)
 
-    ;; Add hooks for prettier in js modes
+    ;; Add hooks for prettier in js/css modes
     (add-hook 'js2-mode-hook 'prettier-js-mode)
-    (add-hook 'react-mode-hook 'prettier-js-mode)
+    (add-hook 'css-mode-hook 'prettier-js-mode)
     (add-hook 'typescript-mode-hook 'prettier-js-mode)
-    (add-hook 'typescript-tsx-mode-hook 'prettier-js-mode)
     (add-hook 'vue-mode-hook 'prettier-js-mode)
+
+    ;; Setup rjsx mode
+    (defun setup-rjsx-mode ()
+      ;; Set up Tide mode.
+      (interactive)
+      (tide-setup)
+      (eldoc-mode +1)
+      (prettier-js-mode)
+      (tide-hl-identifier-mode +1)
+      ;; Enable emmet
+      (emmet-mode))
+    (add-to-list 'auto-mode-alist '("\\.[jt]sx\\'" . rjsx-mode))
+    (add-hook 'rjsx-mode-hook #'setup-rjsx-mode)
 
     (require 'diminish)
     ;; Replace mode lighters with something not shit
@@ -563,7 +573,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (spotify helm-spotify-plus multi treemacs-projectile treemacs-evil treemacs ht pfuture company-quickhelp yasnippet-snippets yapfify xterm-color ws-butler winum which-key web-mode web-beautify wakatime-mode vue-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide tagedit symon stylus-mode string-inflection spaceline-all-the-icons solaire-mode smeargle slim-mode shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv ranger rainbow-mode rainbow-identifiers rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode projectile-rails prettier-js popwin pippel pipenv pip-requirements persp-mode pbcopy password-generator paradox overseer osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file nlinum-relative neotree nameless mwim multi-term move-text moe-theme minitest markdown-toc magit-gitflow macrostep lsp-vue lsp-ui lsp-python lorem-ipsum livid-mode live-py-mode link-hint less-css-mode launchctl json-mode js2-refactor js-doc indent-guide importmagic impatient-mode hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy font-lock+ flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig dumb-jump doom-themes diminish diff-hl cython-mode counsel-projectile company-web company-tern company-statistics company-lsp company-auctex company-anaconda column-enforce-mode color-identifiers-mode coffee-mode clean-aindent-mode chruby centered-cursor-mode bundler browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile all-the-icons-dired aggressive-indent add-node-modules-path adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (web-mode tagedit slim-mode scss-mode sass-mode pug-mode impatient-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data yasnippet-snippets yapfify xterm-color ws-butler winum which-key web-beautify wakatime-mode vue-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide symon stylus-mode string-inflection spotify spaceline-all-the-icons smeargle shell-pop rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restart-emacs rbenv ranger rainbow-mode rainbow-identifiers rainbow-delimiters pyvenv pytest pyenv-mode py-isort projectile-rails prettier-js popwin pippel pipenv pip-requirements persp-mode pbcopy password-generator paradox overseer osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file nlinum-relative neotree nameless mwim multi-term move-text moe-theme minitest markdown-toc magit-gitflow macrostep lsp-vue lsp-ui lsp-python lorem-ipsum livid-mode live-py-mode link-hint launchctl json-mode js2-refactor js-doc indent-guide importmagic hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-spotify-plus helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy font-lock+ flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help elisp-slime-nav editorconfig dumb-jump doom-themes diminish diff-hl cython-mode counsel-projectile company-tern company-statistics company-quickhelp company-lsp company-auctex company-anaconda column-enforce-mode color-identifiers-mode coffee-mode clean-aindent-mode chruby centered-cursor-mode bundler browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile all-the-icons-dired aggressive-indent add-node-modules-path adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
