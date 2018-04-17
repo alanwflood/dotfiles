@@ -1,7 +1,7 @@
 alias path='echo -e ${PATH//:/\\n}'
-alias now='date + "%T %d-%m-%Y"'
-alias nowtime='date +"%T"'
-alias nowdate='date +"%d-%m-%Y"'
+alias tnow='date + "%T %d-%m-%Y"'
+alias tnowtime='date +"%T"'
+alias tnowdate='date +"%d-%m-%Y"'
 
 # In this house we use exclusively neovim
 alias vim='nvim'
