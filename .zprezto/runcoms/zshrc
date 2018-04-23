@@ -17,3 +17,5 @@ fi
 #
 
 source "$HOME/.zshConfig"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
