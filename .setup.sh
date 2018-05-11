@@ -17,6 +17,7 @@ brew install imagemagick --with-webp
 brew install nmap
 brew install speedtest_cli
 brew install tmux
+brew install reattach-to-user-namespace --with-wrap-pbcopy-and-pbpaste
 brew install wget --with-iri
 # Ranger + it's dependencies
 brew install ranger libcaca highlight atool lynx w3m elinks poppler transmission mediainfo exiftool
@@ -63,8 +64,8 @@ git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 
 # version managers
 # nvm
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
-# yarn
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+# yarna
 brew install yarn
 # chruby
 brew install chruby
@@ -82,9 +83,6 @@ brew cask install bartender
 brew cask install bettertouchtool
 brew cask install calibre
 brew cask install dropbox
-brew cask install google-chrome
-brew cask install iterm2
-brew cask install keepassxc
 brew cask install mongodb-compass
 brew cask install mpv
 brew cask install nextcloud
@@ -96,6 +94,10 @@ brew cask install smcfancontrol
 brew cask install soulseek
 brew cask install spotify
 brew cask install the-unarchiver
+brew cask install oni
+brew cask install charles
+brew cask install postman
+brew cask install dbeaver
 brew cask install transmission-remote-gui
 brew cask install tunnelblick
 brew cask install veracrypt
@@ -110,7 +112,7 @@ brew tap buo/cask-upgrade
 
 echo 'INSTALLING THROUGH NPM'
 # global js packages
-npm install -g prettier tern eslint preact-cli js-beautify
+npm install -g prettier tern eslint preact-cli js-beautify vue-cli
 
 echo 'INSTALLING THROUGH PIP'
 # global python packages
