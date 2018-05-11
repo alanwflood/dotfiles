@@ -4,20 +4,13 @@ filetype off                  " required
 set number
 set noswapfile
 set smartcase
+set inccommand=split  "Show text about to be replaced
 
-" Turn off statusbar, because it is externalized
-set noshowmode
+set noshowmode          " Turn off statusbar, because it is externalized
 set noruler
 set laststatus=0
 set noshowcmd
-set tabstop=2       " The width of a TAB is set to 2
-                    " Still it is a \t. It is just that
-                    " Vim will interpret it to be having
-                    " a width of 2.
-
-set shiftwidth=2   " Indents will have a width of 4
-set softtabstop=2   " Sets the number of columns for a TAB
-set expandtab       " Expand TABs to spaces
+set expandtab           " Expand TABs to spaces
 set mouse=a             " Enable GUI mouse behavior
 set nostartofline       " Do not jump to first character with page commands.
 set ignorecase          " Make searching case insensitive
@@ -64,46 +57,78 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " Vim helpers
+Plug 'wellle/targets.vim'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
 Plug 'machakann/vim-sandwich'
+
+" Vim helpers
 Plug 'conormcd/matchindent.vim'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'easymotion/vim-easymotion'
 
-" Linting
-Plug 'w0rp/ale'
-
-" Autocomplete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
 " Additional Syntax
 Plug 'sheerun/vim-polyglot'
+
 call plug#end()
-
-" Enable Deoplete
-let g:deoplete#enable_at_startup = 1
-
-" Let ale use prettier in javascript
-let g:ale_fixers = {}
-let g:ale_fixers['javascript'] = ['prettier']
-let g:ale_fixers['css'] = ['prettier']
-let g:ale_fixers['html'] = ['prettier']
-let g:ale_fix_on_save = 1
-let g:ale_javascript_prettier_use_local_config = 1
 
 call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
 nnoremap <silent> <leader> :<c-u>LeaderGuide '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
 
+
+
+
+
+" ============================== FZF/RIPGREP
+
+" ========== files
 " Make FZF Use ripgrep
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
 
-let g:lmap = {}
+" ========== words
+command! -bang -nargs=* Find call fzf#vim#grep(
+\ 'rg --column
+\     --line-number
+\     --no-heading
+\     --ignore-case
+\     --hidden
+\     --follow
+\     --color
+\     "always" '
+\   .shellescape(<q-args>),
+\ 1,
+\ fzf#vim#with_preview('right:50%:wrap', '?'))
 
-" Toggle Ale
-let g:lmap.f = { 'name' : 'Syntax Checking' }
-map <leader>st :ALEToggle<CR>
+" ========== word under cursor
+command! -bang -nargs=* FindCurrent call fzf#vim#grep(
+\ 'rg --column
+\     --line-number
+\     --no-heading
+\     --fixed-strings
+\     --ignore-case
+\     --hidden
+\     --follow
+\     --color
+\     "always" '
+\   .shellescape(expand('<cword>')),
+\ 1,
+\ fzf#vim#with_preview('right:50%:wrap', '?'))
+
+" ========== most recently used files
+command! MRU call fzf#run({
+\  'source':  v:oldfiles,
+\  'sink':    'e',
+\  'options': '-m -x +s',
+\ 'down': '40%'})
+
+
+
+
+
+
+
+let g:lmap = {}
 
 " open ranger as netrw in current dir
 let g:ranger_map_keys = 0
@@ -134,3 +159,8 @@ let g:lmap.b.d = [':Bclose', 'Close Buffer']
 " last buffer
 let g:lmap.b.l = ['<tab> :e #', 'Last Buffer']
 nnoremap <Leader><tab> :e #<CR>
+
+let g:lmap.t = { 'name' : 'Tabs' }
+let g:lmap.t.c = [':tabe', 'Create Tab']
+let g:lmap.t.p = [':tabp', 'Previous Tab']
+let g:lmap.t.n = [':tabn', 'Next Tab']

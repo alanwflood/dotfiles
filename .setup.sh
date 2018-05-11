@@ -65,7 +65,7 @@ git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 # version managers
 # nvm
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-# yarna
+# yarn
 brew install yarn
 # chruby
 brew install chruby
@@ -83,6 +83,7 @@ brew cask install bartender
 brew cask install bettertouchtool
 brew cask install calibre
 brew cask install dropbox
+brew cask install iterm2
 brew cask install mongodb-compass
 brew cask install mpv
 brew cask install nextcloud

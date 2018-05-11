@@ -18,12 +18,28 @@ exports.deactivate = function (oni) {
 exports.configuration = {
     //add custom config here, such as
     "ui.colorscheme": "nord",
-    //"oni.useDefaultConfig": true,
+    "oni.useDefaultConfig": false,
     //"oni.bookmarks": ["~/Documents"],
     "oni.loadInitVim": "~/.config/oni/init.vim",
     "editor.fontSize": "15px",
     "editor.fontFamily": "Iosevka Nerd Font Mono",
     // UI customizations
     "ui.animations.enabled": true,
-    "ui.fontSmoothing": "auto"
+    "ui.fontSmoothing": "auto",
+    "oni.plugins.prettier": {
+        settings: {
+            semi: true,
+            tabWidth: 2,
+            useTabs: false,
+            singleQuote: false,
+            trailingComma: "es5",
+            bracketSpacing: true,
+            jsxBracketSameLine: false,
+            arrowParens: "avoid",
+            printWidth: 80
+        },
+        formatOnSave: true,
+        enabled: true
+    },
+    "language.vue.languageServer.command": "vls"
 };
