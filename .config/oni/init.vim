@@ -5,10 +5,9 @@ syntax on
 set number
 set noswapfile
 set smartcase
-set inccommand=nosplit "Show text about to be replaced
+set inccommand=split  "Show text about to be replaced
 
-" Turn off statusbar, because it is externalized
-set noshowmode
+set noshowmode          " Turn off statusbar, because it is externalized
 set noruler
 set laststatus=0
 set noshowcmd
@@ -92,9 +91,7 @@ call plug#end()
 
 
 
-
 let g:indentLine_char = '┆'
-
 " ============================== FZF/RIPGREP
 
 " ========== files
