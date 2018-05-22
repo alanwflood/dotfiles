@@ -1,6 +1,8 @@
+
 " Map the leader key to SPACE
 let mapleader="\<SPACE>"
 set syntax=on
+filetype plugin indent on
 set showcmd             " Show (partial) command in status line.
 set showmatch           " Show matching brackets.
 set showmode            " Show current mode.
@@ -10,7 +12,7 @@ set formatoptions+=o    " Continue comment marker in new lines.
 set textwidth=0         " Hard-wrap long lines as you type them.
 set expandtab           " Insert spaces when TAB is pressed.
 set tabstop=2           " Render TABs using this many spaces.
-set shiftwidth=2        " Indentation amount for < and > commands.
+set shiftwidth=2        " Indentation amount for < and > commands.filetype plugin indent on
 set icm=split
 set mouse=a             " I can haz mouse?
 set nostartofline       " Do not jump to first character with page commands.
@@ -21,6 +23,7 @@ set ignorecase          " Make searching case insensitive
 set smartcase           " ... unless the query has capital letters.
 set magic               " Use 'magic' patterns (extended regular expressions).
 set background=dark
+set noswapfile
 
 highlight LineNr ctermfg=blue "Change numbers color to blue
 
@@ -42,12 +45,10 @@ set list                " Show problematic characters.
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
 match ExtraWhitespace /\s\+$\|\t/
 
-
 " Use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
-
 " Relative numbering
 function! NumberToggle()
   if(&relativenumber == 1)
@@ -61,18 +62,30 @@ endfunc
 " Toggle between normal and relative numbering.
 nnoremap <leader>n :call NumberToggle()<cr>
 
-call plug#begin('~/.local/share/nvim/plugged')
-Plug 'hecal3/vim-leader-guide'
+" Caps Y copys a whole line
+nnoremap Y y$
+
+" Move to new splits when opened
+nnoremap <C-w>s <C-w>s<C-w>w
+nnoremap <C-w>v <C-w>v<C-w>w
+
+" Delete's comment characters when joining commented lines
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j
+endif
+
 
 
 
 
 
 " ============================== PLUGINS INSTALL
+call plug#begin('~/.local/share/nvim/plugged')
 
 " File management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-peekaboo'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
 
@@ -80,13 +93,20 @@ Plug 'rbgrouleff/bclose.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
+" Time management
+Plug 'wakatime/vim-wakatime'
+
 " Vim helpers
+Plug 'wellle/targets.vim'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
 Plug 'machakann/vim-sandwich'
 Plug 'conormcd/matchindent.vim'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'easymotion/vim-easymotion'
+Plug 'roman/golden-ratio'
+Plug 'Yggdroot/indentLine'
+Plug 'jiangmiao/auto-pairs'
 
 Plug 'vim-airline/vim-airline'
 
@@ -95,24 +115,32 @@ Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.s
 
 " Linting
 Plug 'w0rp/ale'
-" Autocomplete
+
+"
+"
+"Autocomplete
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Snippets management
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'ervandew/supertab'
 
 " Additional Syntax
 Plug 'sheerun/vim-polyglot'
+Plug 'jparise/vim-graphql'
+Plug 'posva/vim-vue'
 
+Plug 'hecal3/vim-leader-guide'
 call plug#end()
 
 
 
 
 
-
 " ============================== PLUGINS CONFIGURATION
+
+let g:indentLine_char = '┆'
 
 " Enable Deoplete
 let g:deoplete#enable_at_startup = 1
@@ -146,6 +174,8 @@ let g:airline_powerline_fonts = 1
 " ========== files
 " Make FZF Use ripgrep
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
+" Use ripgrep for vims grep util
+set grepprg=rg\ --vimgrep
 
 " ========== words
 command! -bang -nargs=* Find call fzf#vim#grep(
@@ -183,26 +213,34 @@ command! MRU call fzf#run({
 \  'options': '-m -x +s',
 \ 'down': '40%'})
 
+" ==========  Ripgrep integration with fzf
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
 
 
 
 
 
-" ============================== MAPPINGS
+" ============================== Bindings
+
+" Quickly toggle between two buffers
+nnoremap <Leader><tab> :e #<CR>
+
+nnoremap ; :    " Use ; for commands.
+nnoremap Q @q   " Use Q to execute default register.
+
+" ==> ==> Vim Leader Guide
 
 " Vim leader mapped to space
 call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
 nnoremap <silent> <leader> :<c-u>LeaderGuide '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
 
-nnoremap ; :    " Use ; for commands.
-nnoremap Q @q   " Use Q to execute default register.
-
 let g:lmap = {}
-
-" Toggle Ale
-let g:lmap.s = { 'name' : 'Syntax Checking' }
-map <leader>st :ALEToggle<CR>
 
 " open ranger as netrw in current dir
 let g:ranger_map_keys = 0
@@ -210,26 +248,92 @@ let g:lmap.r = [':RangerWorkingDirectory', 'Open Ranger']
 nnoremap - :Ranger<CR>
 let g:ranger_replace_netrw = 1
 
+
+" ==> Toggles
+let g:lmap.t = { 'name' : 'Toggles' }
+let g:lmap.t.s = [":ALEToggle", "Syntax Checking"]
+" Toggle between normal and relative numbering.
+let g:lmap.t.n = [":call NumberToggle()", "Relative Line Numbers"]
+let g:lmap.t.g = [":GoldenRatioToggle", "Golden Ratio"]
+let g:lmap.t.i = [":IndentLinesToggle", "Indentation Guide"]
+let g:lmap.t.p = [":AutoPairsShortcutToggle", "Auto Parens"]
+
+" ==> Easy Motion Bindings
+let g:EasyMotion_do_mapping = 0
+let g:lmap.e = { 'name' : 'Easymotion' }
+
+" <Leader>f{char} to move to {char}
+map  <Leader>ef <Plug>(easymotion-bd-f)
+nmap <Leader>ef <Plug>(easymotion-overwin-f)
+
+" s{char}{char} to move to {char}{char}
+nmap <Leader>ec <Plug>(easymotion-overwin-f2)
+
+" Move to line
+map <Leader>el <Plug>(easymotion-bd-jk)
+nmap <Leader>el <Plug>(easymotion-overwin-line)
+
+" Move to word
+map  <Leader>ew <Plug>(easymotion-bd-w)
+nmap <Leader>ew <Plug>(easymotion-overwin-w)
+
+
 " ==> Files
 let g:lmap.f = { 'name' : 'Files' }
 " Open fzf file menu
 let g:lmap.f.o = [':FZF', 'Open FZF']
 " find and replace word
 let g:lmap.f.r = [':%s//g<Left><Left>', 'Find & Replace Word']
+" Recently used files
+let g:lmap.f.R = [':MRU', 'Most Recently Used Files']
 " find file
-let g:lmap.f.f = [':Files', 'Find Files']
-nnoremap <Leader>ff :Files<CR>
+let g:lmap.f.z = [':Files', 'Find Files']
 " find current
-let g:lmap.f.c = [':FindCurrent', 'Find In Current']
+let g:lmap.f.c = [':FindCurrent', 'Find In Current Buffer']
 " find fuzzy
-let g:lmap.f.z = [':Find', 'Fuzzy Find']
+let g:lmap.f.f = [':find', 'Fuzzy Find']
+" find lines
+let g:lmap.f.l = [':Lines', 'Find Lines']
+
+" ==> Search
+let g:lmap.s = { 'name' : 'Search' }
+" find history
+let g:lmap.s.h = [':History', 'History']
+" find marks
+let g:lmap.s.m = [':Marks', 'Marks']
+" find Windows
+let g:lmap.s.w = [':Windows', 'Windows']
+" Snippets
+let g:lmap.s.n = [':Snippets', 'Snippets']
+
+" ==> Git
+let g:lmap.g = {'name' : 'Git'}
+let g:lmap.g.f = [':GFiles', 'View Files']
+let g:lmap.g.F = [':GFiles?', 'View File Status']
+let g:lmap.g.s = [' :Gstatus', 'Status']
+let g:lmap.g.d = [' :Gdiff', 'Diff']
+let g:lmap.g.b = [':Gblame', 'Blame']
+let g:lmap.g.e = [':Gedit', 'Edit']
+let g:lmap.g.r = [':Gread', 'Read']
+let g:lmap.g.w = [':Gwrite', 'Write']
+let g:lmap.g.q = [':Gwq', 'Write and Quit']
+let g:lmap.g.Q = [':Gwq!', 'Write and Quit!']
+
+let g:lmap.g.c = {'name' : 'Commits'}
+let g:lmap.g.c.s = [':Commits', 'View Commits']
+let g:lmap.g.c.x = [':Commits', 'View Buffers Commits']
+let g:lmap.g.c.c = [':Gcommit', 'Create Commit']
+
+" ==> Help
+let g:lmap.h = {'name' : 'Help'}
+let g:lmap.h.c = [':Commands', 'View Commands']
+let g:lmap.h.h = [':Helptags', 'View Help Tags']
 
 " ==> Buffers
 let g:lmap.b = { 'name' : 'Buffers' }
 " find buffer
-let g:lmap.b.b = [':Buffers', 'Buffer Search']
+let g:lmap.b.b = [':Buffers', 'View Buffers']
 let g:lmap.b.d = [':Bclose', 'Close Buffer']
 
 " last buffer
 let g:lmap.b.l = ['<tab> :e #', 'Last Buffer']
-nnoremap <Leader><tab> :e #<CR>
