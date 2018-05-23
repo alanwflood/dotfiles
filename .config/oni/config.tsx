@@ -23,7 +23,7 @@ export const deactivate = (oni: Oni.Plugin.Api) => {
 export const configuration = {
   //add custom config here, such as
 
-  "ui.colorscheme": "nord",
+  "ui.colorscheme": "hybrid_dark",
 
   "oni.useDefaultConfig": false,
   //"oni.bookmarks": ["~/Documents"],
@@ -34,6 +34,17 @@ export const configuration = {
   // UI customizations
   "ui.animations.enabled": true,
   "ui.fontSmoothing": "auto",
+
+  "autoClosingPairs.enabled": true,
+  // Add more autoclosing pairs
+  "autoClosingPairs.default": [
+    { open: "{", close: "}" },
+    { open: "[", close: "]" },
+    { open: "(", close: ")" },
+    { open: "'", close: "'" },
+    { open: "`", close: "`" },
+    { open: '"', close: '"' },
+  ],
 
   "oni.plugins.prettier": {
     settings: {

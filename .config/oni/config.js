@@ -17,7 +17,7 @@ exports.deactivate = function (oni) {
 };
 exports.configuration = {
     //add custom config here, such as
-    "ui.colorscheme": "nord",
+    "ui.colorscheme": "hybrid_dark",
     "oni.useDefaultConfig": false,
     //"oni.bookmarks": ["~/Documents"],
     "oni.loadInitVim": "~/.config/oni/init.vim",
@@ -26,6 +26,16 @@ exports.configuration = {
     // UI customizations
     "ui.animations.enabled": true,
     "ui.fontSmoothing": "auto",
+    "autoClosingPairs.enabled": true,
+    // Add more autoclosing pairs
+    "autoClosingPairs.default": [
+        { open: "{", close: "}" },
+        { open: "[", close: "]" },
+        { open: "(", close: ")" },
+        { open: "'", close: "'" },
+        { open: "`", close: "`" },
+        { open: '"', close: '"' },
+    ],
     "oni.plugins.prettier": {
         settings: {
             semi: true,
