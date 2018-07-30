@@ -49,15 +49,12 @@ match ExtraWhitespace /\s\+$\|\t/
 if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
-" Relative numbering
+
+" Change between: no numbers → absolute → relative → relative with absolute on cursor line:
 function! NumberToggle()
-  if(&relativenumber == 1)
-    set nornu
-    set number
-  else
-    set rnu
-  endif
+  :exe 'set nu!' &nu ? 'rnu!' : ''
 endfunc
+
 
 " Toggle between normal and relative numbering.
 nnoremap <leader>n :call NumberToggle()<cr>
@@ -97,17 +94,31 @@ Plug 'airblade/vim-gitgutter'
 Plug 'wakatime/vim-wakatime'
 
 " Vim helpers
+" ============
 Plug 'wellle/targets.vim'
 Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-commentary'
+
+" Comment Plugin
+Plug 'tyru/caw.vim'
+" Get context from fieltypes for comment plugin
+Plug 'Shougo/context_filetype.vim'
+" Allows . commands for non standard actions
+Plug 'kana/vim-repeat'
+" Wrapping plugin
 Plug 'machakann/vim-sandwich'
+" Figure out indentation based on filetype
 Plug 'conormcd/matchindent.vim'
-Plug 'kien/rainbow_parentheses.vim'
+" Colorful matching parens
+Plug 'junegunn/rainbow_parentheses.vim'
+" Move around files easier
 Plug 'easymotion/vim-easymotion'
 Plug 'roman/golden-ratio'
 Plug 'Yggdroot/indentLine'
 Plug 'jiangmiao/auto-pairs'
+" Use Tab to expands lots of things
+Plug 'ervandew/supertab'
 
+" Status Bar
 Plug 'vim-airline/vim-airline'
 
 " Language Server Protocol management
@@ -116,19 +127,20 @@ Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.s
 " Linting
 Plug 'w0rp/ale'
 
-"
-"
 "Autocomplete
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Snippets management
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'ervandew/supertab'
+Plug 'alanwflood/vim-react-snippets'
+Plug 'isRuslan/vim-es6'
 
 " Additional Syntax
 Plug 'sheerun/vim-polyglot'
+Plug 'othree/yajs.vim'
 Plug 'jparise/vim-graphql'
+Plug 'reasonml-editor/vim-reason-plus'
 Plug 'posva/vim-vue'
 
 Plug 'hecal3/vim-leader-guide'
@@ -140,29 +152,56 @@ call plug#end()
 
 " ============================== PLUGINS CONFIGURATION
 
+"Set indent character
 let g:indentLine_char = '┆'
+
+" Don't load golden_radio automagically
+let g:golden_ratio_autocommand = 0
+
+" Enable Rainbow parens
+au VimEnter * RainbowParentheses
+" Blacklist black and dark gray parens
+let g:rainbow#blacklist = [233, 234, 235, 236, 237, 238, 239]
 
 " Enable Deoplete
 let g:deoplete#enable_at_startup = 1
 
 " UltiSnips config
 let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<C-n>"
-let g:UltiSnipsJumpBackwardTrigger="<C-p>"
+let g:UltiSnipsJumpForwardTrigger="<C-f>"
+let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 
 " Configure Language Server
 set hidden
-let g:LanguageClient_serverCommands = { 'javascript': ['javascript-typescript-stdio'] }
+let g:LanguageClient_serverCommands = {
+\ 'javascript.jsx': ['javascript-typescript-stdio'],
+\ 'javascript': ['javascript-typescript-stdio'],
+\ 'typescript': ['javascript-typescript-stdio'],
+\ 'reason': ['ocaml-language-server', '--stdio'],
+\ 'ocaml': ['ocaml-language-server', '--stdio'],
+\ 'vue': ['vls'],
+\ 'dart': ['dart_language_server'],
+\ 'rust': ['rustup', 'run', 'stable', 'rls']
+\ }
 nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
-" Let ale use prettier in javascript
-let g:ale_fixers = {}
-let g:ale_fixers['javascript'] = ['prettier']
+" Let ale autofix code as it's typed
+let g:ale_fixers = {
+\ 'javascript': ['prettier'],
+\ 'typescript': ['prettier'],
+\ 'css': ['prettier'],
+\ 'vue':['prettier'],
+\ 'rust':['rustfmt']
+\ }
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1
 
+" Prefer using syntax plugins for certain languages
+let g:polyglot_disabled = ['vue', 'graphql', 'javascript']
+
+" Make airline use some l33t fonts
 let g:airline_powerline_fonts = 1
 
 
@@ -257,6 +296,7 @@ let g:lmap.t.n = [":call NumberToggle()", "Relative Line Numbers"]
 let g:lmap.t.g = [":GoldenRatioToggle", "Golden Ratio"]
 let g:lmap.t.i = [":IndentLinesToggle", "Indentation Guide"]
 let g:lmap.t.p = [":AutoPairsShortcutToggle", "Auto Parens"]
+let g:lmap.t.r = [":RainbowParentheses!!", "Rainbow Parens"]
 
 " ==> Easy Motion Bindings
 let g:EasyMotion_do_mapping = 0
@@ -291,7 +331,7 @@ let g:lmap.f.z = [':Files', 'Find Files']
 " find current
 let g:lmap.f.c = [':FindCurrent', 'Find In Current Buffer']
 " find fuzzy
-let g:lmap.f.f = [':find', 'Fuzzy Find']
+let g:lmap.f.f = [':Find', 'Find']
 " find lines
 let g:lmap.f.l = [':Lines', 'Find Lines']
 
@@ -328,6 +368,7 @@ let g:lmap.g.c.c = [':Gcommit', 'Create Commit']
 let g:lmap.h = {'name' : 'Help'}
 let g:lmap.h.c = [':Commands', 'View Commands']
 let g:lmap.h.h = [':Helptags', 'View Help Tags']
+let g:lmap.h.e = [':e ~/.config/nvim/init.vim', 'Edit init.vim']
 
 " ==> Buffers
 let g:lmap.b = { 'name' : 'Buffers' }

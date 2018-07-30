@@ -79,7 +79,10 @@ Plug 'Yggdroot/indentLine'
 
 Plug 'wellle/targets.vim'
 Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-commentary'
+
+Plug 'tyru/caw.vim'
+Plug 'Shougo/context_filetype.vim'
+Plug 'kana/vim-repeat'
 Plug 'machakann/vim-sandwich'
 
 " Additional Syntax

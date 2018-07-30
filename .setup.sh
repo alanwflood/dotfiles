@@ -28,6 +28,15 @@ brew install python3
 brew install postgresql && brew services start postgres
 brew install redis
 brew install mongodb && brew services start mongodb
+brew install rustup
+
+# Install rust language with sane defaults
+rustup-init -y
+rustup component add rls-preview rust-analysis rust-src
+
+# Install Dart
+brew tap dart-lang/dart
+brew install dart
 
 # webfont generators
 brew tap bramstein/webfonttools
@@ -79,29 +88,39 @@ brew tap caskroom/cask
 
 echo 'INSTALLING THROUGH BREW CASK'
 brew cask install alfred
+brew cask install android-studio android-platform-tools
 brew cask install bartender
 brew cask install bettertouchtool
+brew cask install bitwarden
 brew cask install calibre
+brew cask install charles
+brew cask install dbeaver-community
+brew cask install discord
+brew cask install disk-inventory-x
+brew cask install docker
 brew cask install dropbox
+brew cask install intellij-idea-ce
 brew cask install iterm2
+brew cask install java
 brew cask install mongodb-compass
 brew cask install mpv
 brew cask install nextcloud
+brew cask install ngrok
+brew cask install oni
 brew cask install onyx
 brew cask install osxfuse
 brew cask install plex-media-player
+brew cask install postman
 brew cask install sketch
 brew cask install smcfancontrol
 brew cask install soulseek
 brew cask install spotify
 brew cask install the-unarchiver
-brew cask install oni
-brew cask install charles
-brew cask install postman
-brew cask install dbeaver
 brew cask install transmission-remote-gui
 brew cask install tunnelblick
 brew cask install veracrypt
+brew cask install virtualbox vagrant
+brew cask install whatsapp
 brew cask install zeplin
 
 # Fetch and install firefox nightly
@@ -113,11 +132,11 @@ brew tap buo/cask-upgrade
 
 echo 'INSTALLING THROUGH NPM'
 # global js packages
-npm install -g prettier tern eslint preact-cli js-beautify vue-cli
+npm install -g lighthouse prettier eslint js-beautify now preact-cli reason-cli angular-cli vue-cli bs-platform javascript-typescript-langserver ocaml-language-server vue-language-server
 
 echo 'INSTALLING THROUGH PIP'
 # global python packages
 pip install wakatime
 
 echo 'FINITO SETTING UP WOOP WOOP 🎉'
-echo 'Remember you still need to download the following manually from the app store: Giphy, Amphetamine'
+echo 'Remember you still need to download the following manually from the app store: Giphy, Amphetamine. Afinity apps'
