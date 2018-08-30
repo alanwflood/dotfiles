@@ -1,5 +1,4 @@
-
-" Map the leader key to SPACE
+" Map the leader key to SPAC s e
 let mapleader="\<SPACE>"
 set syntax=on
 filetype plugin indent on
@@ -11,19 +10,17 @@ set number              " Show the line numbers on the left side.
 set formatoptions+=o    " Continue comment marker in new lines.
 set textwidth=0         " Hard-wrap long lines as you type them.
 set expandtab           " Insert spaces when TAB is pressed.
-set tabstop=2           " Render TABs using this many spaces.
-set shiftwidth=2        " Indentation amount for < and > commands.filetype plugin indent on
-set icm=split
+set inccommand=split    " Shows results of command in a preview window
 set mouse=a             " I can haz mouse?
 set nostartofline       " Do not jump to first character with page commands.
 set noerrorbells        " No beeps.
 set modeline            " Enable modeline.
-set linespace=0         " Set line-spacing to minimum.
 set ignorecase          " Make searching case insensitive
 set smartcase           " ... unless the query has capital letters.
 set magic               " Use 'magic' patterns (extended regular expressions).
 set background=dark
 set noswapfile
+set list                " Show problematic characters.
 
 highlight LineNr ctermfg=blue "Change numbers color to blue
 
@@ -39,7 +36,6 @@ endif
 if &listchars ==# 'eol:$'
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
-set list                " Show problematic characters.
 
 " Also highlight all tabs and trailing whitespace characters.
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
@@ -50,20 +46,10 @@ if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
 
-" Change between: no numbers → absolute → relative → relative with absolute on cursor line:
-function! NumberToggle()
-  :exe 'set nu!' &nu ? 'rnu!' : ''
-endfunc
-
-
-" Toggle between normal and relative numbering.
-nnoremap <leader>n :call NumberToggle()<cr>
-
 " Caps Y copys a whole line
 nnoremap Y y$
 
-" Move to new splits when opened
-nnoremap <C-w>s <C-w>s<C-w>w
+" Move to new horiz splits when opened
 nnoremap <C-w>v <C-w>v<C-w>w
 
 " Delete's comment characters when joining commented lines
@@ -107,7 +93,7 @@ Plug 'kana/vim-repeat'
 " Wrapping plugin
 Plug 'machakann/vim-sandwich'
 " Figure out indentation based on filetype
-Plug 'conormcd/matchindent.vim'
+Plug 'tpope/vim-sleuth'
 " Colorful matching parens
 Plug 'junegunn/rainbow_parentheses.vim'
 " Move around files easier
@@ -269,7 +255,7 @@ command! -bang -nargs=* Rg
 " Quickly toggle between two buffers
 nnoremap <Leader><tab> :e #<CR>
 
-nnoremap ; :    " Use ; for commands.
+nnoremap ; :Buffers<CR>
 nnoremap Q @q   " Use Q to execute default register.
 
 " ==> ==> Vim Leader Guide
@@ -292,7 +278,6 @@ let g:ranger_replace_netrw = 1
 let g:lmap.t = { 'name' : 'Toggles' }
 let g:lmap.t.s = [":ALEToggle", "Syntax Checking"]
 " Toggle between normal and relative numbering.
-let g:lmap.t.n = [":call NumberToggle()", "Relative Line Numbers"]
 let g:lmap.t.g = [":GoldenRatioToggle", "Golden Ratio"]
 let g:lmap.t.i = [":IndentLinesToggle", "Indentation Guide"]
 let g:lmap.t.p = [":AutoPairsShortcutToggle", "Auto Parens"]
@@ -350,8 +335,8 @@ let g:lmap.s.n = [':Snippets', 'Snippets']
 let g:lmap.g = {'name' : 'Git'}
 let g:lmap.g.f = [':GFiles', 'View Files']
 let g:lmap.g.F = [':GFiles?', 'View File Status']
-let g:lmap.g.s = [' :Gstatus', 'Status']
-let g:lmap.g.d = [' :Gdiff', 'Diff']
+let g:lmap.g.s = [':Gstatus', 'Status']
+let g:lmap.g.d = [':Gdiff', 'Diff']
 let g:lmap.g.b = [':Gblame', 'Blame']
 let g:lmap.g.e = [':Gedit', 'Edit']
 let g:lmap.g.r = [':Gread', 'Read']

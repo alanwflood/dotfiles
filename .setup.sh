@@ -32,6 +32,7 @@ brew install rustup
 
 # Install rust language with sane defaults
 rustup-init -y
+rustup default stable
 rustup component add rls-preview rust-analysis rust-src
 
 # Install Dart
@@ -47,12 +48,13 @@ brew install woff2
 # the rest
 brew install dark-mode
 brew install buku
+echo 'MAKE SURE YOU LN TO BUKUS DB TO THE ONE ON DROPBOX'
 brew install git
 brew install git-lfs
 brew install mpd
 brew install ncmpcpp
 brew install ripgrep
-brew install the_silver_searcher
+# brew install the_silver_searcher
 brew install fzf
 brew install zplug
 brew install trash
@@ -66,19 +68,19 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 pip2 install --user neovim
 pip3 install --user neovim
 
-brew tap railwaycat/emacsmacport
-brew install emacs-mac --with-gnutls --with-imagemagick --with-modules --with-texinfo --with-xml2 --with-spacemacs-icon
-brew linkapps emacs-mac
-git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+# brew tap railwaycat/emacsmacport
+# brew install emacs-mac --with-gnutls --with-imagemagick --with-modules --with-texinfo --with-xml2 --with-spacemacs-icon
+# brew linkapps emacs-mac
+# git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 
 # version managers
 # nvm
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 # yarn
-brew install yarn
+# brew install yarn
 # chruby
-brew install chruby
-brew install ruby-install
+# brew install chruby
+# brew install ruby-install
 
 # Remove outdated versions from the cellar.
 brew cleanup
@@ -100,6 +102,7 @@ brew cask install disk-inventory-x
 brew cask install docker
 brew cask install dropbox
 brew cask install intellij-idea-ce
+brew cask install imageoptim
 brew cask install iterm2
 brew cask install java
 brew cask install mongodb-compass
@@ -139,4 +142,4 @@ echo 'INSTALLING THROUGH PIP'
 pip install wakatime
 
 echo 'FINITO SETTING UP WOOP WOOP 🎉'
-echo 'Remember you still need to download the following manually from the app store: Giphy, Amphetamine. Afinity apps'
+echo 'Remember you still need to download the following manually from the app store: Giphy, Amphetamine. Afinity apps, etc'
