@@ -108,7 +108,10 @@ Plug 'ervandew/supertab'
 Plug 'vim-airline/vim-airline'
 
 " Language Server Protocol management
-Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 
 " Linting
 Plug 'w0rp/ale'
@@ -163,8 +166,7 @@ let g:LanguageClient_serverCommands = {
 \ 'javascript.jsx': ['javascript-typescript-stdio'],
 \ 'javascript': ['javascript-typescript-stdio'],
 \ 'typescript': ['javascript-typescript-stdio'],
-\ 'reason': ['ocaml-language-server', '--stdio'],
-\ 'ocaml': ['ocaml-language-server', '--stdio'],
+\ 'reason': ['~/.config/reason-language-server/reason-language-server.exe'],
 \ 'vue': ['vls'],
 \ 'dart': ['dart_language_server'],
 \ 'rust': ['rustup', 'run', 'stable', 'rls']
@@ -179,6 +181,7 @@ let g:ale_fixers = {
 \ 'typescript': ['prettier'],
 \ 'css': ['prettier'],
 \ 'vue':['prettier'],
+\ 'reason':['refmt'],
 \ 'rust':['rustfmt']
 \ }
 let g:ale_fix_on_save = 1

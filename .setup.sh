@@ -51,11 +51,15 @@ brew install buku
 echo 'MAKE SURE YOU LN TO BUKUS DB TO THE ONE ON DROPBOX'
 brew install git
 brew install git-lfs
+brew install joplin
 brew install mpd
 brew install ncmpcpp
 brew install ripgrep
 # brew install the_silver_searcher
+
 brew install fzf
+$(brew --prefix)/opt/fzf/install
+
 brew install zplug
 brew install trash
 brew install youtube-dl
@@ -105,6 +109,7 @@ brew cask install intellij-idea-ce
 brew cask install imageoptim
 brew cask install iterm2
 brew cask install java
+brew cask install joplin
 brew cask install mongodb-compass
 brew cask install mpv
 brew cask install nextcloud
