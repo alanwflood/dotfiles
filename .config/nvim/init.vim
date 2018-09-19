@@ -68,6 +68,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 " File management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+" extends " and @ in normal mode and <CTRL-R> in insert mode so you can see the contents of the registers.
 Plug 'junegunn/vim-peekaboo'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
@@ -81,7 +82,9 @@ Plug 'wakatime/vim-wakatime'
 
 " Vim helpers
 " ============
+" provides additional text objects
 Plug 'wellle/targets.vim'
+" provides a bunch of shortcut mappings
 Plug 'tpope/vim-unimpaired'
 
 " Comment Plugin
@@ -101,8 +104,6 @@ Plug 'easymotion/vim-easymotion'
 Plug 'roman/golden-ratio'
 Plug 'Yggdroot/indentLine'
 Plug 'jiangmiao/auto-pairs'
-" Use Tab to expands lots of things
-Plug 'ervandew/supertab'
 
 " Status Bar
 Plug 'vim-airline/vim-airline'
@@ -126,13 +127,14 @@ Plug 'alanwflood/vim-react-snippets'
 Plug 'isRuslan/vim-es6'
 
 " Additional Syntax
-Plug 'sheerun/vim-polyglot'
-Plug 'othree/yajs.vim'
+Plug 'neoclide/vim-jsx-improve'
 Plug 'jparise/vim-graphql'
 Plug 'reasonml-editor/vim-reason-plus'
 Plug 'posva/vim-vue'
+Plug 'sheerun/vim-polyglot'
 
-Plug 'hecal3/vim-leader-guide'
+" Emacs style which key menu
+Plug 'liuchengxu/vim-which-key'
 call plug#end()
 
 
@@ -171,28 +173,30 @@ let g:LanguageClient_serverCommands = {
 \ 'dart': ['dart_language_server'],
 \ 'rust': ['rustup', 'run', 'stable', 'rls']
 \ }
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
 " Let ale autofix code as it's typed
 let g:ale_fixers = {
-\ 'javascript': ['prettier'],
+\ 'javascript': ['prettier', 'eslint'],
 \ 'typescript': ['prettier'],
 \ 'css': ['prettier'],
 \ 'vue':['prettier'],
 \ 'reason':['refmt'],
 \ 'rust':['rustfmt']
 \ }
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
 let g:ale_javascript_prettier_use_local_config = 1
 
-" Prefer using syntax plugins for certain languages
-let g:polyglot_disabled = ['vue', 'graphql', 'javascript']
+" Error and warning signs for Ale.
+let g:ale_sign_error = '⤫'
+let g:ale_sign_warning = '⚠'
 
+" Prefer using syntax plugins for certain languages
+let g:polyglot_disabled = ['vue', 'graphql', 'javascript', 'jsx']
+
+" Enable ale integration with airline.
+let g:airline#extensions#ale#enabled = 1
 " Make airline use some l33t fonts
 let g:airline_powerline_fonts = 1
-
 
 
 
@@ -256,40 +260,38 @@ command! -bang -nargs=* Rg
 " ============================== Bindings
 
 " Quickly toggle between two buffers
-nnoremap <Leader><tab> :e #<CR>
-
 nnoremap ; :Buffers<CR>
-nnoremap Q @q   " Use Q to execute default register.
+" Use Q to execute default register.
+nnoremap Q @q
 
-" ==> ==> Vim Leader Guide
-
-" Vim leader mapped to space
-call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
-nnoremap <silent> <leader> :<c-u>LeaderGuide '<Space>'<CR>
-vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
-
-let g:lmap = {}
 
 " open ranger as netrw in current dir
 let g:ranger_map_keys = 0
-let g:lmap.r = [':RangerWorkingDirectory', 'Open Ranger']
 nnoremap - :Ranger<CR>
 let g:ranger_replace_netrw = 1
 
+" ========= Vim Leader Guide
+call which_key#register('<Space>', "g:which_key_map")
+nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+
+let g:which_key_map =  {}
 
 " ==> Toggles
-let g:lmap.t = { 'name' : 'Toggles' }
-let g:lmap.t.s = [":ALEToggle", "Syntax Checking"]
-" Toggle between normal and relative numbering.
-let g:lmap.t.g = [":GoldenRatioToggle", "Golden Ratio"]
-let g:lmap.t.i = [":IndentLinesToggle", "Indentation Guide"]
-let g:lmap.t.p = [":AutoPairsShortcutToggle", "Auto Parens"]
-let g:lmap.t.r = [":RainbowParentheses!!", "Rainbow Parens"]
+let g:which_key_map.t =  {
+      \ 'name' : '+toggles',
+      \ 's' : [ ':ALEToggle',               'Linter'],
+      \ 'g' : [ ':GoldenRatioToggle',       'Golden Ratio'],
+      \ 'i' : [ ':IndentLinesToggle',       'Auto Indentation'],
+      \ 'p' : [ ':AutoPairsShortcutToggle', 'Auto Insert Parens'],
+      \ 'r' : [ ':RainbowParentheses!!',    'Rainbow Parens'],
+      \ }
 
 " ==> Easy Motion Bindings
 let g:EasyMotion_do_mapping = 0
-let g:lmap.e = { 'name' : 'Easymotion' }
-
+let g:which_key_map.e =  {
+      \ 'name' : '+easymotion'
+      \ }
 " <Leader>f{char} to move to {char}
 map  <Leader>ef <Plug>(easymotion-bd-f)
 nmap <Leader>ef <Plug>(easymotion-overwin-f)
@@ -307,62 +309,76 @@ nmap <Leader>ew <Plug>(easymotion-overwin-w)
 
 
 " ==> Files
-let g:lmap.f = { 'name' : 'Files' }
-" Open fzf file menu
-let g:lmap.f.o = [':FZF', 'Open FZF']
-" find and replace word
-let g:lmap.f.r = [':%s//g<Left><Left>', 'Find & Replace Word']
-" Recently used files
-let g:lmap.f.R = [':MRU', 'Most Recently Used Files']
-" find file
-let g:lmap.f.z = [':Files', 'Find Files']
-" find current
-let g:lmap.f.c = [':FindCurrent', 'Find In Current Buffer']
-" find fuzzy
-let g:lmap.f.f = [':Find', 'Find']
-" find lines
-let g:lmap.f.l = [':Lines', 'Find Lines']
+let g:which_key_map.f =  {
+      \ 'name' : '+files',
+      \ 'o' : [':FZF',               'Fuzzy Find File'],
+      \ 'r' : [':%s//g<Left><Left>', 'Find & Replace'],
+      \ 'R' : [':MRU',               'Recently Used File'],
+      \ 'z' : [':Files',             'Find File'],
+      \ 'c' : [':FindCurrent',       'Search Current File'],
+      \ 'f' : [':Find',              'Fuzzy Find Word'],
+      \ 'l' : [':Lines',             'Find Line'],
+      \ }
+
+" ==> Lsp
+let g:which_key_map.l = {
+      \ 'name' : '+lsp',
+      \ 'f' : ['LanguageClient#textDocument_formatting()',     'Formatting'],
+      \ 'h' : ['LanguageClient#textDocument_hover()',          'Hover'],
+      \ 'r' : ['LanguageClient#textDocument_references()',     'References'],
+      \ 'R' : ['LanguageClient#textDocument_rename()',         'Rename'],
+      \ 's' : ['LanguageClient#textDocument_documentSymbol()', 'Document-Symbol'],
+      \ 'S' : ['LanguageClient#workspace_symbol()',            'Workspace-Symbol'],
+      \ 'g' : {
+        \ 'name': '+goto',
+        \ 'd' : ['LanguageClient#textDocument_definition()',     'Definition'],
+        \ 't' : ['LanguageClient#textDocument_typeDefinition()', 'Type-Definition'],
+        \ 'i' : ['LanguageClient#textDocument_implementation()', 'Implementation'],
+        \ },
+      \ }
 
 " ==> Search
-let g:lmap.s = { 'name' : 'Search' }
-" find history
-let g:lmap.s.h = [':History', 'History']
-" find marks
-let g:lmap.s.m = [':Marks', 'Marks']
-" find Windows
-let g:lmap.s.w = [':Windows', 'Windows']
-" Snippets
-let g:lmap.s.n = [':Snippets', 'Snippets']
-
-" ==> Git
-let g:lmap.g = {'name' : 'Git'}
-let g:lmap.g.f = [':GFiles', 'View Files']
-let g:lmap.g.F = [':GFiles?', 'View File Status']
-let g:lmap.g.s = [':Gstatus', 'Status']
-let g:lmap.g.d = [':Gdiff', 'Diff']
-let g:lmap.g.b = [':Gblame', 'Blame']
-let g:lmap.g.e = [':Gedit', 'Edit']
-let g:lmap.g.r = [':Gread', 'Read']
-let g:lmap.g.w = [':Gwrite', 'Write']
-let g:lmap.g.q = [':Gwq', 'Write and Quit']
-let g:lmap.g.Q = [':Gwq!', 'Write and Quit!']
-
-let g:lmap.g.c = {'name' : 'Commits'}
-let g:lmap.g.c.s = [':Commits', 'View Commits']
-let g:lmap.g.c.x = [':Commits', 'View Buffers Commits']
-let g:lmap.g.c.c = [':Gcommit', 'Create Commit']
+let g:which_key_map.s = {
+      \ 'name' : '+search',
+      \ 'h': [':history',  'History'],
+      \ 'm': [':marks',    'Marks'],
+      \ 'w': [':windows',  'Windows'],
+      \ 's': [':snippets', 'Snippets'],
+      \ }
 
 " ==> Help
-let g:lmap.h = {'name' : 'Help'}
-let g:lmap.h.c = [':Commands', 'View Commands']
-let g:lmap.h.h = [':Helptags', 'View Help Tags']
-let g:lmap.h.e = [':e ~/.config/nvim/init.vim', 'Edit init.vim']
+let g:which_key_map.h = {
+      \ 'name' : '+help',
+      \ 'c': [':Commands',                  'Commands'],
+      \ 'h': [':Helptags',                  'Help Tags'],
+      \ 'e': [':e ~/.config/nvim/init.vim', 'Edit init.vim'],
+      \ }
 
 " ==> Buffers
-let g:lmap.b = { 'name' : 'Buffers' }
-" find buffer
-let g:lmap.b.b = [':Buffers', 'View Buffers']
-let g:lmap.b.d = [':Bclose', 'Close Buffer']
+let g:which_key_map.b = {
+      \ 'name' : '+buffers',
+      \ 'l' : [":e #",     "Switch To Last"],
+      \ 's' : [":Buffers", "Search"],
+      \ 'd' : [":Bclose",  "Close Buffer"],
+      \}
 
-" last buffer
-let g:lmap.b.l = ['<tab> :e #', 'Last Buffer']
+" ==> Git Fugitive Bindings
+let g:which_key_map.g = {
+      \ 'name' : '+git',
+      \ 'f' : [':GFiles',  'View Files'],
+      \ 'F' : [':GFiles?', 'View File Status'],
+      \ 's' : [':Gstatus', 'Status'],
+      \ 'd' : [':Gdiff',   'Diff'],
+      \ 'b' : [':Gblame',  'Blame'],
+      \ 'e' : [':Gedit',   'Edit'],
+      \ 'r' : [':Gread',   'Read'],
+      \ 'w' : [':Gwrite',  'Write'],
+      \ 'q' : [':Gwq',     'Write and Quit'],
+      \ 'Q' : [':Gwq!',    'Write and Quit!'],
+      \ 'c' : {
+        \'name' : '+commits',
+        \ 's' : [':Commits',  'View Commits'],
+        \ 'x' : [':Commits',  'View Buffers Commits'],
+        \ 'c' : [':Gcommit',  'Create Commit']
+        \ },
+      \ }

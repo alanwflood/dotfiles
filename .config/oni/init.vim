@@ -1,58 +1,59 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-syntax on
+" Map the leader key to SPAC s e
+let mapleader="\<SPACE>"
+set syntax=on
+filetype plugin indent on
+set showmatch           " Show matching brackets.
 
-set number
-set noswapfile
-set smartcase
-set inccommand=split  "Show text about to be replaced
-
-set noshowmode          " Turn off statusbar, because it is externalized
-set noruler
-set laststatus=0
-set noshowcmd
-set expandtab           " Expand TABs to spaces
-set mouse=a             " Enable GUI mouse behavior
+set number              " Show the line numbers on the left side.
+set formatoptions+=o    " Continue comment marker in new lines.
+set textwidth=0         " Hard-wrap long lines as you type them.
+set expandtab           " Insert spaces when TAB is pressed.
+set inccommand=split    " Shows results of command in a preview window
+set mouse=a             " I can haz mouse?
 set nostartofline       " Do not jump to first character with page commands.
 set ignorecase          " Make searching case insensitive
 set smartcase           " ... unless the query has capital letters.
+set magic               " Use 'magic' patterns (extended regular expressions).
 set list                " Show problematic characters.
-set autoread            " Auto reload changed files
-set cursorline          " Highlight cursor line
+set autoread
 
-" Capital Y copys the whole line
-noremap Y y$
-" Clear search with CTRL-L
-nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
-
-let mapleader="\<SPACE>" " Set leader to space
-
-" Relative numbering
-function! NumberToggle()
-  if(&relativenumber == 1)
-    set nornu
-    set number
-  else
-    set rnu
-  endif
-endfunc
+set noshowmode
+set noruler
+set laststatus=0
+set noshowcmd
 
 " Tell Vim which characters to show for expanded TABs,
 " trailing whitespace, and end-of-lines.
 if &listchars ==# 'eol:$'
-  set listchars=tab:>\ ,trail:·,extends:>,precedes:<,nbsp:+
-endif
-
-" Delete's comment characters when joining commented lines
-if v:version > 703 || v:version == 703 && has("patch541")
-  set formatoptions+=j
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
 
 " Also highlight all tabs and trailing whitespace characters.
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
 match ExtraWhitespace /\s\+$\|\t/
 
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+endif
 
+" Caps Y copys a whole line
+nnoremap Y y$
+
+" Move to new horiz splits when opened
+nnoremap <C-w>v <C-w>v<C-w>w
+
+" Delete's comment characters when joining commented lines
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j
+endif
+
+
+
+
+
+
+" ============================== PLUGINS INSTALL
 call plug#begin('~/.config/oni/nvim-pluggins')
 
 " File management
@@ -70,36 +71,123 @@ Plug 'airblade/vim-gitgutter'
 Plug 'wakatime/vim-wakatime'
 
 " Vim helpers
-Plug 'hecal3/vim-leader-guide'
-Plug 'conormcd/matchindent.vim'
-Plug 'kien/rainbow_parentheses.vim'
-Plug 'easymotion/vim-easymotion'
-Plug 'roman/golden-ratio'
-Plug 'Yggdroot/indentLine'
-
+" ============
 Plug 'wellle/targets.vim'
 Plug 'tpope/vim-unimpaired'
 
+" Comment Plugin
 Plug 'tyru/caw.vim'
+" Get context from filetypes for comment plugin
 Plug 'Shougo/context_filetype.vim'
+" Allows . commands for non standard actions
 Plug 'kana/vim-repeat'
+" Wrapping plugin
 Plug 'machakann/vim-sandwich'
+" Figure out indentation based on filetype
+Plug 'tpope/vim-sleuth'
+" Colorful matching parens
+Plug 'junegunn/rainbow_parentheses.vim'
+" Move around files easier
+Plug 'easymotion/vim-easymotion'
+Plug 'roman/golden-ratio'
+Plug 'Yggdroot/indentLine'
+Plug 'jiangmiao/auto-pairs'
+" Use Tab to expands lots of things
+Plug 'ervandew/supertab'
+
+" Language Server Protocol management
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+" Linting
+Plug 'w0rp/ale'
+
+"Autocomplete
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+" Snippets management
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'alanwflood/vim-react-snippets'
+Plug 'isRuslan/vim-es6'
 
 " Additional Syntax
-Plug 'sheerun/vim-polyglot'
+Plug 'neoclide/vim-jsx-improve'
 Plug 'jparise/vim-graphql'
+Plug 'reasonml-editor/vim-reason-plus'
 Plug 'posva/vim-vue'
+Plug 'sheerun/vim-polyglot'
 
+Plug 'hecal3/vim-leader-guide'
 call plug#end()
 
 
 
+
+
+" ============================== PLUGINS CONFIGURATION
+
+"Set indent character
 let g:indentLine_char = '┆'
+
+" Don't load golden_radio automagically
+let g:golden_ratio_autocommand = 0
+
+" Enable Rainbow parens
+au VimEnter * RainbowParentheses
+" Blacklist black and dark gray parens
+let g:rainbow#blacklist = [233, 234, 235, 236, 237, 238, 239]
+
+" Enable Deoplete
+let g:deoplete#enable_at_startup = 1
+
+" UltiSnips config
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<C-f>"
+let g:UltiSnipsJumpBackwardTrigger="<C-b>"
+
+" Configure Language Server
+set hidden
+let g:LanguageClient_serverCommands = {
+\ 'javascript.jsx': ['javascript-typescript-stdio'],
+\ 'javascript': ['javascript-typescript-stdio'],
+\ 'typescript': ['javascript-typescript-stdio'],
+\ 'reason': ['~/.config/reason-language-server/reason-language-server.exe'],
+\ 'vue': ['vls'],
+\ 'dart': ['dart_language_server'],
+\ 'rust': ['rustup', 'run', 'stable', 'rls']
+\ }
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+
+" Let ale autofix code as it's typed
+let g:ale_fixers = {
+\ 'javascript': ['prettier', 'eslint'],
+\ 'typescript': ['prettier'],
+\ 'css': ['prettier'],
+\ 'vue':['prettier'],
+\ 'reason':['refmt'],
+\ 'rust':['rustfmt']
+\ }
+let g:ale_fix_on_save = 0
+let g:ale_javascript_prettier_use_local_config = 1
+
+" Prefer using syntax plugins for certain languages
+let g:polyglot_disabled = ['vue', 'graphql', 'javascript', 'jsx']
+
+
+
+
 " ============================== FZF/RIPGREP
 
 " ========== files
 " Make FZF Use ripgrep
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
+" Use ripgrep for vims grep util
+set grepprg=rg\ --vimgrep
 
 " ========== words
 command! -bang -nargs=* Find call fzf#vim#grep(
@@ -137,16 +225,21 @@ command! MRU call fzf#run({
 \  'options': '-m -x +s',
 \ 'down': '40%'})
 
+" ==========  Ripgrep integration with fzf
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
 
 
 
 
 " ============================== Bindings
 
-" Quickly toggle between two buffers
-nnoremap <Leader><tab> :e #<CR>
-
-nnoremap ; :    " Use ; for commands.
+nnoremap ; :Buffers<CR>
 nnoremap Q @q   " Use Q to execute default register.
 
 " ==> ==> Vim Leader Guide
@@ -166,12 +259,13 @@ let g:ranger_replace_netrw = 1
 
 
 " ==> Toggles
-" Toggles
 let g:lmap.t = { 'name' : 'Toggles' }
+let g:lmap.t.s = [":ALEToggle", "Syntax Checking"]
 " Toggle between normal and relative numbering.
-let g:lmap.t.n = [":call NumberToggle()", "Relative Line Numbers"]
 let g:lmap.t.g = [":GoldenRatioToggle", "Golden Ratio"]
 let g:lmap.t.i = [":IndentLinesToggle", "Indentation Guide"]
+let g:lmap.t.p = [":AutoPairsShortcutToggle", "Auto Parens"]
+let g:lmap.t.r = [":RainbowParentheses!!", "Rainbow Parens"]
 
 " ==> Easy Motion Bindings
 let g:EasyMotion_do_mapping = 0
@@ -206,9 +300,9 @@ let g:lmap.f.z = [':Files', 'Find Files']
 " find current
 let g:lmap.f.c = [':FindCurrent', 'Find In Current Buffer']
 " find fuzzy
-let g:lmap.f.f = [':find', 'Fuzzy Find']
+let g:lmap.f.f = [':Find', 'Find']
 " find lines
-let g:lmap.f.l = [':FzfLines', 'Find Lines']
+let g:lmap.f.l = [':Lines', 'Find Lines']
 
 " ==> Search
 let g:lmap.s = { 'name' : 'Search' }
@@ -225,8 +319,8 @@ let g:lmap.s.n = [':Snippets', 'Snippets']
 let g:lmap.g = {'name' : 'Git'}
 let g:lmap.g.f = [':GFiles', 'View Files']
 let g:lmap.g.F = [':GFiles?', 'View File Status']
-let g:lmap.g.s = [' :Gstatus', 'Status']
-let g:lmap.g.d = [' :Gdiff', 'Diff']
+let g:lmap.g.s = [':Gstatus', 'Status']
+let g:lmap.g.d = [':Gdiff', 'Diff']
 let g:lmap.g.b = [':Gblame', 'Blame']
 let g:lmap.g.e = [':Gedit', 'Edit']
 let g:lmap.g.r = [':Gread', 'Read']
@@ -243,6 +337,7 @@ let g:lmap.g.c.c = [':Gcommit', 'Create Commit']
 let g:lmap.h = {'name' : 'Help'}
 let g:lmap.h.c = [':Commands', 'View Commands']
 let g:lmap.h.h = [':Helptags', 'View Help Tags']
+let g:lmap.h.e = [':e ~/.config/nvim/init.vim', 'Edit init.vim']
 
 " ==> Buffers
 let g:lmap.b = { 'name' : 'Buffers' }
@@ -252,3 +347,8 @@ let g:lmap.b.d = [':Bclose', 'Close Buffer']
 
 " last buffer
 let g:lmap.b.l = ['<tab> :e #', 'Last Buffer']
+
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+      \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+      \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+

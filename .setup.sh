@@ -140,7 +140,7 @@ brew tap buo/cask-upgrade
 
 echo 'INSTALLING THROUGH NPM'
 # global js packages
-npm install -g lighthouse prettier eslint js-beautify now preact-cli reason-cli angular-cli vue-cli bs-platform javascript-typescript-langserver ocaml-language-server vue-language-server
+npm i -g lighthouse prettier eslint js-beautify now preact-cli bs-platform @angular/cli vue-cli bs-platform javascript-typescript-langserver ocaml-language-server vue-language-server
 
 echo 'INSTALLING THROUGH PIP'
 # global python packages
