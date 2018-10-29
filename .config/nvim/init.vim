@@ -57,12 +57,18 @@ if v:version > 703 || v:version == 703 && has("patch541")
   set formatoptions+=j
 endif
 
+" Disable line numbers when using :term
+augroup TerminalStuff
+  autocmd TermOpen * setlocal nonumber norelativenumber
+augroup END
+" Remap the escape key in terminal to actually escape terminal input
+:tnoremap <Esc> <C-\><C-n>
 
 
 
 
 
-" ============================== PLUGINS INSTALL
+" ============================== PLUGINS INSTALL - 36 Total
 call plug#begin('~/.local/share/nvim/plugged')
 
 " File management
@@ -70,6 +76,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " extends " and @ in normal mode and <CTRL-R> in insert mode so you can see the contents of the registers.
 Plug 'junegunn/vim-peekaboo'
+" Muh file explorer
 Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
 
@@ -101,8 +108,11 @@ Plug 'tpope/vim-sleuth'
 Plug 'junegunn/rainbow_parentheses.vim'
 " Move around files easier
 Plug 'easymotion/vim-easymotion'
+" Resize Window automagically
 Plug 'roman/golden-ratio'
+" Show indents
 Plug 'Yggdroot/indentLine'
+" Auto-parens to spare my fingers
 Plug 'jiangmiao/auto-pairs'
 
 " Status Bar
@@ -127,10 +137,18 @@ Plug 'alanwflood/vim-react-snippets'
 Plug 'isRuslan/vim-es6'
 
 " Additional Syntax
+" -- Js
+Plug 'heavenshell/vim-jsdoc'
 Plug 'neoclide/vim-jsx-improve'
-Plug 'jparise/vim-graphql'
-Plug 'reasonml-editor/vim-reason-plus'
+" -- Vue
 Plug 'posva/vim-vue'
+" -- Graphql
+Plug 'jparise/vim-graphql'
+" -- Reason
+Plug 'reasonml-editor/vim-reason-plus'
+" -- Elm
+Plug 'ElmCast/elm-vim'
+" -- Everything else
 Plug 'sheerun/vim-polyglot'
 
 " Emacs style which key menu
@@ -169,6 +187,7 @@ let g:LanguageClient_serverCommands = {
 \ 'javascript': ['javascript-typescript-stdio'],
 \ 'typescript': ['javascript-typescript-stdio'],
 \ 'reason': ['~/.config/reason-language-server/reason-language-server.exe'],
+\ 'elm': ['~/.config/reason-language-server/reason-language-server.exe'],
 \ 'vue': ['vls'],
 \ 'dart': ['dart_language_server'],
 \ 'rust': ['rustup', 'run', 'stable', 'rls']
@@ -183,7 +202,7 @@ let g:ale_fixers = {
 \ 'reason':['refmt'],
 \ 'rust':['rustfmt']
 \ }
-let g:ale_fix_on_save = 0
+let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1
 
 " Error and warning signs for Ale.
@@ -191,12 +210,16 @@ let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
 
 " Prefer using syntax plugins for certain languages
-let g:polyglot_disabled = ['vue', 'graphql', 'javascript', 'jsx']
+let g:polyglot_disabled = ['vue', 'graphql', 'javascript', 'jsx', 'elm']
 
 " Enable ale integration with airline.
 let g:airline#extensions#ale#enabled = 1
 " Make airline use some l33t fonts
 let g:airline_powerline_fonts = 1
+
+" Allows JsDoc to figure out ES6 function syntax 
+" (WHY IS THIS TURNED OFF BY DEFAULT?)
+let g:jsdoc_enable_es6 = 1
 
 
 
@@ -277,9 +300,18 @@ vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 
 let g:which_key_map =  {}
 
+function! FixOnSaveToggle()
+    if g:ale_fix_on_save
+      let g:ale_fix_on_save = 0
+    else
+      let g:ale_fix_on_save = 1
+    endif
+endfunction
+
 " ==> Toggles
 let g:which_key_map.t =  {
       \ 'name' : '+toggles',
+      \ 'f' : [ ':call FixOnSaveToggle()', 'Fix On Save' ],
       \ 's' : [ ':ALEToggle',               'Linter'],
       \ 'g' : [ ':GoldenRatioToggle',       'Golden Ratio'],
       \ 'i' : [ ':IndentLinesToggle',       'Auto Indentation'],
