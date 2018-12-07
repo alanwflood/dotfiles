@@ -89,8 +89,6 @@ Plug 'wakatime/vim-wakatime'
 
 " Vim helpers
 " ============
-" provides additional text objects
-Plug 'wellle/targets.vim'
 " provides a bunch of shortcut mappings
 Plug 'tpope/vim-unimpaired'
 
@@ -183,24 +181,25 @@ let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 " Configure Language Server
 set hidden
 let g:LanguageClient_serverCommands = {
-\ 'javascript.jsx': ['javascript-typescript-stdio'],
-\ 'javascript': ['javascript-typescript-stdio'],
-\ 'typescript': ['javascript-typescript-stdio'],
-\ 'reason': ['~/.config/reason-language-server/reason-language-server.exe'],
-\ 'elm': ['~/.config/reason-language-server/reason-language-server.exe'],
-\ 'vue': ['vls'],
+\ 'c': ['cquery'],
 \ 'dart': ['dart_language_server'],
-\ 'rust': ['rustup', 'run', 'stable', 'rls']
+\ 'javascript': ['javascript-typescript-stdio'],
+\ 'javascript.jsx': ['javascript-typescript-stdio'],
+\ 'reason': ['~/.config/reason-language-server/reason-language-server.exe'],
+\ 'rust': ['rustup', 'run', 'stable', 'rls'],
+\ 'typescript': ['javascript-typescript-stdio'],
+\ 'vue': ['vls'],
 \ }
 
 " Let ale autofix code as it's typed
 let g:ale_fixers = {
-\ 'javascript': ['prettier', 'eslint'],
-\ 'typescript': ['prettier'],
+\ 'c': ['clang-format'],
 \ 'css': ['prettier'],
-\ 'vue':['prettier'],
+\ 'javascript': ['prettier', 'eslint'],
 \ 'reason':['refmt'],
-\ 'rust':['rustfmt']
+\ 'rust':['rustfmt'],
+\ 'typescript': ['prettier'],
+\ 'vue':['prettier'],
 \ }
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1
