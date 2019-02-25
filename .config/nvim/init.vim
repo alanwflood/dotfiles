@@ -1,35 +1,35 @@
+
+" ============================== General Settings
+
+" === Internal Vim
 " Map the leader key to SPAC s e
 let mapleader="\<SPACE>"
-set syntax=on
 filetype plugin indent on
-set showcmd             " Show (partial) command in status line.
-set showmatch           " Show matching brackets.
-set showmode            " Show current mode.
-set ruler               " Show the line and column numbers of the cursor.
-set number              " Show the line numbers on the left side.
-set formatoptions+=o    " Continue comment marker in new lines.
-set textwidth=0         " Hard-wrap long lines as you type them.
-set expandtab           " Insert spaces when TAB is pressed.
-set inccommand=split    " Shows results of command in a preview window
-set mouse=a             " I can haz mouse?
-set nostartofline       " Do not jump to first character with page commands.
+set hidden              " Hide Buffers instead of closing them
+set visualbell          " No beeps.
 set noerrorbells        " No beeps.
-set modeline            " Enable modeline.
+
+" === Searching/Commands
+set hlsearch            " highlight search terms
+set incsearch           " show search matches as you type
+set showcmd             " Show (partial) command in status line.
+set showmatch           " Highlight matching brackets.
+set inccommand=split    " Shows results of command in a preview window
 set ignorecase          " Make searching case insensitive
 set smartcase           " ... unless the query has capital letters.
 set magic               " Use 'magic' patterns (extended regular expressions).
-set background=dark
-set noswapfile
+
+" === Interface/Syntax Highlighting
+set syntax=on           " Syntax Highlighting
+set showmode            " Show current mode.
+set ruler               " Show the line and column numbers of the cursor.
+set number              " Show the line numbers on the left side.
+set modeline            " Enable modeline.
+set background=dark     " Makes colors brighter to match dark background
 set list                " Show problematic characters.
 
-highlight LineNr ctermfg=blue "Change numbers color to blue
-
-if !&scrolloff
-  set scrolloff=3       " Show next 3 lines while scrolling.
-endif
-if !&sidescrolloff
-  set sidescrolloff=5   " Show next 5 columns while side-scrolling.
-endif
+" Change numbers column color to blue
+highlight LineNr ctermfg=blue
 
 " Tell Vim which characters to show for expanded TABs,
 " trailing whitespace, and end-of-lines.
@@ -40,6 +40,19 @@ endif
 " Also highlight all tabs and trailing whitespace characters.
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
 match ExtraWhitespace /\s\+$\|\t/
+
+" === Autocomplete
+set shortmess+=c " don't give |ins-completion-menu| messages.
+set signcolumn=yes " always show signcolumns
+
+" === Tabs/Space
+set formatoptions+=o    " Continue comment marker in new lines.
+set textwidth=0         " Hard-wrap long lines as you type them.
+set expandtab           " Insert spaces when TAB is pressed.
+
+" === Controls/Basic Keybinds
+set mouse=a             " I can haz mouse scroll?
+set nostartofline       " Do not jump to first character with page commands.
 
 " Use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-L>', 'n') ==# ''
@@ -52,10 +65,8 @@ nnoremap Y y$
 " Move to new horiz splits when opened
 nnoremap <C-w>v <C-w>v<C-w>w
 
-" Delete's comment characters when joining commented lines
-if v:version > 703 || v:version == 703 && has("patch541")
-  set formatoptions+=j
-endif
+" Use :w!! to sudo save a file
+cmap w!! w !sudo tee % >/dev/null
 
 " Disable line numbers when using :term
 augroup TerminalStuff
@@ -64,11 +75,39 @@ augroup END
 " Remap the escape key in terminal to actually escape terminal input
 :tnoremap <Esc> <C-\><C-n>
 
+" Netrw Remapping
+augroup netrw_mapping
+    autocmd!
+    autocmd filetype netrw call NetrwMapping()
+augroup END
+
+" Netrw remaps for alignment with Ranger
+function! NetrwMapping()
+    map <buffer> l <Enter>
+    map <buffer> <Right> <Enter>
+    map <buffer> h -
+    map <buffer> <Left> -
+endfunction
+
+" === Backups
+set backupdir=$HOME/.config/nvim/backups// " Set directory for backups
+set directory=$HOME/.config/nvim/swapfiles// " Set directory for swapfiles
+
+" Allows infinite undos in file, deletes undos after 90 days
+set undofile
+set undodir=~/.config/nvim/undodir
+let s:undos = split(globpath(&undodir, '*'), "\n")
+call filter(s:undos, 'getftime(v:val) < localtime() - (60 * 60 * 24 * 90)')
+call map(s:undos, 'delete(v:val)')
+" Delete's comment characters when joining commented lines
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j
+endif
 
 
 
 
-" ============================== PLUGINS INSTALL - 36 Total
+" ============================== PLUGINS INSTALL - 37 Total
 call plug#begin('~/.local/share/nvim/plugged')
 
 " File management
@@ -77,8 +116,7 @@ Plug 'junegunn/fzf.vim'
 " extends " and @ in normal mode and <CTRL-R> in insert mode so you can see the contents of the registers.
 Plug 'junegunn/vim-peekaboo'
 " Muh file explorer
-Plug 'francoiscabrol/ranger.vim'
-Plug 'rbgrouleff/bclose.vim'
+Plug 'tpope/vim-vinegar'
 
 " Git management
 Plug 'tpope/vim-fugitive'
@@ -91,7 +129,8 @@ Plug 'wakatime/vim-wakatime'
 " ============
 " provides a bunch of shortcut mappings
 Plug 'tpope/vim-unimpaired'
-
+" Help build up good habbits not use HJKL the whole time
+Plug 'takac/vim-hardtime'
 " Comment Plugin
 Plug 'tyru/caw.vim'
 " Get context from fieltypes for comment plugin
@@ -105,43 +144,38 @@ Plug 'tpope/vim-sleuth'
 " Colorful matching parens
 Plug 'junegunn/rainbow_parentheses.vim'
 " Move around files easier
-Plug 'easymotion/vim-easymotion'
+Plug 'unblevable/quick-scope'
 " Resize Window automagically
 Plug 'roman/golden-ratio'
 " Show indents
 Plug 'Yggdroot/indentLine'
 " Auto-parens to spare my fingers
 Plug 'jiangmiao/auto-pairs'
-
+" Case Sensitive search and replace with :S
+Plug 'tpope/vim-abolish'
 " Status Bar
 Plug 'vim-airline/vim-airline'
-
-" Language Server Protocol management
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
 
 " Linting
 Plug 'w0rp/ale'
 
 "Autocomplete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 " Snippets management
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'alanwflood/vim-react-snippets'
-Plug 'isRuslan/vim-es6'
+" Plug 'isRuslan/vim-es6'
+
 
 " Additional Syntax
 " -- Js
 Plug 'heavenshell/vim-jsdoc'
 Plug 'neoclide/vim-jsx-improve'
+Plug 'HerringtonDarkholme/yats.vim'
 " -- Vue
 Plug 'posva/vim-vue'
-" -- Graphql
-Plug 'jparise/vim-graphql'
 " -- Reason
 Plug 'reasonml-editor/vim-reason-plus'
 " -- Elm
@@ -159,6 +193,13 @@ call plug#end()
 
 " ============================== PLUGINS CONFIGURATION
 
+" God help me
+" let g:hardtime_default_on = 1
+let g:list_of_normal_keys = ["h", "j", "k", "l", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+let g:list_of_visual_keys = ["h", "j", "k", "l", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+let g:list_of_insert_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+let g:list_of_disabled_keys = []
+
 "Set indent character
 let g:indentLine_char = '┆'
 
@@ -166,34 +207,19 @@ let g:indentLine_char = '┆'
 let g:golden_ratio_autocommand = 0
 
 " Enable Rainbow parens
-au VimEnter * RainbowParentheses
+au VimEnter * RainbowParenthes
 " Blacklist black and dark gray parens
-let g:rainbow#blacklist = [233, 234, 235, 236, 237, 238, 239]
-
-" Enable Deoplete
-let g:deoplete#enable_at_startup = 1
+let g:rainbow#blacklist = range(16, 255)
 
 " UltiSnips config
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<C-f>"
 let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 
-" Configure Language Server
-set hidden
-let g:LanguageClient_serverCommands = {
-\ 'c': ['cquery'],
-\ 'dart': ['dart_language_server'],
-\ 'javascript': ['javascript-typescript-stdio'],
-\ 'javascript.jsx': ['javascript-typescript-stdio'],
-\ 'reason': ['~/.config/reason-language-server/reason-language-server.exe'],
-\ 'rust': ['rustup', 'run', 'stable', 'rls'],
-\ 'typescript': ['javascript-typescript-stdio'],
-\ 'vue': ['vls'],
-\ }
-
 " Let ale autofix code as it's typed
 let g:ale_fixers = {
 \ 'c': ['clang-format'],
+\ 'cpp': ['clang-format'],
 \ 'css': ['prettier'],
 \ 'javascript': ['prettier', 'eslint'],
 \ 'reason':['refmt'],
@@ -208,17 +234,20 @@ let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
 
-" Prefer using syntax plugins for certain languages
-let g:polyglot_disabled = ['vue', 'graphql', 'javascript', 'jsx', 'elm']
-
 " Enable ale integration with airline.
 let g:airline#extensions#ale#enabled = 1
 " Make airline use some l33t fonts
 let g:airline_powerline_fonts = 1
 
-" Allows JsDoc to figure out ES6 function syntax 
-" (WHY IS THIS TURNED OFF BY DEFAULT?)
+" Prefer using feature rich syntax plugins for specific languages
+let g:polyglot_disabled = ['vue', 'javascript',  'typescript',  'jsx', 'elm']
+
+" Allows JsDoc to figure out ES6 function syntax
 let g:jsdoc_enable_es6 = 1
+
+" Text Highlighting for Quickscope Plugin
+highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
+highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
 
 
@@ -281,16 +310,14 @@ command! -bang -nargs=* Rg
 
 " ============================== Bindings
 
-" Quickly toggle between two buffers
-nnoremap ; :Buffers<CR>
+" Map FZF file finder to Ctrl-P
+noremap <C-p> :Files<CR>
+
+" Use Meta-; to open buffers list
+nnoremap <M-;> :Buffers<CR>
 " Use Q to execute default register.
 nnoremap Q @q
 
-
-" open ranger as netrw in current dir
-let g:ranger_map_keys = 0
-nnoremap - :Ranger<CR>
-let g:ranger_replace_netrw = 1
 
 " ========= Vim Leader Guide
 call which_key#register('<Space>', "g:which_key_map")
@@ -314,30 +341,10 @@ let g:which_key_map.t =  {
       \ 's' : [ ':ALEToggle',               'Linter'],
       \ 'g' : [ ':GoldenRatioToggle',       'Golden Ratio'],
       \ 'i' : [ ':IndentLinesToggle',       'Auto Indentation'],
-      \ 'p' : [ ':AutoPairsShortcutToggle', 'Auto Insert Parens'],
+      \ 'q' : [ ':QuickScopeToggle', 'QuickScope Highlighting'],
+      \ 'p' : [ '<M-p>', 'Auto Insert Parens'],
       \ 'r' : [ ':RainbowParentheses!!',    'Rainbow Parens'],
       \ }
-
-" ==> Easy Motion Bindings
-let g:EasyMotion_do_mapping = 0
-let g:which_key_map.e =  {
-      \ 'name' : '+easymotion'
-      \ }
-" <Leader>f{char} to move to {char}
-map  <Leader>ef <Plug>(easymotion-bd-f)
-nmap <Leader>ef <Plug>(easymotion-overwin-f)
-
-" s{char}{char} to move to {char}{char}
-nmap <Leader>ec <Plug>(easymotion-overwin-f2)
-
-" Move to line
-map <Leader>el <Plug>(easymotion-bd-jk)
-nmap <Leader>el <Plug>(easymotion-overwin-line)
-
-" Move to word
-map  <Leader>ew <Plug>(easymotion-bd-w)
-nmap <Leader>ew <Plug>(easymotion-overwin-w)
-
 
 " ==> Files
 let g:which_key_map.f =  {
@@ -349,23 +356,6 @@ let g:which_key_map.f =  {
       \ 'c' : [':FindCurrent',       'Search Current File'],
       \ 'f' : [':Find',              'Fuzzy Find Word'],
       \ 'l' : [':Lines',             'Find Line'],
-      \ }
-
-" ==> Lsp
-let g:which_key_map.l = {
-      \ 'name' : '+lsp',
-      \ 'f' : ['LanguageClient#textDocument_formatting()',     'Formatting'],
-      \ 'h' : ['LanguageClient#textDocument_hover()',          'Hover'],
-      \ 'r' : ['LanguageClient#textDocument_references()',     'References'],
-      \ 'R' : ['LanguageClient#textDocument_rename()',         'Rename'],
-      \ 's' : ['LanguageClient#textDocument_documentSymbol()', 'Document-Symbol'],
-      \ 'S' : ['LanguageClient#workspace_symbol()',            'Workspace-Symbol'],
-      \ 'g' : {
-        \ 'name': '+goto',
-        \ 'd' : ['LanguageClient#textDocument_definition()',     'Definition'],
-        \ 't' : ['LanguageClient#textDocument_typeDefinition()', 'Type-Definition'],
-        \ 'i' : ['LanguageClient#textDocument_implementation()', 'Implementation'],
-        \ },
       \ }
 
 " ==> Search

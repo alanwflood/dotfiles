@@ -2,6 +2,10 @@ export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
 source $HOME/.zplugrc
 
+source /usr/local/share/chruby/chruby.sh
+PATH="`ruby -e 'puts Gem.user_dir'`/bin:$PATH"
+source ~/.config/tmuxinator.zsh
+
 # powerline9k theme
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(time dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(nvm chruby)
@@ -31,6 +35,8 @@ POWERLEVEL9K_MODE='nerdfont-complete'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 
+# Alacritty Autocomplete
+
 # Source aliases file
 source $HOME/.aliases
 
@@ -46,30 +52,15 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Auto change node version based on nvmrc file
-autoload -U add-zsh-hook
-load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-    fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
-
 # Dart language Package manager
 export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 # yarn integration
 export PATH="$PATH:`yarn global bin`"
+
+# workplaces
+function workon () {
+  LOC="$1"
+  cd "${HOME}/Sites/$LOC"
+  tmux attach -dt "$LOC" || tmux new -s "$LOC"
+}

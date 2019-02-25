@@ -17,14 +17,15 @@
 }
 
 #TabsToolbar {
- visibility: collapse !important; 
+  visibility: collapse !important;
 }
 
-#PersonalToolbar { /* bookmarks toolbar */
+#PersonalToolbar {
+  /* bookmarks toolbar */
   padding-left: 100px;
 }
 
 /* Hide White Header Tab Tree */
-#sidebar-header {
- display: none;
-}
+/* #sidebar-header { */
+/*  display: none;   */
+/* }                 */
