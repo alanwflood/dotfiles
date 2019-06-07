@@ -2,12 +2,12 @@
 " ============================== General Settings
 
 " === Internal Vim
-" Map the leader key to SPAC s e
+" Map the leader key to spacebar
 let mapleader="\<SPACE>"
 filetype plugin indent on
 set hidden              " Hide Buffers instead of closing them
 set visualbell          " No beeps.
-set noerrorbells        " No beeps.
+set noerrorbells        " No boops.
 
 " === Searching/Commands
 set hlsearch            " highlight search terms
@@ -30,6 +30,8 @@ set list                " Show problematic characters.
 
 " Change numbers column color to blue
 highlight LineNr ctermfg=blue
+" Have SignColumn be transparent
+highlight clear SignColumn
 
 " Tell Vim which characters to show for expanded TABs,
 " trailing whitespace, and end-of-lines.
@@ -42,8 +44,7 @@ highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
 match ExtraWhitespace /\s\+$\|\t/
 
 " === Autocomplete
-set shortmess+=c " don't give |ins-completion-menu| messages.
-set signcolumn=yes " always show signcolumns
+set shortmess+=c        " don't give |ins-completion-menu| messages.
 
 " === Tabs/Space
 set formatoptions+=o    " Continue comment marker in new lines.
@@ -65,15 +66,12 @@ nnoremap Y y$
 " Move to new horiz splits when opened
 nnoremap <C-w>v <C-w>v<C-w>w
 
-" Use :w!! to sudo save a file
-cmap w!! w !sudo tee % >/dev/null
-
 " Disable line numbers when using :term
 augroup TerminalStuff
   autocmd TermOpen * setlocal nonumber norelativenumber
 augroup END
 " Remap the escape key in terminal to actually escape terminal input
-:tnoremap <Esc> <C-\><C-n>
+au TermOpen * tnoremap <Esc> <c-\><c-n> 
 
 " Netrw Remapping
 augroup netrw_mapping
@@ -81,25 +79,44 @@ augroup netrw_mapping
     autocmd filetype netrw call NetrwMapping()
 augroup END
 
-" Netrw remaps for alignment with Ranger
+" Netrw sane remaps 
 function! NetrwMapping()
     map <buffer> l <Enter>
     map <buffer> <Right> <Enter>
     map <buffer> h -
     map <buffer> <Left> -
 endfunction
+" Remove files with trash so I don't do stupid things
+let g:netrw_localrmdir='trash -r'
+
+
 
 " === Backups
+
+" Create backups directory
+if !isdirectory($HOME . "/.config/nvim/backups")
+  call mkdir($HOME . "/.config/nvim/backups", "p")
+endif
 set backupdir=$HOME/.config/nvim/backups// " Set directory for backups
+
+" Create swapfiles directory
+if !isdirectory($HOME . "/.config/nvim/swapfiles")
+  call mkdir($HOME . "/.config/nvim/swapfiles", "p")
+endif
 set directory=$HOME/.config/nvim/swapfiles// " Set directory for swapfiles
 
 " Allows infinite undos in file, deletes undos after 90 days
 set undofile
-set undodir=~/.config/nvim/undodir
+" Create undos directory
+if !isdirectory($HOME . "/.config/nvim/undos")
+  call mkdir($HOME . "/.config/nvim/undos", "p")
+endif
+set undodir=$HOME/.config/nvim/undos
 let s:undos = split(globpath(&undodir, '*'), "\n")
 call filter(s:undos, 'getftime(v:val) < localtime() - (60 * 60 * 24 * 90)')
 call map(s:undos, 'delete(v:val)')
-" Delete's comment characters when joining commented lines
+
+" Deletes comment characters when joining commented lines
 if v:version > 703 || v:version == 703 && has("patch541")
   set formatoptions+=j
 endif
@@ -115,12 +132,13 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " extends " and @ in normal mode and <CTRL-R> in insert mode so you can see the contents of the registers.
 Plug 'junegunn/vim-peekaboo'
+
 " Muh file explorer
 Plug 'tpope/vim-vinegar'
 
 " Git management
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 
 " Time management
 Plug 'wakatime/vim-wakatime'
@@ -149,8 +167,6 @@ Plug 'unblevable/quick-scope'
 Plug 'roman/golden-ratio'
 " Show indents
 Plug 'Yggdroot/indentLine'
-" Auto-parens to spare my fingers
-Plug 'jiangmiao/auto-pairs'
 " Case Sensitive search and replace with :S
 Plug 'tpope/vim-abolish'
 " Status Bar
@@ -166,7 +182,6 @@ Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'alanwflood/vim-react-snippets'
-" Plug 'isRuslan/vim-es6'
 
 
 " Additional Syntax
@@ -211,17 +226,13 @@ au VimEnter * RainbowParenthes
 " Blacklist black and dark gray parens
 let g:rainbow#blacklist = range(16, 255)
 
-" UltiSnips config
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<C-f>"
-let g:UltiSnipsJumpBackwardTrigger="<C-b>"
-
-" Let ale autofix code as it's typed
+" Let ale autofix code on save
 let g:ale_fixers = {
 \ 'c': ['clang-format'],
 \ 'cpp': ['clang-format'],
 \ 'css': ['prettier'],
 \ 'javascript': ['prettier', 'eslint'],
+\ 'python': ['autopep8'],
 \ 'reason':['refmt'],
 \ 'rust':['rustfmt'],
 \ 'typescript': ['prettier'],
@@ -259,6 +270,8 @@ highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=und
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
 " Use ripgrep for vims grep util
 set grepprg=rg\ --vimgrep
+" Due to the ESC remap in terminal, ESC does not close FZF, this restores that
+au FileType fzf tunmap <Esc>
 
 " ========== words
 command! -bang -nargs=* Find call fzf#vim#grep(
@@ -272,7 +285,8 @@ command! -bang -nargs=* Find call fzf#vim#grep(
 \     "always" '
 \   .shellescape(<q-args>),
 \ 1,
-\ fzf#vim#with_preview('right:50%:wrap', '?'))
+\ fzf#vim#with_preview('right:50%:wrap', '?')
+\ )
 
 " ========== word under cursor
 command! -bang -nargs=* FindCurrent call fzf#vim#grep(
@@ -287,22 +301,16 @@ command! -bang -nargs=* FindCurrent call fzf#vim#grep(
 \     "always" '
 \   .shellescape(expand('<cword>')),
 \ 1,
-\ fzf#vim#with_preview('right:50%:wrap', '?'))
+\ fzf#vim#with_preview('right:50%:wrap', '?')
+\ )
 
 " ========== most recently used files
 command! MRU call fzf#run({
 \  'source':  v:oldfiles,
 \  'sink':    'e',
 \  'options': '-m -x +s',
-\ 'down': '40%'})
-
-" ==========  Ripgrep integration with fzf
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
+\ 'down': '40%'}
+\ )
 
 
 
@@ -310,13 +318,29 @@ command! -bang -nargs=* Rg
 
 " ============================== Bindings
 
-" Map FZF file finder to Ctrl-P
+" Map FZF file finder to Ctrl-p
 noremap <C-p> :Files<CR>
-
-" Use Meta-; to open buffers list
-nnoremap <M-;> :Buffers<CR>
+" Map FZF Buffer list to  Ctrl-b
+nnoremap <C-b> :Buffers<CR>
+" Map FZF Buffer list to  Ctrl-b
+nnoremap <C-s> :Snippets<CR>
 " Use Q to execute default register.
 nnoremap Q @q
+
+" Use C-l to expand snippets
+let g:UltiSnipsExpandTrigger = "<C-l>"
+
+" Use tab for completion window
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
 
 " ========= Vim Leader Guide
@@ -342,7 +366,6 @@ let g:which_key_map.t =  {
       \ 'g' : [ ':GoldenRatioToggle',       'Golden Ratio'],
       \ 'i' : [ ':IndentLinesToggle',       'Auto Indentation'],
       \ 'q' : [ ':QuickScopeToggle', 'QuickScope Highlighting'],
-      \ 'p' : [ '<M-p>', 'Auto Insert Parens'],
       \ 'r' : [ ':RainbowParentheses!!',    'Rainbow Parens'],
       \ }
 
@@ -364,7 +387,7 @@ let g:which_key_map.s = {
       \ 'h': [':history',  'History'],
       \ 'm': [':marks',    'Marks'],
       \ 'w': [':windows',  'Windows'],
-      \ 's': [':snippets', 'Snippets'],
+      \ 's': [':Snippets', 'Snippets'],
       \ }
 
 " ==> Help
@@ -386,20 +409,22 @@ let g:which_key_map.b = {
 " ==> Git Fugitive Bindings
 let g:which_key_map.g = {
       \ 'name' : '+git',
-      \ 'f' : [':GFiles',  'View Files'],
-      \ 'F' : [':GFiles?', 'View File Status'],
-      \ 's' : [':Gstatus', 'Status'],
-      \ 'd' : [':Gdiff',   'Diff'],
-      \ 'b' : [':Gblame',  'Blame'],
-      \ 'e' : [':Gedit',   'Edit'],
-      \ 'r' : [':Gread',   'Read'],
-      \ 'w' : [':Gwrite',  'Write'],
-      \ 'q' : [':Gwq',     'Write and Quit'],
-      \ 'Q' : [':Gwq!',    'Write and Quit!'],
+      \ 'b' : [':Gblame',   'Blame'],
+      \ 'B' : [':Gbrowser', 'Open in Browser'],
+      \ 'd' : [':Gdiff',    'Diff'],
+      \ 'e' : [':Gedit',    'Edit'],
+      \ 'f' : [':GFiles',   'View Files'],
+      \ 'F' : [':GFiles?',  'View File Status'],
+      \ 's' : [':Gstatus',  'Status'],
+      \ 'p' : [':Gpull',    'Pull'],
+      \ 'P' : [':Gpush',    'Push'],
+      \ 'r' : [':Gread',    'Read'],
+      \ 'w' : [':Gwrite',   'Add File'],
+      \ 'q' : [':Gwq',      'Add File and Quit'],
+      \ 'Q' : [':Gwq!',     'Add File and Quit!'],
       \ 'c' : {
         \'name' : '+commits',
         \ 's' : [':Commits',  'View Commits'],
-        \ 'x' : [':Commits',  'View Buffers Commits'],
         \ 'c' : [':Gcommit',  'Create Commit']
         \ },
       \ }
