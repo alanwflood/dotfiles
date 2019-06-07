@@ -1,12 +1,22 @@
+set -Ux EDITOR nvim
+set -Ux VISUAL nvim
+set -Ux PAGER less
+
 source $HOME/.config/fish/aliases.mac.fish
 source $HOME/.config/fish/aliases.shared.fish
 
 source /usr/local/share/chruby/chruby.fish
 source /usr/local/share/chruby/auto.fish
 
+set -gx PATH $PATH /usr/local/anaconda3/bin
+
 set -g theme_nerd_fonts yes
 set -g theme_display_date no
 set -g theme_color_scheme gruvbox
+
+set -Ux NNN_USE_EDITOR 1
+set -Ux NNN_TRASH 1
+
 
 function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
 
@@ -38,3 +48,5 @@ function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
   # set -x color_virtualgo                brblue black --bold
   # set -x color_desk                     brblue black --bold
 end
+set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
+
