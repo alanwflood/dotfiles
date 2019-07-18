@@ -1,3 +1,5 @@
+
+set -Ux TERM alacritty-256color
 set -Ux EDITOR nvim
 set -Ux VISUAL nvim
 set -Ux PAGER less
@@ -49,4 +51,3 @@ function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
   # set -x color_desk                     brblue black --bold
 end
 set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
-
