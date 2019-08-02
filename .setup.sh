@@ -99,6 +99,7 @@ echo 'INSTALLING THROUGH BREW CASK'
 # brew cask install smcfancontrol
 # brew cask install transmission-remote-gui
 # brew cask install whatsapp
+# brew cask install soulseek
 
 brew cask install alcritty
 brew cask install alfred
@@ -108,24 +109,25 @@ brew cask install bettertouchtool
 brew cask install bitwarden
 brew cask install calibre
 brew cask install dbeaver-community
-brew cask install discord
 brew cask install disk-inventory-x
 brew cask install docker
 brew cask install dropbox
 brew cask install google-chrome
+brew cask install figma
 brew cask install imageoptim
 brew cask install intellij-idea-ce
 brew cask install java
+brew cask install karabinder-elements
 brew cask install mongodb-compass
 brew cask install mpv
 brew cask install nextcloud
 brew cask install ngrok
+brew cask install nightowl
 brew cask install onyx
 brew cask install osxfuse
 brew cask install plex-media-player
 brew cask install postman
 brew cask install sketch
-brew cask install soulseek
 brew cask install spotify
 brew cask install the-unarchiver
 brew cask install tunnelblick

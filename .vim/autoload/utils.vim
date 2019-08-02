@@ -30,12 +30,21 @@ function! utils#setupCompletion() abort
   nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
   " Remap keys for gotos
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
+  " nmap <silent> gd <Plug>(coc-definition)
+  " nmap <silent> gy <Plug>(coc-type-definition)
+  " nmap <silent> gi <Plug>(coc-implementation)
+  " nmap <silent> gr <Plug>(coc-references)
 
-  nmap <leader>rn <Plug>(coc-rename)
+  " nmap <leader>rn <Plug>(coc-rename)
+
+  function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+      execute 'h '.expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
+
   " Use K for show documentation in preview window
   nnoremap <silent> K :call <SID>show_documentation()<CR>
 

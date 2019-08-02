@@ -2,6 +2,8 @@ call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 
+command! ALEToggleFixer execute "let g:ale_fix_on_save = get(g:, 'ale_fix_on_save', 0) ? 0 : 1"
+
 let g:which_key_map =  {}
 
 " ==> Toggles
@@ -12,6 +14,7 @@ let g:which_key_map.t =  {
       \ 'i' : [ ':IndentLinesToggle',       'Auto Indentation'],
       \ 'q' : [ ':QuickScopeToggle', 'QuickScope Highlighting'],
       \ 'r' : [ ':RainbowParentheses!!',    'Rainbow Parens'],
+      \ 'p' : [ ':call AutoPairsToggle()',    'Auto Pairs'],
       \ }
 
 " ==> Tests
@@ -61,7 +64,7 @@ let g:which_key_map.b = {
       \ 'd' : [":Bclose",  "Close Buffer"],
       \}
 
-" ==> Git Fugitive Bindings
+" ==> Git + Git Fugitive Bindings
 let g:which_key_map.g = {
       \ 'name' : '+git',
       \ 'b' : [':Gblame',   'Blame'],
@@ -82,4 +85,16 @@ let g:which_key_map.g = {
         \ 's' : [':Commits',  'View Commits'],
         \ 'c' : [':Gcommit',  'Create Commit']
         \ },
+      \ }
+
+" ==> Auto Complete
+let g:which_key_map.l = {
+      \ 'name' : '+LSP',
+      \ 'D' : ['<Plug>(coc-definition)', 'Goto Definition'],
+      \ 'Y' : ['<Plug>(coc-type-definition)', 'Goto Type Definition'],
+      \ 'I' : ['<Plug>(coc-implementation)', 'Goto Implementation'],
+      \ 'R' : ['<Plug>(coc-references)', 'Goto References'],
+      \ 'r' : ['<Plug>(coc-rename)',  'Rename Definition'],
+      \ 'f' : ['<Plug>(coc-format-selected)',  'Format Selection'],
+      \ 'F' : [':call CocAction("format"))',  'Format File'],
       \ }
