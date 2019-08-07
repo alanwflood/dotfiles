@@ -24,6 +24,12 @@ brew install wget --with-iri
 # brew install ranger libcaca highlight atool lynx w3m elinks poppler transmission mediainfo exiftool
 brew install nnn
 
+# Fun stuff
+brew install cowsay lolcat fortune figlet
+
+# Fish shell
+brew install fish
+
 # Development
 brew install python
 brew install python3
@@ -59,7 +65,7 @@ brew install ripgrep
 brew install fzf
 $(brew --prefix)/opt/fzf/install
 
-brew install zplug
+# brew install zplug
 brew install trash
 brew install youtube-dl
 
@@ -145,6 +151,7 @@ brew tap buo/cask-upgrade
 echo 'INSTALLING THROUGH NPM'
 # global js packages
 npm i -g lighthouse \
+        expo-cli \
         bs-platform \
         eslint \
         javascript-typescript-langserver \
