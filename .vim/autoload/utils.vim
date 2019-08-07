@@ -56,6 +56,11 @@ function! utils#setupCompletion() abort
   augroup end
 endfunction
 
+function! utils#has_floating_window() abort
+  " MenuPopupChanged was renamed to CompleteChanged -> https://github.com/neovim/neovim/pull/9819
+  return (exists('##MenuPopupChanged') || exists('##CompleteChanged')) && exists('*nvim_open_win')
+endfunction
+
 function! utils#open() abort
   " Linux/BSD
   if executable('xdg-open')
