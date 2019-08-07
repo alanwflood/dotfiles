@@ -148,3 +148,16 @@ if has('persistent_undo')
     call map(s:undos, 'delete(v:val)')
   endif
 endif
+
+
+if exists('&guioptions')
+  " cursor behavior:
+  "   - no blinking in normal/visual mode
+  "   - blinking in insert-mode
+  set guicursor+=n-v-c:blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait30-blinkoff100-blinkon100
+endif
+
+if executable('rg')
+  set grepprg=rg\ --vimgrep
+  set grepformat=%f:%l:%c:%m
+endif

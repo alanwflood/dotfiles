@@ -68,3 +68,8 @@ function! utils#open() abort
   " Windows
   return 'explorer'
 endfunction
+
+let g:FileTypeQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help', 'taskedit', 'diff']
+function! utils#should_quit_on_q() abort
+  return &diff || index(g:FileTypeQuitOnQ, &filetype) >= 0
+endfunction
