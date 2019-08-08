@@ -30,6 +30,19 @@ brew install cowsay lolcat fortune figlet
 # Fish shell
 brew install fish
 
+# Fisher package manager
+curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
+
+FISHER_PACKAGES=(
+  "brigand/fast-nvm-fish",
+  "jethrokuan/fzf",
+  "jethrokuan/z",
+  "oh-my-fish/plugin-bang-bang",
+  "oh-my-fish/theme-bobthefish"
+)
+fisher add "${FISHER_PACKAGES[@]}"
+unset -v FISHER_PACKAGES
+
 # Development
 brew install python
 brew install python3
@@ -159,10 +172,8 @@ npm i -g lighthouse \
         neovim \
         now \
         npm-check-updates \
-        preact-cli \
         prettier \
         tldr \
-        vue-cli \
         vue-language-server
 
 echo 'INSTALLING THROUGH PIP'
