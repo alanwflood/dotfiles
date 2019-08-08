@@ -53,7 +53,7 @@ let g:which_key_map.h = {
       \ 'name' : '+help',
       \ 'c': [':Commands',                  'Commands'],
       \ 'h': [':Helptags',                  'Help Tags'],
-      \ 'e': [':e ~/.config/nvim/init.vim', 'Edit init.vim'],
+      \ 'e': [':e $MYVIMRC', 'Edit init.vim'],
       \ }
 
 " ==> Buffers
