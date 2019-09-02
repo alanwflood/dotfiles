@@ -18,6 +18,7 @@ brew install nmap
 brew install speedtest_cli
 brew install tmux
 brew install tree
+brew install ntfs-3g
 brew install reattach-to-user-namespace --with-wrap-pbcopy-and-pbpaste
 brew install wget --with-iri
 # Ranger + it's dependencies
