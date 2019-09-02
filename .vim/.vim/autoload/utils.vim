@@ -61,13 +61,6 @@ function! utils#has_floating_window() abort
   return (exists('##MenuPopupChanged') || exists('##CompleteChanged')) && exists('*nvim_open_win')
 endfunction
 
-function! utils#create_dir(dir) abort
-  if !isdirectory(a:dir)
-      call mkdir(a:dir, "p")
-  endif
-  return a:dir
-endfunction
-
 function! utils#open() abort
   " Linux/BSD
   if executable('xdg-open')

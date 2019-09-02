@@ -1,0 +1,129 @@
+global !p
+from helpers import *
+endglobal
+
+snippet bang
+#!/usr/bin/env ${1:sh}
+
+$0
+endsnippet
+
+snippet todo "Add a todo with date and github user" b
+[TODO]: ${1:Do something} (`date +"%d-%m-%y %H:%M"`${2: - `echo $GITHUB_USER`})
+$0
+endsnippet
+
+snippet vimfold "fold comment" b
+${1:Fold title} {{{
+	${0:${VISUAL}}
+}}}
+endsnippet
+
+snippet :d "Jan 25, 2011"
+`date "+%b %e, %Y"`
+endsnippet
+
+snippet :dd "Sun, Jan 25"
+`date "+%a, %b %e"`
+endsnippet
+
+snippet :date "Jan 25, 2011"
+`date "+%b %e, %Y"`
+endsnippet
+
+snippet :date "Sun, Jan 25"
+`date "+%a, %b %e"`
+endsnippet
+
+snippet :date "January 25, 2011"
+`date "+%B %e, %Y"`
+endsnippet
+
+snippet :date "2011-01-25"
+`date "+%F"`
+endsnippet
+
+snippet :t "15:35"
+`date "+%H:%M"`
+endsnippet
+
+snippet :time "03:35PM"
+`date "+%I:%M%p"`
+endsnippet
+
+snippet :cmd
+⌘
+endsnippet
+
+snippet :alt
+⌥
+endsnippet
+
+snippet :shift
+⇧
+endsnippet
+
+snippet :esc
+⎋
+endsnippet
+
+snippet :caps
+⇪
+endsnippet
+
+snippet :ret
+⏎
+endsnippet
+
+snippet :return
+⏎
+endsnippet
+
+snippet :del
+⌫
+endsnippet
+
+snippet :tab
+⇥
+endsnippet
+
+snippet :shrug "shrug ascci" b
+¯\_(ツ)_/¯
+endsnippet
+
+snippet mode
+`!p
+comment_char=snip.opt('&commentstring')
+# vim goes crazy if I have this a literal string so I trick it by doing this
+str = "{}:{}=".format('vim', 'ft')
+snip.rv = comment_char % ' ' + str if not (comment_char is None) else str
+`${1}:
+endsnippet
+
+snippet box "Box"
+`!p
+comment_char = snip.opt('&commentstring')
+top='┌' + '─' * (len(t[1]) + 2) + '┐'
+snip.rv = comment_char.replace('%s',  ' ' + top) if not (comment_char is None) else top
+`
+`!p
+comment_char = snip.opt('&commentstring')
+snip.rv = comment_char.replace('%s',  ' │ ' + t[1] + ' │ ') if not (comment_char is None) else ''
+`$1
+`!p
+comment_char = snip.opt('&commentstring')
+bottom='└' + '─' * (len(t[1]) + 2) + '┘'
+snip.rv = comment_char.replace('%s',  ' ' + bottom) if not (comment_char is None) else bottom
+`
+$0
+endsnippet
+
+snippet banner "add ascii banner"
+`!p snip.rv = repeat_char(snip, '━')`
+`!p
+comment_char = snip.opt('&commentstring')
+snip.rv = comment_char.replace('%s', ' ') if not (comment_char is None) else ''
+` $1
+`!p snip.rv = repeat_char(snip, '━')`
+$0
+endsnippet

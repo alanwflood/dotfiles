@@ -55,7 +55,7 @@ function! plugins#install_plugins() abort
   Plug 'tyru/caw.vim'
 
   " Get context from filetypes for comment plugin
-  Plug 'shougo/context_filetype.vim'
+  Plug 'Shougo/context_filetype.vim'
 
   " Allows . commands for non standard actions
   Plug 'tpope/vim-repeat'
@@ -82,7 +82,7 @@ function! plugins#install_plugins() abort
   Plug 'vim-airline/vim-airline'
 
   " Linting
-  Plug 'dense-analysis/ale', { 'do': 'npm install -g prettier' }
+  Plug 'w0rp/ale', { 'do': 'npm install -g prettier' }
 
   " Autocomplete
   let g:coc_global_extensions = [
@@ -111,7 +111,7 @@ function! plugins#install_plugins() abort
   let CocSetup = function('s:coc_cb')
   Plug 'neoclide/coc.nvim', { 'branch':  'release', 'do': CocSetup }
   unlet CocSetup
-  Plug 'shougo/echodoc.vim'
+  Plug 'Shougo/echodoc.vim'
 
   " Snippets management
   Plug 'SirVer/ultisnips'
@@ -129,8 +129,8 @@ function! plugins#install_plugins() abort
 
   " Additional Syntax
   " -- Show Colors beside hex values
-  Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
-  Plug 'amadeus/vim-convert-color-to', {'on': 'ConvertColorTo'}
+  Plug "RRethy/vim-hexokinase", { 'do': 'make hexokinase' }
+  Plug "amadeus/vim-convert-color-to", {'on': ['ConvertColorTo']}
   " -- Js
   Plug 'heavenshell/vim-jsdoc'
   Plug 'neoclide/vim-jsx-improve'
@@ -143,8 +143,6 @@ function! plugins#install_plugins() abort
   Plug 'ElmCast/elm-vim', { 'for': ['elm']}
   " -- Everything else
   Plug 'sheerun/vim-polyglot'
-
-  Plug 'morhetz/gruvbox'
 
   " Emacs style which key menu
   Plug 'liuchengxu/vim-which-key'

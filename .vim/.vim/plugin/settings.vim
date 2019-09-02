@@ -62,13 +62,6 @@ if has('linebreak')
 endif
 set modeline            " Enable modeline.
 set background=dark     " Makes colors brighter to match dark background
-set termguicolors
-let &t_8f = "<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "<Esc>[48;2;%lu;%lu;%lum"
-colorscheme gruvbox
-
-
-set t_ut=
 set hidden
 set mouse=a
 
@@ -122,14 +115,16 @@ if exists('$SUDO_USER')
   set nobackup                        " don't create root-owned files
   set nowritebackup                   " don't create root-owned files
 else
-  let &backupdir=utils#create_dir($VIMHOME.'/tmp/backup') " keep backup files out of the way
+  let &backupdir=$VIMHOME.'/tmp/backup' " keep backup files out of the way
+  set backupdir+=.
 endif
 
 " Swapfiles
 if exists('$SUDO_USER')
   set noswapfile                      " don't create root-owned files
 else
-  let &directory=utils#create_dir($VIMHOME.'/tmp/swap') " keep swap files out of the way
+  let &directory=$VIMHOME.'/tmp/swap' " keep swap files out of the way
+  set directory+=.
 endif
 
 if exists('&swapsync')
@@ -143,7 +138,8 @@ if has('persistent_undo')
   if exists('$SUDO_USER')
     set noundofile                    " don't create root-owned files
   else
-    let &undodir=utils#create_dir($VIMHOME.'/tmp/undo') " keep undo files out of the way
+    let &undodir=$VIMHOME.'/tmp/undo' " keep undo files out of the way
+    set undodir+=.
     " actually use undo files
     set undofile
     " Purge unused undos after 90 days
