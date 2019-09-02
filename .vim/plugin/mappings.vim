@@ -31,9 +31,6 @@ if has('nvim')
   augroup END
 endif
 
-" Clear current search
-imap <leader><C-l> :noh
-
 " Disable arrow keys
 imap <up>    <nop>
 imap <down>  <nop>

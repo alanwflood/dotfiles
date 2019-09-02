@@ -82,7 +82,7 @@ function! plugins#install_plugins() abort
   Plug 'vim-airline/vim-airline'
 
   " Linting
-  Plug 'w0rp/ale', { 'do': 'npm install -g prettier' }
+  Plug 'w0rp/ale'
 
   " Autocomplete
   let g:coc_global_extensions = [
@@ -111,7 +111,6 @@ function! plugins#install_plugins() abort
   let CocSetup = function('s:coc_cb')
   Plug 'neoclide/coc.nvim', { 'branch':  'release', 'do': CocSetup }
   unlet CocSetup
-  Plug 'Shougo/echodoc.vim'
 
   " Snippets management
   Plug 'SirVer/ultisnips'
@@ -128,9 +127,6 @@ function! plugins#install_plugins() abort
         \ ]}
 
   " Additional Syntax
-  " -- Show Colors beside hex values
-  Plug "RRethy/vim-hexokinase", { 'do': 'make hexokinase' }
-  Plug "amadeus/vim-convert-color-to", {'on': ['ConvertColorTo']}
   " -- Js
   Plug 'heavenshell/vim-jsdoc'
   Plug 'neoclide/vim-jsx-improve'

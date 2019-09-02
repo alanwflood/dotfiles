@@ -9,13 +9,12 @@ let g:which_key_map =  {}
 " ==> Toggles
 let g:which_key_map.t =  {
       \ 'name' : '+toggles',
-      \ 'c' : [ ':HexokinaseToggle', 'Color Highlighting' ],
       \ 'f' : [ ':call FixOnSaveToggle()', 'Fix On Save' ],
+      \ 's' : [ ':ALEToggle',               'Linter'],
       \ 'i' : [ ':IndentLinesToggle',       'Auto Indentation'],
-      \ 'p' : [ ':call AutoPairsToggle()',    'Auto Pairs'],
       \ 'q' : [ ':QuickScopeToggle', 'QuickScope Highlighting'],
       \ 'r' : [ ':RainbowParentheses!!',    'Rainbow Parens'],
-      \ 's' : [ ':ALEToggle',               'Linter'],
+      \ 'p' : [ ':call AutoPairsToggle()',    'Auto Pairs'],
       \ }
 
 " ==> Tests
