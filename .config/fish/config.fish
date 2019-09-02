@@ -23,7 +23,7 @@ set -Ux NNN_TRASH 1
 function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
 
   # Optionally include a base color scheme
-  __bobthefish_colors default
+  __bobthefish_colors gruvbox
 
   # Then override everything you want!
   # Note that these must be defined with `set -x`
@@ -32,7 +32,7 @@ function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
   # set -x color_path_nowrite             magenta black
   # set -x color_path_nowrite_basename    magenta black --bold
   #
-  # set -x color_repo                     green black
+  set -x color_repo                     brgreen black
   # set -x color_repo_work_tree           black black --bold
   set -x color_repo_dirty                 red brwhite
   # set -x color_repo_staged              yellow black
