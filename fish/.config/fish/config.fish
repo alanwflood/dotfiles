@@ -9,6 +9,13 @@ source /usr/local/share/chruby/chruby.fish
 source /usr/local/share/chruby/auto.fish
 source $HOME/.config/fish/jenv.fish
 
+set -gx PATH $PATH $HOME/.cargo/bin
+set -gx ANDROID_HOME $HOME/Library/Android/sdk
+set -gx PATH $PATH $ANDROID_HOME/emulator
+set -gx PATH $PATH $ANDROID_HOME/tools
+set -gx PATH $PATH $ANDROID_HOME/tools/bin
+set -gx PATH $PATH $ANDROID_HOME/platform-tools
+
 set -g theme_nerd_fonts yes
 set -g theme_display_date no
 set -g theme_color_scheme gruvbox
