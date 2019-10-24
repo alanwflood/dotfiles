@@ -129,9 +129,9 @@ function! plugins#install_plugins() abort
 
   " Additional Syntax
   " -- Show Colors beside hex values
-  Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
-  let g:Hexokinase_ftAutoload = ['*']
-  let g:Hexokinase_highlighters = ['virtual']
+  " Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
+  " let g:Hexokinase_ftAutoload = ['*']
+  " let g:Hexokinase_highlighters = ['virtual']
 
   Plug 'amadeus/vim-convert-color-to', {'on': 'ConvertColorTo'}
   " -- Js

@@ -1,3 +1,5 @@
+alias reload="source $HOME/.config/fish/config.fish"
+
 # Alias the date command
 alias tnow='date "+%T %d-%m-%Y"'
 alias tnowtime='date "+%T"'
@@ -37,6 +39,19 @@ alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date
 function wth
   curl "wttr.in/$argv"
 end
+
+function wth2
+  curl "v2.wttr.in/$argv"
+end
+
+alias moon="curl wttr.in/moon"
+
+
+function cheat
+  curl "cheat.sh/$argv"
+end
+
+alias btc="curl eur.rate.sx/btc@10d"
 
 alias myip='curl ifconfig.io'
 

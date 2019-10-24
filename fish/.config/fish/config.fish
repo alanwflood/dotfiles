@@ -7,9 +7,7 @@ source $HOME/.config/fish/aliases.shared.fish
 
 source /usr/local/share/chruby/chruby.fish
 source /usr/local/share/chruby/auto.fish
-
-# set -gx PATH $PATH /usr/local/anaconda3/bin
- set -gx PATH $PATH $HOME/.cargo/bin
+source $HOME/.config/fish/jenv.fish
 
 set -g theme_nerd_fonts yes
 set -g theme_display_date no
