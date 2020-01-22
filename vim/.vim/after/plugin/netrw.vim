@@ -1,1 +1,1 @@
-let g:netrw_localrmdir='trash -r'
+let g:netrw_localrmdir='trash-put'

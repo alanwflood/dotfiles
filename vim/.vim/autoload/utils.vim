@@ -35,7 +35,7 @@ function! utils#setupCompletion() abort
   " nmap <silent> gi <Plug>(coc-implementation)
   " nmap <silent> gr <Plug>(coc-references)
 
-  " nmap <leader>rn <Plug>(coc-rename)
+  nmap <leader>rn <Plug>(coc-rename)
 
   function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
