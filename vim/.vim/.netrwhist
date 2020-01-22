@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =3
+let g:netrw_dirhist_3='/Users/al952368/Sites/Work/Zurich/Suite-Of-Services-React-Component-Library/storybook/stories'
+let g:netrw_dirhist_2='/Users/al952368/Sites/Work/Zurich/Suite-Of-Services-React-Component-Library/storybook/stories/CardSection'
+let g:netrw_dirhist_1='/Users/al952368/Sites/Work/Zurich/Suite-Of-Services-React-Component-Library/storybook/stories'
+let g:netrw_dirhist_0='/Users/al952368/Sites/Work/Zurich/Suite-Of-Services-React-Component-Library/storybook/stories/Article'
+let g:netrw_dirhist_9='/Users/al952368/Sites/Work/Zurich/Suite-Of-Services-React-Component-Library/src/__tests__'
+let g:netrw_dirhist_8='/Users/al952368/Sites/Work/Zurich/Suite-Of-Services-React-Component-Library/src'
+let g:netrw_dirhist_7='/Users/al952368/Sites/Work/Zurich/Suite-Of-Services-React-Component-Library/src/card'
+let g:netrw_dirhist_6='/Users/al952368/Sites/Work/Zurich/Suite-Of-Services-React-Component-Library/src'
+let g:netrw_dirhist_5='/Users/al952368/Sites/Work/Zurich/Suite-Of-Services-React-Component-Library/src/cardModal'
+let g:netrw_dirhist_4='/Users/al952368/Sites/Work/Zurich/Suite-Of-Services-React-Component-Library/src'
