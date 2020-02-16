@@ -3,4 +3,8 @@
 tmp/
 temp/
 plugged/
+
+fish/.config/fish/conf.d/
 fish/.config/fish/functions/
+fish/.config/fish/fish_variables
+fish/.config/fish/fishfile

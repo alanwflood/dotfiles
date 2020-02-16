@@ -4,6 +4,9 @@ set scrolloff=5
 set surround
 set incsearch
 
+set visualbell
+set noerrorbells
+
 set multiple-cursors
 
 " Insert line above.

@@ -2,7 +2,7 @@ set -Ux EDITOR nvim
 set -Ux VISUAL nvim
 set -Ux PAGER less
 
-source $HOME/.config/fish/aliases.mac.fish
+# Source General Aliases
 source $HOME/.config/fish/aliases.shared.fish
 
 # Per OS Setup
@@ -18,6 +18,7 @@ switch (uname)
     set -gx PATH $PATH $ANDROID_HOME/tools
     set -gx PATH $PATH $ANDROID_HOME/tools/bin
     set -gx PATH $PATH $ANDROID_HOME/platform-tools
+    set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
   case Linux
     set -Ux BROWSER /usr/bin/firefox-developer-edition
     source /usr/share/chruby/chruby.fish
@@ -25,6 +26,7 @@ switch (uname)
 
     source $HOME/.config/fish/aliases.linux.fish
 
+    # Setup NPM
     set PATH "$HOME/.local/npm-global/bin:$PATH"
     set -Ux npm_config_prefix $HOME/.local/npm-global/bin
 end
@@ -74,4 +76,3 @@ function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
   # set -x color_virtualgo                brblue black --bold
   # set -x color_desk                     brblue black --bold
 end
-set -g fish_user_paths "/usr/local/sbin" $fish_user_paths

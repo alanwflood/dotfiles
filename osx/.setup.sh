@@ -16,7 +16,10 @@ brew install httpie
 brew install imagemagick --with-webp
 brew install nmap
 brew install speedtest_cli
+# Tmux and Tmux Plugin Manager
 brew install tmux
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 brew install tree
 brew install ntfs-3g
 brew install reattach-to-user-namespace --with-wrap-pbcopy-and-pbpaste
