@@ -16,7 +16,11 @@ brew install httpie
 brew install imagemagick --with-webp
 brew install nmap
 brew install speedtest_cli
+
+# Tmux and Plugin Manager
 brew install tmux
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 brew install tree
 brew install ntfs-3g
 brew install reattach-to-user-namespace --with-wrap-pbcopy-and-pbpaste
@@ -28,21 +32,9 @@ brew install nnn
 # Fun stuff
 brew install cowsay lolcat fortune figlet
 
-# Fish shell
+# Fish shell and setup
 brew install fish
-
-# Fisher package manager
-curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-
-FISHER_PACKAGES=(
-  "brigand/fast-nvm-fish",
-  "jethrokuan/fzf",
-  "jethrokuan/z",
-  "oh-my-fish/plugin-bang-bang",
-  "oh-my-fish/theme-bobthefish"
-)
-fisher add "${FISHER_PACKAGES[@]}"
-unset -v FISHER_PACKAGES
+sh ~/.config/fish/fish.setup.sh
 
 # Development
 brew install python

@@ -43,6 +43,9 @@ function! plugins#install_plugins() abort
   " Navigate Seamlessly between Vim and Tmux
   Plug 'christoomey/vim-tmux-navigator'
 
+  " FocusLost + FocusGained refreshing in tmux
+  Plug 'tmux-plugins/vim-tmux-focus-events'
+
   " provides a bunch of shortcut mappings
   Plug 'tpope/vim-unimpaired'
 

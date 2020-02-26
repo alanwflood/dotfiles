@@ -25,6 +25,8 @@ set showmatch            " Highlight matching brackets.
 set inccommand=split     " Shows results of command in a preview window
 set ic smartcase
 
+" ===> Autoreload files
+set autoread
 
 " ===> Tab Completion
 " show a navigable menu for tab completion
