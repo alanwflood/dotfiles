@@ -5,6 +5,15 @@ vim/.vim/tmp
 vim/.vim/coc/extensions/*
 vim/.vim/.netrwhist
 
+.cfg
+temp/
+
+fish/.config/fish/conf.d/
+fish/.config/fish/functions/
+fish/.config/fish/fish_variables
+fish/.config/fish/fishfile
+
+
 
 ### Linux ###
 *~

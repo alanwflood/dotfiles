@@ -17,7 +17,7 @@ brew install imagemagick --with-webp
 brew install nmap
 brew install speedtest_cli
 
-# Tmux and Plugin Manager
+# Tmux and Tmux Plugin Manager
 brew install tmux
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 

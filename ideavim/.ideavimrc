@@ -2,9 +2,14 @@ imap jk <C-c>
 set scrolloff=5
 
 set surround
-set incsearch
 set commentary
 set multiple-cursors
+
+set incsearch
+
+set visualbell
+set noerrorbells
+
 
 " Insert line above.
 nnoremap [<space> O<esc>0C<esc>j

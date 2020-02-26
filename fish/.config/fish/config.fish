@@ -2,19 +2,36 @@ set -Ux EDITOR nvim
 set -Ux VISUAL nvim
 set -Ux PAGER less
 
-source $HOME/.config/fish/aliases.mac.fish
+# Source General Aliases
 source $HOME/.config/fish/aliases.shared.fish
 
-source /usr/local/share/chruby/chruby.fish
-source /usr/local/share/chruby/auto.fish
-source $HOME/.config/fish/jenv.fish
+# Per OS Setup
+switch (uname)
+  case Darwin # OSX
+    source /usr/local/share/chruby/chruby.fish
+    source /usr/local/share/chruby/auto.fish
+
+    source $HOME/.config/fish/aliases.mac.fish
+
+    set -gx ANDROID_HOME $HOME/Library/Android/sdk
+    set -gx PATH $PATH $ANDROID_HOME/emulator
+    set -gx PATH $PATH $ANDROID_HOME/tools
+    set -gx PATH $PATH $ANDROID_HOME/tools/bin
+    set -gx PATH $PATH $ANDROID_HOME/platform-tools
+    set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
+  case Linux
+    set -Ux BROWSER /usr/bin/firefox-developer-edition
+    source /usr/share/chruby/chruby.fish
+    source /usr/share/chruby/auto.fish
+
+    source $HOME/.config/fish/aliases.linux.fish
+
+    # Setup NPM
+    set PATH "$HOME/.local/npm-global/bin:$PATH"
+    set -Ux npm_config_prefix $HOME/.local/npm-global/bin
+end
 
 set -gx PATH $PATH $HOME/.cargo/bin
-set -gx ANDROID_HOME $HOME/Library/Android/sdk
-set -gx PATH $PATH $ANDROID_HOME/emulator
-set -gx PATH $PATH $ANDROID_HOME/tools
-set -gx PATH $PATH $ANDROID_HOME/tools/bin
-set -gx PATH $PATH $ANDROID_HOME/platform-tools
 
 set -g theme_nerd_fonts yes
 set -g theme_display_date no
@@ -23,6 +40,11 @@ set -g theme_color_scheme gruvbox
 set -Ux NNN_USE_EDITOR 1
 set -Ux NNN_TRASH 1
 
+if not functions -q fisher
+  set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
+  curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
+  fish -c fisher
+end
 
 function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
 
@@ -54,4 +76,3 @@ function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
   # set -x color_virtualgo                brblue black --bold
   # set -x color_desk                     brblue black --bold
 end
-set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
