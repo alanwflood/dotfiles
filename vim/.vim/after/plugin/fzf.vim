@@ -39,9 +39,7 @@ command! -bang -nargs=* FindCurrent call fzf#vim#grep(
 \ fzf#vim#with_preview('right:50%:wrap', '?')
 \ )
 
-
-
-
+let g:fzf_layout = { 'window': utils#fzf_window() }
 
 " ============================== Bindings
 

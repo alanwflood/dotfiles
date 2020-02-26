@@ -3,7 +3,7 @@ set scrolloff=5
 
 set surround
 set incsearch
-
+set commentary
 set multiple-cursors
 
 " Insert line above.

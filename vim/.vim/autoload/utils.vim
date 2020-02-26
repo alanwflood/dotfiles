@@ -85,3 +85,7 @@ let g:FileTypeQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help', 'taskedit', 'd
 function! utils#should_quit_on_q() abort
   return &diff || index(g:FileTypeQuitOnQ, &filetype) >= 0
 endfunction
+
+function! utils#fzf_window() abort
+  return utils#has_floating_window() ? { 'width': 0.9 , 'height': 0.8 } : 'enew'
+endfunction

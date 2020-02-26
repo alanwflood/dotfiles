@@ -1,9 +1,10 @@
-let s:VIM_PLUG_FOLDER = expand($VIMHOME . '/plugged')
+let s:VIM_PLUG_FOLDER = expand(g:VIMHOME . '/plugged')
+let s:VIM_PLUG_EXE = glob(g:VIMHOME . '/autoload/plug.vim')
 let s:CURRENT_FILE = expand('<sfile>')
 
 function! plugins#install_vim_plug() abort
-  if empty(glob('~/.vim/autoload/plug.vim'))
-    execute 'silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  if empty(s:VIM_PLUG_FOLDER)
+    execute 'silent !curl -fLo' . s:VIM_PLUG_EXE . '--create-dirs \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   endif
 endfunction
@@ -102,15 +103,9 @@ function! plugins#install_plugins() abort
         \ 'coc-tailwindcss'
         \ ]
 
+  Plug 'neoclide/coc.nvim', { 'branch':  'release' }
+  Plug 'antoinemadec/coc-fzf'
 
-  function! s:coc_cb() abort
-    call coc#util#install()
-    call coc#util#add_extension(g:coc_global_extensions)
-  endfunction
-
-  let CocSetup = function('s:coc_cb')
-  Plug 'neoclide/coc.nvim', { 'branch':  'release', 'do': CocSetup }
-  unlet CocSetup
   Plug 'shougo/echodoc.vim'
 
   " Snippets management
@@ -127,12 +122,8 @@ function! plugins#install_plugins() abort
         \ 'TestVisit'
         \ ]}
 
-  " Additional Syntax
-  " -- Show Colors beside hex values
-  " Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
-  " let g:Hexokinase_ftAutoload = ['*']
-  " let g:Hexokinase_highlighters = ['virtual']
 
+  Plug 'norcalli/nvim-colorizer.lua'
   Plug 'amadeus/vim-convert-color-to', {'on': 'ConvertColorTo'}
   " -- Js
   Plug 'heavenshell/vim-jsdoc'
