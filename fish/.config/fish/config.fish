@@ -6,7 +6,7 @@ set -Ux PAGER less
 source $HOME/.config/fish/aliases.shared.fish
 
 # Per OS Setup
-switch (uname)
+switch uname
   case Darwin # OSX
     source /usr/local/share/chruby/chruby.fish
     source /usr/local/share/chruby/auto.fish
@@ -41,13 +41,18 @@ set -Ux NNN_USE_EDITOR 1
 set -Ux NNN_TRASH 1
 
 if not functions -q fisher
-  set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
+  set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME $HOME/.config
   curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
   fish -c fisher
 end
 
-function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
+if not test -d $HOME/.tmux/plugins/tpm
+    if set -q TMUX
+      git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+    end
+end
 
+function bobthefish_colors -S -d 'Define a custom bobthefish color scheme'
   # Optionally include a base color scheme
   __bobthefish_colors gruvbox
 
