@@ -6,7 +6,7 @@ set -Ux PAGER less
 source $HOME/.config/fish/aliases.shared.fish
 
 # Per OS Setup
-switch uname
+switch (uname)
   case Darwin # OSX
     source /usr/local/share/chruby/chruby.fish
     source /usr/local/share/chruby/auto.fish
@@ -27,8 +27,8 @@ switch uname
     source $HOME/.config/fish/aliases.linux.fish
 
     # Setup NPM
-    set PATH "$HOME/.local/npm-global/bin:$PATH"
-    set -Ux npm_config_prefix $HOME/.local/npm-global/bin
+    set PATH "$HOME/.local/npm-global/bin" $PATH
+    set -Ux npm_config_prefix $HOME/.local/npm-global
 end
 
 set -gx PATH $PATH $HOME/.cargo/bin
