@@ -20,6 +20,9 @@ function! plugins#install_plugins() abort
   " extends " and @ in normal mode and <CTRL-R> in insert mode so you can see the contents of the registers.
   Plug 'junegunn/vim-peekaboo'
 
+  " Show marked lines in the gutter
+  Plug 'kshenoy/vim-signature'
+
   " Muh file explorer
   Plug 'tpope/vim-vinegar'
 
