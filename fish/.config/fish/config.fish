@@ -27,8 +27,8 @@ switch (uname)
     source $HOME/.config/fish/aliases.linux.fish
 
     # Setup NPM
-    set PATH "$HOME/.local/npm-global/bin:$PATH"
-    set -Ux npm_config_prefix $HOME/.local/npm-global/bin
+    set PATH "$HOME/.local/npm-global/bin" $PATH
+    set -Ux npm_config_prefix $HOME/.local/npm-global
 end
 
 set -gx PATH $PATH $HOME/.cargo/bin
