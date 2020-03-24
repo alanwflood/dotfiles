@@ -6,7 +6,7 @@ set -Ux PAGER less
 source $HOME/.config/fish/aliases.shared.fish
 
 # Per OS Setup
-switch uname
+switch (uname)
   case Darwin # OSX
     source /usr/local/share/chruby/chruby.fish
     source /usr/local/share/chruby/auto.fish
