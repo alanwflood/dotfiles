@@ -24,7 +24,7 @@ function! plugins#install_plugins() abort
   Plug 'kshenoy/vim-signature'
 
   " Muh file explorer
-  Plug 'tpope/vim-vinegar'
+  Plug 'mcchrish/nnn.vim'
 
   " Git management
   Plug 'tpope/vim-fugitive'
@@ -37,9 +37,9 @@ function! plugins#install_plugins() abort
   " Sensible defaults
   Plug 'tpope/vim-sensible'
 
-
   " Vim helpers
   " ============
+
   " Autoparens
   Plug 'jiangmiao/auto-pairs'
 
@@ -81,6 +81,8 @@ function! plugins#install_plugins() abort
 
   " Move around files easier
   Plug 'unblevable/quick-scope'
+
+  Plug 'tommcdo/vim-lion'
 
   " Show indents
   Plug 'Yggdroot/indentLine'

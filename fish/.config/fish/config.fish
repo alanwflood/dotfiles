@@ -26,26 +26,32 @@ switch (uname)
 
     source $HOME/.config/fish/aliases.linux.fish
 
-    # Setup NPM
-    set PATH "$HOME/.local/npm-global/bin" $PATH
+    # Setup Global NPM packages
+    set PATH "$HOME/.local/npm-global/bin:$PATH"
     set -Ux npm_config_prefix $HOME/.local/npm-global
 end
 
+# Setup Ruby Gems path
+set -gx PATH $PATH (ruby -e 'print Gem.user_dir')/bin
+# Setup Rust Cargo path
 set -gx PATH $PATH $HOME/.cargo/bin
 
 set -g theme_nerd_fonts yes
 set -g theme_display_date no
 set -g theme_color_scheme gruvbox
 
+# NNN Settings
 set -Ux NNN_USE_EDITOR 1
 set -Ux NNN_TRASH 1
 
+# If fisher doesn't exist install it
 if not functions -q fisher
   set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME $HOME/.config
   curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
   fish -c fisher
 end
 
+# If Tmux Package Manager doesn't exist install it
 if not test -d $HOME/.tmux/plugins/tpm
     if set -q TMUX
       git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
