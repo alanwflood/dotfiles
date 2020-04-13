@@ -14,13 +14,14 @@ nnoremap <silent> - :silent! NnnPicker -H -o -e '%:p:h'<CR>
 function! s:layout()
   let buf = nvim_create_buf(v:false, v:true)
 
-  let height = &lines - (float2nr(&lines / 2))
-  let width = float2nr(&columns - (&columns * 1 / 2))
+  let height = &lines - 3
+  let width = float2nr(&columns - (&columns * 2 / 10))
+  let col = float2nr((&columns - width) / 2)
 
   let opts = {
         \ 'relative': 'editor',
-        \ 'row': 2,
-        \ 'col': 8,
+        \ 'row': height * 0.3,
+        \ 'col': col,
         \ 'width': width,
         \ 'height': height
         \ }
