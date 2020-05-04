@@ -52,8 +52,8 @@ let g:which_key_map.s = {
 " ==> Help
 let g:which_key_map.h = {
       \ 'name' : '+help',
-      \ 'c': [':Commands',                  'Commands'],
-      \ 'h': [':Helptags',                  'Help Tags'],
+      \ 'c': [':Commands',   'Commands'],
+      \ 'h': [':Helptags',   'Help Tags'],
       \ 'e': [':e $MYVIMRC', 'Edit init.vim'],
       \ }
 
@@ -91,7 +91,8 @@ let g:which_key_map.g = {
 " ==> Auto Complete
 let g:which_key_map.l = {
       \ 'name' : '+LSP',
-      \ 'D' : ['<Plug>(coc-definition)', 'Goto Definition'],
+      \ 'd' : ['<Plug>(coc-definition)', 'Goto Definition'],
+      \ 'D' : ['<Plug>(devdocs-under-cursor)', 'Goto DevDocs Definition'],
       \ 'Y' : ['<Plug>(coc-type-definition)', 'Goto Type Definition'],
       \ 'I' : ['<Plug>(coc-implementation)', 'Goto Implementation'],
       \ 'R' : ['<Plug>(coc-references)', 'Goto References'],

@@ -67,8 +67,8 @@ function! plugins#install_plugins() abort
   " Allows . commands for non standard actions
   Plug 'tpope/vim-repeat'
 
-  " Wrapping plugin
-  Plug 'tpope/vim-surround'
+  " Wrapping plugins
+  Plug 'machakann/vim-sandwich'
 
   " Case Sensitive search and replace with :S
   Plug 'tpope/vim-abolish'
@@ -89,6 +89,8 @@ function! plugins#install_plugins() abort
 
   " Status Bar
   Plug 'vim-airline/vim-airline'
+
+  Plug 'rhysd/devdocs.vim'
 
   " Linting
   Plug 'dense-analysis/ale', { 'do': 'npm install -g prettier' }
@@ -133,17 +135,8 @@ function! plugins#install_plugins() abort
 
   Plug 'norcalli/nvim-colorizer.lua'
   Plug 'amadeus/vim-convert-color-to', {'on': 'ConvertColorTo'}
-  " -- Js
-  Plug 'heavenshell/vim-jsdoc'
-  Plug 'neoclide/vim-jsx-improve'
-  Plug 'HerringtonDarkholme/yats.vim'
-  " -- Vue
-  Plug 'posva/vim-vue', { 'for': ['vue']}
   " -- Reason
   Plug 'reasonml-editor/vim-reason-plus', { 'for': ['reason']}
-  " -- Elm
-  Plug 'ElmCast/elm-vim', { 'for': ['elm']}
-  " -- Everything else
   Plug 'sheerun/vim-polyglot'
 
   Plug 'morhetz/gruvbox'
