@@ -1,6 +1,12 @@
-set -Ux EDITOR nvim
-set -Ux VISUAL nvim
 set -Ux PAGER less
+# Use NVR for nested nvim instances
+if test -n $NVIM_LISTEN_ADDRESS
+  set -Ux EDITOR nvr --cc tabedit --remote-wait +'set bufhidden=wipe'
+  set -Ux VISUAL nvr --cc tabedit --remote-wait +'set bufhidden=wipe'
+else
+  set -Ux EDITOR nvim
+  set -Ux VISUAL nvim
+end
 
 # Source General Aliases
 source $HOME/.config/fish/aliases.shared.fish
