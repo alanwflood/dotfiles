@@ -18,10 +18,6 @@ let s:LSP_CONFIG = [
       \     }
       \   },
       \ }],
-      \ ['reason', {
-      \   'command': '/Users/al952368/.config/reason-language-server/reason-language-server',
-      \   'filetypes': ['reason'],
-      \ }]
       \ ]
 
 call coc#config('coc.preferences', {
@@ -52,6 +48,12 @@ call coc#config('diagnostic', {
 
 call coc#config('coc.github', {
       \ 'filetypes': ['gitcommit', 'markdown.ghpull']
+      \ })
+
+call coc#config('snippets.extends', {
+      \ 'javascriptreact': ['javascript'],
+      \ 'typescriptreact': ['javascript'],
+      \ 'typescript': ['javascript']
       \ })
 
 let s:languageservers = {}

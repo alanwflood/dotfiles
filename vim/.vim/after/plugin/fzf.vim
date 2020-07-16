@@ -11,7 +11,8 @@ let g:fzf_layout = { 'window': utils#fzf_window() }
 
 " ============================== Bindings
 
-noremap <C-p> :Files<CR>
+noremap <C-p> :GFiles<CR>
+" noremap <C-P> :Files<CR>
 noremap <C-f> :Rg<CR>
 nnoremap <C-b> :Buffers<CR>
 nnoremap <C-s> :Snippets<CR>
