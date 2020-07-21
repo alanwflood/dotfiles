@@ -105,7 +105,8 @@ function! plugins#install_plugins() abort
         \ 'coc-yaml',
         \ 'coc-emoji',
         \ 'coc-tsserver',
-        \ 'coc-ultisnips',
+        \ 'coc-snippets',
+        \ 'coc-reason',
         \ 'coc-github',
         \ 'coc-git',
         \ 'coc-svg',
@@ -119,7 +120,6 @@ function! plugins#install_plugins() abort
   Plug 'shougo/echodoc.vim'
 
   " Snippets management
-  Plug 'SirVer/ultisnips'
   Plug 'honza/vim-snippets'
   Plug 'alanwflood/vim-react-snippets'
 

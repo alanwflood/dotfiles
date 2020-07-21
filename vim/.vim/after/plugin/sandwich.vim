@@ -1,8 +1,7 @@
-if exists('g:loaded_sandwich')
+if !exists('g:loaded_sandwich')
   finish
 endif
 
-" Match vim-surround's keybind
 runtime macros/sandwich/keymap/surround.vim
 
 " Copy sandwich default recipes
