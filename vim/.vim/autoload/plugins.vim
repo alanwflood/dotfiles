@@ -74,6 +74,9 @@ function! plugins#install_plugins() abort
   " Wrapping plugins
   Plug 'machakann/vim-sandwich'
 
+  " Highlight text and hit * and # to search for it
+  Plug 'nelstrom/vim-visual-star-search'
+
   " Case Sensitive search and replace with :S
   Plug 'tpope/vim-abolish'
 

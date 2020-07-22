@@ -1,4 +1,4 @@
-if exists(':Matchup')
+if !exists(':Matchup')
   finish
 endif
 

@@ -19,24 +19,24 @@ let g:ale_javascript_prettier_use_local_config = 1
 
 " Let ale autofix code on save
 let g:ale_fixers = {
-      \   '*'         : ['remove_trailing_lines', 'trim_whitespace'],
-      \   'markdown'  : ['prettier'],
-      \   'javascript': ['prettier'],
-      \   'typescript': ['prettier'],
-      \   'vue'       : ['prettier'],
-      \   'css'       : ['prettier'],
-      \   'json'      : ['prettier'],
-      \   'scss'      : ['prettier'],
-      \   'yaml'      : ['prettier'],
-      \   'graphql'   : ['prettier'],
-      \   'html'      : ['prettier'],
-      \   'c'         : ['clang-format'],
-      \   'cpp'       : ['clang-format'],
-      \   'reason'    : ['refmt'],
-      \   'python'    : ['black'],
-      \   'sh'        : ['shfmt'],
-      \   'bash'      : ['shfmt'],
-      \   'rust'      : ['rustfmt'],
+      \   '*'              : ['remove_trailing_lines', 'trim_whitespace'],
+      \   'javascript'     : ['prettier'],
+      \   'typescript'     : ['prettier'],
+      \   'typescriptreact': ['prettier'],
+      \   'vue'            : ['prettier'],
+      \   'css'            : ['prettier'],
+      \   'json'           : ['prettier'],
+      \   'scss'           : ['prettier'],
+      \   'yaml'           : ['prettier'],
+      \   'graphql'        : ['prettier'],
+      \   'html'           : ['prettier'],
+      \   'c'              : ['clang-format'],
+      \   'cpp'            : ['clang-format'],
+      \   'reason'         : ['refmt'],
+      \   'python'         : ['black'],
+      \   'sh'             : ['shfmt'],
+      \   'bash'           : ['shfmt'],
+      \   'rust'           : ['rustfmt'],
 \ }
 
 " Error and warning signs for Ale.
@@ -53,15 +53,15 @@ let g:airline_powerline_fonts = 1
 let g:ale_pattern_options_enabled = 1
 let g:ale_pattern_options = {
       \   '\.min\.(js\|css)$': {
-      \       'ale_linters': [],
-      \       'ale_fixers': ['remove_trailing_lines', 'trim_whitespace']
+      \       'ale_linters'  : [],
+      \       'ale_fixers'   : ['remove_trailing_lines', 'trim_whitespace']
       \   },
-      \   'node_modules/.*': {
-      \       'ale_linters': [],
-      \       'ale_fixers': []
+      \   'node_modules/.*'  : {
+      \       'ale_linters'  : [],
+      \       'ale_fixers'   : []
       \   },
-      \   'package.json': {
-      \       'ale_fixers': ['remove_trailing_lines', 'trim_whitespace']
+      \   'package.json'     : {
+      \       'ale_fixers'   : ['remove_trailing_lines', 'trim_whitespace']
       \   },
       \}
 
@@ -72,4 +72,3 @@ function! FixOnSaveToggle()
       let g:ale_fix_on_save = 1
     endif
 endfunction
-
