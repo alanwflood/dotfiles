@@ -29,11 +29,15 @@ function! plugins#install_plugins() abort
   " Git management
   Plug 'tpope/vim-fugitive'
 
+  " Show Git Blames in a floating window
+  Plug 'rhysd/git-messenger.vim'
+
   " Time management
   Plug 'wakatime/vim-wakatime'
 
   " matchit.vim enhancement
   Plug 'andymass/vim-matchup'
+
   " Sensible defaults
   Plug 'tpope/vim-sensible'
 
@@ -90,6 +94,7 @@ function! plugins#install_plugins() abort
   " Status Bar
   Plug 'vim-airline/vim-airline'
 
+  " Lookup line on Devdocs
   Plug 'rhysd/devdocs.vim'
 
   " Linting

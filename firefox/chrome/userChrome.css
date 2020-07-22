@@ -15,21 +15,17 @@
   --tabbar-bg: #0c0c0d;
 }
 
-/* #TabsToolbar {                     */
-/*   visibility: collapse !important; */
-/* }                                  */
-
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]
-  #sidebar-header {
-  display: none;
+#TabsToolbar {
+  visibility: collapse !important;
 }
+
+/* This hides the tab dropdown on TreeStyleTabs
+ * #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] */
+/*   #sidebar-header {                                                          */
+/*   display: none;                                                             */
+/* } */
 
 #PersonalToolbar {
   /* bookmarks toolbar */
   padding-left: 100px;
 }
-
-/* Hide White Header Tab Tree */
-/* #sidebar-header { */
-/*  display: none;   */
-/* }                 */
