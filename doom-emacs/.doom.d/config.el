@@ -20,9 +20,11 @@
 (setq undo-limit 80000000                         ; Raise undo-limit to 80Mb
       evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
       auto-save-default t                         ; Nobody likes to loose work, I certainly don't
-      truncate-string-ellipsis "…")               ; Unicode ellispis are nicer than "...", and also save /precious/ space
+      truncate-string-ellipsis "…")              ; Unicode ellispis are nicer than "...", and also save /precious/ space
 
-;; (display-time-mode 1)                             ; Enable time in the mode-line
+(setq display-time-format "%H:%M, %a, %d %b %Y |")  ; Format the time to something sensible
+(display-time-mode 1)                             ; Enable time in the mode-line
+
 (unless (equal "Battery status not available"
                (battery))
   (display-battery-mode 1))                       ; On laptops it's nice to know how much power you have
