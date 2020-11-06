@@ -65,11 +65,21 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/Nextcloud/org/")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
+
+(lsp-treemacs-sync-mode 1)
+
+(after! lsp-mode
+  (setq lsp-headerline-breadcrumb-enable t)
+  (setq lsp-headerline-breadcrumb-segments '(symbols)))
+
+(after! lsp-ui
+  (setq lsp-ui-sideline-show-hover t
+        lsp-ui-sideline-delay 1))
 
 ;; Easier window navigation
 (map! :map general-override-mode-map

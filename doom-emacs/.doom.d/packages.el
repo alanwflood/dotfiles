@@ -50,3 +50,4 @@
 ;(unpin! t)
 
 (package! eradio)
+(package! lsp-treemacs)
