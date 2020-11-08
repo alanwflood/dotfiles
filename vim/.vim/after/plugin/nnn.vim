@@ -8,7 +8,8 @@ let g:nnn#replace_netrw = 1
 
 " Start nnn in the current file's directory
 " Also throws a wildcard error on fish shell so silent shuts it up
-nnoremap <silent> - :silent! NnnPicker -H -o -e '%:p:h'<CR>
+" nnoremap <silent> - :silent! NnnPicker -H -o -e '%:p:h'<CR>
+nnoremap - :NnnPicker %:p:h<CR>
 
 if utils#has_floating_window()
   let g:nnn#layout =  'call utils#CreateCenteredFloatingWindow()'

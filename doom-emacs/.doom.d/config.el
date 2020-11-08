@@ -71,7 +71,6 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-(lsp-treemacs-sync-mode 1)
 
 (after! lsp-mode
   (setq lsp-headerline-breadcrumb-enable t)
@@ -88,6 +87,24 @@
       :nvim "C-k"  #'evil-window-up
       :nvim "C-l"  #'evil-window-right)
 
+;; External Package Setup
+
+;; tree-sitter
+(use-package! tree-sitter
+  :config
+  (require 'tree-sitter-langs)
+  (global-tree-sitter-mode)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+;; company-tabnine
+(after! company
+  (use-package company-tabnine :ensure t)
+  (setq company-backends '(company-tabnine)))
+
+;; lsp-treemacs
+(lsp-treemacs-sync-mode 1)
+
+;; eradio
 (map! :leader (:prefix ("r" . "eradio") :desc "Play a radio channel" "p" 'eradio-play))
 (map! :leader (:prefix ("r" . "eradio") :desc "Stop the radio player" "s" 'eradio-stop))
 
