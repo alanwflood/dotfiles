@@ -5,6 +5,16 @@ set -Ux VISUAL nvim
 # Source General Aliases
 source $HOME/.config/fish/aliases.shared.fish
 
+# function fish_greeting
+#   fortune | lolcat
+#   stty size | perl -ale 'print "-"x$F[1]'
+# end
+
+function fish_greeting
+  echo "Hi Alan!, Hope you're hanging in there!" | lolcat
+end
+
+
 # Per OS Setup
 switch (uname)
     case Darwin # OSX

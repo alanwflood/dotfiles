@@ -46,7 +46,6 @@ end
 
 alias moon="curl wttr.in/moon"
 
-
 function cheat
   curl "cheat.sh/$argv"
 end
@@ -57,14 +56,7 @@ alias myip='curl ifconfig.io'
 
 alias calc='bc -l'
 
-
-function lofi
-  switch (echo $argv)
-  case --sleep
-    mpv "https://www.youtube.com/watch?v=EcEMX-63PKY" --no-video
-  case --sad
-    mpv "https://www.youtube.com/watch?v=yPLLhlX0YXM" --no-video
-  case '*'
-    mpv "https://www.youtube.com/watch?v=hHW1oY26kxQ" --no-video
-  end
+function mkdir-cd
+    mkdir $argv && cd $argv
 end
+abbr -a mc mkdir-cd

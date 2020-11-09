@@ -1,31 +1,20 @@
-:root {
-  --tab-surface: #252526;
-  --tab-text: #f9f9fa;
-  --tab-border: #3c3c3d;
-  --tab-side-border: #3c3c3d;
-  --tab-surface-hover: #5a5a5b;
-  --tab-surface-active: #474749;
-  --tab-surface-active-hover: #707071;
-  --tab-active-marker: #0a84ff;
-  --tab-active-marker-size: calc(var(--favicon-size) / 6);
-  --dropmarker-color: var(--tab-text);
+/*
+Windows
+    Location: C:\Users\<YourUsername>\AppData\Roaming\Mozilla\Firefox\Profiles\<YourFirefoxProfile>\chrome
+    Notes:
+        If minimize, maximize, and close buttons are no longer visible, enable the Title Bar or Menu Bar in Firefox Customize.
+macOS
+    Location: /Users/<YourUsername>/Library/Application Support/Firefox/Profiles/<YourFirefoxProfile>/chrome
+    Notes:
+        If minimize, maximize, and close buttons overlap other controls, add the Flexible Space in Firefox Customize.
+*/
 
-  --tab-highlighted-glow: var(--tab-active-marker);
-  --tab-highlighted-highlight: white;
-  --tabbar-bg: #0c0c0d;
-}
+@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
 
+/* Hide horizontal tab toolbar */
 #TabsToolbar {
-  visibility: collapse !important;
+    visibility:collapse!important;
 }
 
-/* This hides the tab dropdown on TreeStyleTabs
- * #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] */
-/*   #sidebar-header {                                                          */
-/*   display: none;                                                             */
-/* } */
-
-#PersonalToolbar {
-  /* bookmarks toolbar */
-  padding-left: 100px;
-}
+/* Hide "Tree Style Tabs" sidebar header */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
