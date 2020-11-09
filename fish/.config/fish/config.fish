@@ -11,7 +11,7 @@ source $HOME/.config/fish/aliases.shared.fish
 # end
 
 function fish_greeting
-  echo "Hi Alan!, Hope you're hanging in there!" | lolcat
+  fortune -s | lolcat
 end
 
 
