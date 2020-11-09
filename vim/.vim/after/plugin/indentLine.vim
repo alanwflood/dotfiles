@@ -1,3 +1,3 @@
-"Set indent character
+" Set indent character
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-let g:indentLine_setConceal = 0
+" let g:indentLine_setConceal = 0

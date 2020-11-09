@@ -25,6 +25,8 @@ function! plugins#install_plugins() abort
 
   " Muh file explorer
   Plug 'mcchrish/nnn.vim'
+  Plug 'tpope/vim-vinegar'
+  " Plug 'justinmk/vim-dirvish'
 
   " Git management
   Plug 'tpope/vim-fugitive'

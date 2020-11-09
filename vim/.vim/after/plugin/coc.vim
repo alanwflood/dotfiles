@@ -20,6 +20,10 @@ let s:LSP_CONFIG = [
       \ }],
       \ ]
 
+call coc#config('json.trace', {
+      \ 'server': 1,
+      \ })
+
 call coc#config('coc.preferences', {
       \ 'colorSupport': 0,
       \ 'hoverTarget': utils#has_floating_window() ? 'float' : 'echo',
