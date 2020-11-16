@@ -57,6 +57,20 @@ alias nnn="nnn -e"
 set -Ux NNN_USE_EDITOR 1
 set -Ux NNN_TRASH 1
 
+# Compatability for vterm inside emacs
+function vterm_printf;
+    if [ -n "$TMUX" ]
+        # tell tmux to pass the escape sequences through
+        # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
+        printf "\ePtmux;\e\e]%s\007\e\\ " "$argv"
+    else if string match -q -- "screen*" "$TERM"
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$argv"
+    else
+        printf "\e]%s\e\\" "$argv"
+    end
+end
+
 # If fisher doesn't exist install it
 if not functions -q fisher
     set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME $HOME/.config

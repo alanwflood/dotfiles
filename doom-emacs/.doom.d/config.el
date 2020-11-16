@@ -3,6 +3,7 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+(if (eq system-type 'darwin) (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#"))))
 
 ;; [[file:config.org::*Personal Information][Personal Information:1]]
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
