@@ -5,8 +5,8 @@ echo 'RUNNING NEW SYSTEM SETUP'
 function checkBrew {
 	# Check for Homebrew, install if it's missing
 	if test ! "$(which brew)"; then
-	    echo "Installing homebrew..."
-	    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+		echo "Installing homebrew..."
+		ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	fi
 
 	brew update
@@ -35,7 +35,7 @@ function installCore {
 		wget \
 		nnn \
 		# Fun stuff
-		cowsay lolcat fortune figlet 
+		cowsay lolcat fortune figlet \
 		# webfont generators
 		sfnt2woff \
 		sfnt2woff-zopfli \
@@ -74,22 +74,23 @@ function installDevelopmentTools {
 	echo 'INSTALLING DEV TOOLS'
 	# Development
 	brew install \
-		# node version manager
-		volta \
 		python \
 		postgresql \
 		redis \
+		# node version manager
+		volta \
 		# C/C++
 		cmake \
 		ccls \
 		# Rust
 		rustup \
-		rust-analyzer
+		rust-analyzer \
 		# chruby
-		chruby ruby-install
+		chruby \
+		ruby-install
 
 	# Set rust to sane defaults
-	source $HOME/.cargo/env
+	source "$HOME"/.cargo/env
 	rustup-init -y
 	rustup default stable
 	rustup component add rls-preview rust-analysis rust-src
@@ -126,30 +127,31 @@ function installCasks {
 	echo 'INSTALLING PACKAGES THROUGH BREW CASK'
 
 	CASKS=(
-	  alacritty
-	  alfred
-	  bartender
-	  bettertouchtool
-	  bitwarden
-	  dbeaver-community
-	  disk-inventory-x
-	  docker
-	  google-chrome
-	  figma
-	  imageoptim
-	  intellij-idea-ce
-	  macdown
-	  miro
-	  mpv
-	  nextcloud
-	  nightowl
-	  onyx
-	  postman
-	  sketch
-	  spotify
-	  the-unarchiver
-	  tunnelblick
-	  virtualbox
+		aerial
+		alacritty
+		alfred
+		bartender
+		bettertouchtool
+		bitwarden
+		dbeaver-community
+		disk-inventory-x
+		docker
+		google-chrome
+		figma
+		imageoptim
+		intellij-idea-ce
+		macdown
+		miro
+		mpv
+		nextcloud
+		nightowl
+		onyx
+		postman
+		sketch
+		spotify
+		the-unarchiver
+		tunnelblick
+		virtualbox
 	)
 
 	brew install --cask adoptopenjdk
@@ -181,7 +183,7 @@ function installCasks {
 		mkv
 	)
 	for filetype in $MPV_FILETYPES; do
-		duti -s io.mpv $filetype all
+		duti -s io.mpv "$filetype" all
 	done
 }
 
@@ -230,14 +232,13 @@ checkBrew
 installCore
 intallFish
 installDevelopmentTools
-installMisc
-# installNeovim
-# installEmacs
+installNeovim
+installEmacs
 
 # Remove outdated versions from the cellar.
 brew cleanup
 
-# installCasks
+installCasks
 installNpmPackages
 installPipPackages
 setupMachine
