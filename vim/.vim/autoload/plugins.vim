@@ -116,7 +116,6 @@ function! plugins#install_plugins() abort
         \ 'coc-emoji',
         \ 'coc-tsserver',
         \ 'coc-snippets',
-        \ 'coc-reason',
         \ 'coc-github',
         \ 'coc-git',
         \ 'coc-svg',
