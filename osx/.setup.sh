@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 echo 'RUNNING NEW SYSTEM SETUP'
 
-brew update
+# Check for Homebrew, install if it's missing
+if test ! "$(which brew)"; then
+    echo "Installing homebrew..."
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 
+brew update
 brew upgrade
 
 echo 'INSTALLING THROUGH BREW'
@@ -12,8 +17,7 @@ brew install moreutils
 brew install findutils
 
 brew install htop
-brew install httpie
-brew install imagemagick --with-webp
+brew install imagemagick
 brew install nmap
 brew install speedtest_cli
 
@@ -22,19 +26,18 @@ brew install tmux
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 brew install tree
-brew install ntfs-3g
-brew install reattach-to-user-namespace --with-wrap-pbcopy-and-pbpaste
-brew install wget --with-iri
-# Ranger + it's dependencies
-# brew install ranger libcaca highlight atool lynx w3m elinks poppler transmission mediainfo exiftool
+brew install --cask osxfuse
+brew install reattach-to-user-namespace
+brew install rs/tap/curlie
+brew install wget
 brew install nnn
 
 # Fun stuff
 brew install cowsay lolcat fortune figlet
 
-# Fish shell and setup
+# Fish shell
 brew install fish
-sh ~/.config/fish/fish.setup.sh
+chsh -s "$(which fish)"
 
 # Development
 brew install python
@@ -42,19 +45,17 @@ brew install python3
 brew install postgresql && brew services start postgres
 brew install redis
 brew install mongodb && brew services start mongodb
-brew install rustup
 
-# Language Servers
+# C/C++
+brew install cmake
 brew install ccls
 
 # Install rust language with sane defaults
+brew install rustup
 rustup-init -y
 rustup default stable
 rustup component add rls-preview rust-analysis rust-src
-
-# Install Dart
-# brew tap dart-lang/dart
-# brew install dart
+brew install rust-analyzer
 
 # webfont generators
 brew tap bramstein/webfonttools
@@ -66,14 +67,17 @@ brew install woff2
 brew install dark-mode
 brew install git
 brew install git-lfs
+brew install tig
+brew install fd
+brew install jq
+brew install shellcheck
 brew install ripgrep
+brew install trash
+brew install editorconfig
 
 brew install fzf
 $(brew --prefix)/opt/fzf/install
 
-# brew install zplug
-brew install trash
-brew install youtube-dl
 
 # Neovim
 brew install neovim
@@ -85,14 +89,16 @@ pip2 install --user neovim
 pip3 install --user neovim
 
 # Emacs
-# brew tap railwaycat/emacsmacport
-# brew install emacs-mac --with-gnutls --with-imagemagick --with-modules --with-texinfo --with-xml2 --with-spacemacs-icon
-# brew linkapps emacs-mac
-# git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+brew tap d12frosted/emacs-plus
+brew install emacs-plus
+ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
+git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+~/.emacs.d/bin/doom install
 
 # version managers
-# nvm
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+
+# node version manager
+brew install volta
 # chruby
 brew install chruby
 brew install ruby-install
@@ -104,52 +110,40 @@ brew cleanup
 brew tap caskroom/cask
 
 echo 'INSTALLING THROUGH BREW CASK'
-# old
-# brew cask install charles
-# brew cask install iterm2
-# brew cask install oni
-# brew cask install smcfancontrol
-# brew cask install transmission-remote-gui
-# brew cask install whatsapp
-# brew cask install soulseek
 
-brew cask install alcritty
-brew cask install alfred
-brew cask install android-studio android-platform-tools
-brew cask install bartender
-brew cask install bettertouchtool
-brew cask install bitwarden
-brew cask install calibre
-brew cask install dbeaver-community
-brew cask install disk-inventory-x
-brew cask install docker
-brew cask install dropbox
-brew cask install google-chrome
-brew cask install figma
-brew cask install imageoptim
-brew cask install intellij-idea-ce
-brew cask install java
-brew cask install karabinder-elements
-brew cask install mongodb-compass
-brew cask install mpv
-brew cask install nextcloud
-brew cask install ngrok
-brew cask install nightowl
-brew cask install onyx
-brew cask install osxfuse
-brew cask install plex-media-player
-brew cask install postman
-brew cask install sketch
-brew cask install spotify
-brew cask install the-unarchiver
-brew cask install tunnelblick
-brew cask install veracrypt
-brew cask install virtualbox vagrant
-brew cask install zeplin
+CASKS=(
+  alacritty
+  alfred
+  bartender
+  bettertouchtool
+  bitwarden
+  dbeaver-community
+  disk-inventory-x
+  docker
+  google-chrome
+  figma
+  imageoptim
+  intellij-idea-ce
+  java
+  macdown
+  miro
+  mpv
+  nextcloud
+  nightowl
+  onyx
+  postman
+  sketch
+  spotify
+  the-unarchiver
+  tunnelblick
+  virtualbox
+)
 
-# Fetch and install firefox nightly
-brew cask fetch caskroom/versions/firefox-nightly
-brew cask install firefox-nightly
+brew install --cask "${CASKS[@]}"
+
+# Fetch and install firefox developer edition
+brew fetch --cask caskroom/versions/firefox-developer-edition
+brew install --cask firefox-developer-edition
 
 # Add cask auto upgrade functionality
 brew tap buo/cask-upgrade
@@ -157,21 +151,33 @@ brew tap buo/cask-upgrade
 echo 'INSTALLING THROUGH NPM'
 # global js packages
 npm i -g lighthouse \
-        expo-cli \
-        bs-platform \
-        eslint \
-        javascript-typescript-langserver \
-        js-beautify \
-        neovim \
-        now \
-        npm-check-updates \
-        prettier \
-        tldr \
-        vue-language-server
+         depcheck \
+         eslint \
+         js-beautify \
+         neovim \
+         npm-check-updates \
+         prettier \
+         stylelint \
+         tldr
 
 echo 'INSTALLING THROUGH PIP'
 # global python packages
-pip install wakatime
+pip3 install wakatime
+
+echo 'SETTING DEFAULTS'
+
+# Show filename extensions by default
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+mkdir ~/Code
+mkdir ~/Code/Misc
+git clone https://github.com/sebastiencs/icons-in-terminal.git ~/Code/Misc
+sh ~/Code/Misc/icons-in-terminal/install.sh
+
+mkdir ~/Sites
+mkdir ~/Sites/Work
+mkdir ~/Sites/Education
+mkdir ~/Sites/Personal
 
 echo 'FINITO SETTING UP WOOP WOOP 🎉'
 echo 'Remember you still need to download the following manually from the app store: Giphy, Amphetamine. Afinity apps, etc'

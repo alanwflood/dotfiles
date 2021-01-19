@@ -1,12 +1,19 @@
 /*
-Windows
+Windows:
+
     Location: C:\Users\<YourUsername>\AppData\Roaming\Mozilla\Firefox\Profiles\<YourFirefoxProfile>\chrome
     Notes:
         If minimize, maximize, and close buttons are no longer visible, enable the Title Bar or Menu Bar in Firefox Customize.
-macOS
+
+macOS:
     Location: /Users/<YourUsername>/Library/Application Support/Firefox/Profiles/<YourFirefoxProfile>/chrome
     Notes:
         If minimize, maximize, and close buttons overlap other controls, add the Flexible Space in Firefox Customize.
+
+other:
+    go to about:profiles then show in finder the root folder
+
+Additionally in Firefox 69+ go to about:config and set toolkit.legacyUserProfileCustomizations.stylesheets to true
 */
 
 @namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
