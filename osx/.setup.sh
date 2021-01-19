@@ -42,9 +42,8 @@ chsh -s "$(which fish)"
 # Development
 brew install python
 brew install python3
-brew install postgresql && brew services start postgres
+brew install postgresql
 brew install redis
-brew install mongodb && brew services start mongodb
 
 # C/C++
 brew install cmake
