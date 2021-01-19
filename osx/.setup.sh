@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 echo 'RUNNING NEW SYSTEM SETUP'
 
 function checkBrew {
@@ -109,13 +110,13 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 }
 
 function installEmacs {
-# Emacs
-brew tap d12frosted/emacs-plus
-brew install emacs-plus
-ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
-git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
-~/.emacs.d/bin/doom install
-brew services start emacs-plus
+  # Emacs
+  brew tap d12frosted/emacs-plus
+  brew install emacs-plus
+  ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
+  git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+  ~/.emacs.d/bin/doom install
+  brew services start emacs-plus
 }
 
 function installCasks {
