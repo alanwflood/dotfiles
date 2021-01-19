@@ -13,3 +13,6 @@ alias purge="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -r
 
 # Google Chrome
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
+
+alias addDockSpacer='defaults write com.apple.dock persistent-apps -array-add \'{tile-type="spacer-tile";}\'; killall Dock'
+
