@@ -74,13 +74,14 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-
 (after! lsp-mode
+  (setq lsp-file-watch-threshold 5000)
   (setq lsp-headerline-breadcrumb-enable t)
   (setq lsp-headerline-breadcrumb-segments '(symbols)))
 
 (after! lsp-ui
   (setq lsp-ui-sideline-show-hover t
+        lsp-ui-sideline-show-code-actions nil
         lsp-ui-sideline-delay 1))
 
 ;; Easier window navigation
@@ -89,6 +90,11 @@
       :nvim "C-j"  #'evil-window-down
       :nvim "C-k"  #'evil-window-up
       :nvim "C-l"  #'evil-window-right)
+
+(add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-hook))
+(defun vue-hook ()
+    (web-mode)
+    (lsp))
 
 ;; External Package Setup
 
