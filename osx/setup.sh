@@ -112,12 +112,11 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 
 function installEmacs {
   # Emacs
-  brew tap d12frosted/emacs-plus
-  brew install emacs-plus
-  ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
+	brew tap railwaycat/emacsmacport
+	brew install emacs-mac --with-modules
+	ln -s /usr/local/opt/emacs-mac/Emacs.app /Applications/Emacs.app
   git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
   ~/.emacs.d/bin/doom install
-  brew services start emacs-plus
 }
 
 function installCasks {
@@ -191,15 +190,17 @@ function installCasks {
 function installNpmPackages {
 	echo 'INSTALLING PACKAGES THROUGH NPM'
 	# global js packages
-	npm i -g lighthouse \
-		 depcheck \
-		 eslint \
-		 js-beautify \
-		 neovim \
-		 npm-check-updates \
-		 prettier \
-		 stylelint \
-		 tldr
+	npm i -g \
+		lighthouse \
+		depcheck \
+		eslint \
+		js-beautify \
+		marked \
+		neovim \
+		npm-check-updates \
+		prettier \
+		stylelint \
+		tldr
 }
 
 function installPipPackages {
@@ -207,6 +208,7 @@ function installPipPackages {
 	# global python packages
 	pip3 install wakatime
 	pip3 install --user neovim
+	pip3 install proselint
 }
 
 function setupUpMachine {
