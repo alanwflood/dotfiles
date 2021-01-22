@@ -5,11 +5,6 @@ set -Ux VISUAL nvim
 # Source General Aliases
 source $HOME/.config/fish/aliases.shared.fish
 
-# function fish_greeting
-#   fortune | lolcat
-#   stty size | perl -ale 'print "-"x$F[1]'
-# end
-
 function fish_greeting
   fortune -s | lolcat
 end
@@ -40,13 +35,17 @@ switch (uname)
         # Setup Global NPM packages
         set PATH "$HOME/.local/npm-global/bin:$PATH"
         set -Ux npm_config_prefix $HOME/.local/npm-global
-
 end
 
-# Setup Ruby Gems path
+# Ruby Gems path
 set -gx PATH $PATH (ruby -e 'print Gem.user_dir')/bin
-# Setup Rust Cargo path
+# Rust Cargo path
 set -gx PATH $PATH $HOME/.cargo/bin
+# doom-emacs commands path
+set -gx PATH $PATH $HOME/.emacs.d/bin
+# Volta node manager path
+set -gx VOLTA_HOME "$HOME/.volta"
+set -gx PATH "$VOLTA_HOME/bin" $PATH
 
 set -g theme_nerd_fonts yes
 set -g theme_display_date no
