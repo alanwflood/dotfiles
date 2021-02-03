@@ -26,12 +26,6 @@ alias lsd="ls -lF | grep --color=never '^d'"
 # go to project root
 alias root='cd (git rev-parse --git-dir)/..'
 
-# Freenas SSH
-alias msss='sshfs -p 4500 Alan@floodhome1991.asuscomm.com:/mnt/ $HOME/Documents/Mount'
-
-# edit dotfiles repo
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-
 # Stopwatch
 alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 
@@ -40,6 +34,7 @@ function wth
   curl "wttr.in/$argv"
 end
 
+# Weather me that
 function wth2
   curl "v2.wttr.in/$argv"
 end
@@ -60,3 +55,5 @@ function mkdir-cd
     mkdir $argv && cd $argv
 end
 abbr -a mc mkdir-cd
+
+alias gcb="git branch --show"
