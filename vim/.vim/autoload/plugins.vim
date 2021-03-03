@@ -151,7 +151,7 @@ function! plugins#install_plugins() abort
   Plug 'morhetz/gruvbox'
 
   " Emacs style which key menu
-  Plug 'liuchengxu/vim-which-key'
+  Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
   call plug#end()
 endfunction
 
