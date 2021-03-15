@@ -13,6 +13,9 @@ fish/.config/fish/functions/
 fish/.config/fish/fish_variables
 fish/.config/fish/fishd.tmp*
 
+ncmpcpp/.config/mpd/*
+!ncmpcpp/.config/mpd/mpd.conf
+
 
 
 ### Linux ###
