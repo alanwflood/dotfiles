@@ -31,7 +31,7 @@ mpd_connection_timeout = 5
 #
 ## Needed for tag editor and file operations to work.
 ##
-mpd_music_dir = nfs://saturn.local/mnt/Mimas/Music
+mpd_music_dir = nfs://serverHere
 #
 #mpd_crossfade_time = 5
 #
@@ -380,7 +380,7 @@ mpd_music_dir = nfs://saturn.local/mnt/Mimas/Music
 #
 ## Available values: artist, album_artist, date, genre, composer, performer.
 ##
-#media_library_primary_tag = artist
+media_library_primary_tag = album_artist
 #
 #media_library_albums_split_by_date = yes
 #
