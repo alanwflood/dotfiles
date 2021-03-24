@@ -23,7 +23,7 @@ ncmpcpp_directory = ~/.config/ncmpcpp
 #
 ##### connection settings #####
 #
-mpd_host = localhost
+mpd_host = ~/.config/mpd/socket
 #
 mpd_port = 6600
 #
