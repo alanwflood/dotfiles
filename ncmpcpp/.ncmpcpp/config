@@ -31,7 +31,7 @@ mpd_connection_timeout = 5
 #
 ## Needed for tag editor and file operations to work.
 ##
-mpd_music_dir = nfs://saturn.local/mnt/Mimas/Music
+mpd_music_dir = nfs://serverHere
 #
 #mpd_crossfade_time = 5
 #
@@ -69,7 +69,7 @@ mpd_music_dir = nfs://saturn.local/mnt/Mimas/Music
 ## visualizer.
 ##
 #
-#visualizer_data_source = /tmp/mpd.fifo
+visualizer_data_source = /tmp/mpd.fifo
 #
 ##
 ## Note: Below parameter is needed for ncmpcpp to determine which output
@@ -77,12 +77,12 @@ mpd_music_dir = nfs://saturn.local/mnt/Mimas/Music
 ## to synchronize with audio.
 ##
 #
-#visualizer_output_name = Visualizer feed
+visualizer_output_name = Visualizer feed
 #
 ##
 ## If you set format to 44100:16:2, make it 'yes'.
 ##
-#visualizer_in_stereo = yes
+visualizer_in_stereo = yes
 #
 ##
 ## Note: set below to >=10 only if you have synchronization issues with
@@ -98,13 +98,13 @@ mpd_music_dir = nfs://saturn.local/mnt/Mimas/Music
 #
 ## Available values: spectrum, wave, wave_filled, ellipse.
 ##
-#visualizer_type = spectrum
+visualizer_type = spectrum
 #
 #visualizer_fps = 60
 #
 #visualizer_autoscale = no
 #
-#visualizer_look = ●▮
+visualizer_look = +|
 #
 #visualizer_color = blue, cyan, green, yellow, magenta, red
 #
@@ -376,11 +376,11 @@ mpd_music_dir = nfs://saturn.local/mnt/Mimas/Music
 ##
 #user_interface = classic
 #
-#data_fetching_delay = yes
+data_fetching_delay = no
 #
 ## Available values: artist, album_artist, date, genre, composer, performer.
 ##
-#media_library_primary_tag = artist
+media_library_primary_tag = album_artist
 #
 #media_library_albums_split_by_date = yes
 #
