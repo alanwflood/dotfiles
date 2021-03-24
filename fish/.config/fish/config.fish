@@ -6,7 +6,7 @@ set -Ux VISUAL nvim
 source $HOME/.config/fish/aliases.shared.fish
 
 function fish_greeting
-  fortune -s | lolcat
+    fortune -s | lolcat
 end
 
 
@@ -46,6 +46,8 @@ set -gx PATH $PATH $HOME/.emacs.d/bin
 # Volta node manager path
 set -gx VOLTA_HOME "$HOME/.volta"
 set -gx PATH "$VOLTA_HOME/bin" $PATH
+# thefuck integration
+thefuck --alias | source
 
 set -g theme_nerd_fonts yes
 set -g theme_display_date no
@@ -57,7 +59,7 @@ set -Ux NNN_USE_EDITOR 1
 set -Ux NNN_TRASH 1
 
 # Compatability for vterm inside emacs
-function vterm_printf;
+function vterm_printf
     if [ -n "$TMUX" ]
         # tell tmux to pass the escape sequences through
         # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)

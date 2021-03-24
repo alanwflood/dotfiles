@@ -7,3 +7,4 @@ end
 
 alias mute="qdbus org.kde.kglobalaccel /component/kmix invokeShortcut 'mute'"
 alias nightnight="brightness 10; mute"
+alias mp="ncmpcpp"
