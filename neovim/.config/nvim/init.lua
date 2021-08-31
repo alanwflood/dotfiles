@@ -17,67 +17,135 @@ vim.api.nvim_exec(
 
 local use = require('packer').use
 require('packer').startup(function()
-  use 'wbthomason/packer.nvim' -- Package manager
+  -- Package manager
+  use 'wbthomason/packer.nvim'
+
   use 'tpope/vim-fugitive' -- Git commands in nvim
   use 'tpope/vim-rhubarb' -- Fugitive-companion to interact with github
-  use 'tpope/vim-commentary' -- "gc" to comment visual regions/lines
-  use 'ludovicchabant/vim-gutentags' -- Automatic tags management
+
+  -- "gc" to comment visual regions/lines
+  use 'tpope/vim-commentary'
+
+  -- Automatic tags management
+  use 'ludovicchabant/vim-gutentags'
+
   -- UI to select things (files, grep results, open buffers...)
   use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
-  use { "ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
+
+  -- Transparency for all!
   use 'xiyaowong/nvim-transparent'
+
+  -- Fancier statusline
+  use 'itchyny/lightline.vim'
+
+  -- Themes
   use 'joshdick/onedark.vim' -- Theme inspired by Atom
-  use 'itchyny/lightline.vim' -- Fancier statusline
+  use { "ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}} -- Retro style
+
   -- Add indentation guides even on blank lines
   use 'lukas-reineke/indent-blankline.nvim'
+
   -- Add git related info in the signs columns and popups
   use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+
   -- Highlight, edit, and navigate code using a fast incremental parsing library
   use {
-    'https://github.com/nvim-treesitter/nvim-treesitter',
+    'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
+      config = require 'treesitter',
       requires = {
         {
 	  -- Additional textobjects for treesitter
-          'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
+          'nvim-treesitter/nvim-treesitter-textobjects',
           after = 'nvim-treesitter',
         },
         {
-          'https://github.com/p00f/nvim-ts-rainbow',
+          'p00f/nvim-ts-rainbow',
           after = 'nvim-treesitter',
         },
         {
-          'https://github.com/nvim-treesitter/playground',
+          'nvim-treesitter/playground',
           cmd = 'TSPlaygroundToggle',
           after = 'nvim-treesitter',
         },
-        {
-          'https://github.com/lewis6991/spellsitter.nvim',
-          after = 'nvim-treesitter',
-          config = function()
-            require('spellsitter').setup()
-          end,
-        },
       },
     }
-  use 'neovim/nvim-lspconfig' -- Collection of configurations for built-in LSP client
-  use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'saadparwaiz1/cmp_luasnip'
-  use 'L3MON4D3/LuaSnip' -- Snippets plugin
-  use 'machakann/vim-sandwich'
-  use 'tpope/vim-repeat'
+
   use {
-    "folke/which-key.nvim",
-    config = function()
-      require("which-key").setup()
-    end
+    'norcalli/nvim-colorizer.lua',
+     config = function()
+       require('colorizer').setup()
+     end,
   }
+
+  -- Collection of configurations for built-in LSP client
+  use {
+      'neovim/nvim-lspconfig',
+      requires = {
+        {
+          'tjdevries/lsp_extensions.nvim',
+          -- config = require '_.config.lsp.lsp_extenstions',
+        },
+        {
+          'folke/todo-comments.nvim',
+          config = function()
+            require('todo-comments').setup {}
+          end,
+        },
+        { 'ray-x/lsp_signature.nvim' },
+        { 'folke/lua-dev.nvim' },
+      },
+    }
+
+  -- Snippets plugin
+  use {
+    'L3MON4D3/LuaSnip',
+    requires = {
+      { 'rafamadriz/friendly-snippets' },
+    },
+  }
+
+  -- Autocompletion plugin
+  use {
+    'hrsh7th/nvim-cmp',
+    config = require 'completion',
+    requires = {
+      { 'hrsh7th/cmp-nvim-lsp' },
+      { 'andersevenrud/compe-tmux', branch = 'cmp' },
+      { 'saadparwaiz1/cmp_luasnip' },
+      { 'hrsh7th/cmp-path' },
+      { 'hrsh7th/cmp-buffer' },
+      { 'hrsh7th/cmp-emoji' },
+      { 'f3fora/cmp-spell' },
+    },
+  }
+
+  -- Surround plugins
+  use 'machakann/vim-sandwich'
+
+  -- Extend repeating plugin actions
+  use 'tpope/vim-repeat'
+
+  -- Make nvim easier to use inside tmux
+  use {
+    'christoomey/vim-tmux-navigator',
+    opt = true,
+    cond = function()
+      return vim.env.TMUX ~= nil
+    end,
+    config = function()
+      if vim.fn.exists 'g:loaded_tmux_navigator' == 0 then
+        vim.g.tmux_navigator_disable_when_zoomed = 1
+      end
+    end,
+  }
+
+  -- Replace netrw with something sane
   use {
     "mcchrish/nnn.vim",
     config = function()
 	require("nnn").setup({
-		command = "nnn -o -C",
+		command = "nnn -o -H",
 		set_default_mappings = 0,
 		replace_netrw = 1,
 		action = {
@@ -88,7 +156,52 @@ require('packer').startup(function()
 	})
     end
   }
+
+  -- Extends " and @ to show what's contained in those registers
+  use {
+    'junegunn/vim-peekaboo',
+    event = 'BufReadPre',
+    config = function()
+      vim.g.peekaboo_window = 'vertical botright 60new'
+    end,
+  }
+
+  -- Make looking up paths easier
+  use 'tpope/vim-apathy'
+
+  -- emacs style which key
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      require("which-key").setup()
+    end
+  }
 end)
+
+-- spaces per tab
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+
+-- spaces per tab (when shifting)
+vim.opt.shiftwidth = 2
+
+-- always use spaces instead of tabs
+vim.opt.expandtab = true
+
+-- don't bother updating screen during macro playback
+vim.opt.lazyredraw = true
+
+-- show trailing whitespace
+vim.opt.list = true
+vim.opt.listchars = {
+  tab = '………',
+  nbsp = '░',
+  extends = '»',
+  precedes = '«',
+  trail = '·',
+}
+
+vim.opt.ruler = true
 
 --Incremental live completion (note: this is now a default on master)
 vim.o.inccommand = 'nosplit'
@@ -197,7 +310,7 @@ vim.api.nvim_set_keymap('n', '<leader>so', [[<cmd>lua require('telescope.builtin
 vim.api.nvim_set_keymap('n', '<leader>?', [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]], { noremap = true, silent = true })
 
 -- NNN
-vim.api.nvim_set_keymap('n', '-', ':NnnPicker<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '-', ':NnnPicker %:p:h<CR>', { noremap = true, silent = true })
 
 -- Treesitter configuration
 -- Parsers must be installed manually via :TSInstall
@@ -293,8 +406,8 @@ for _, lsp in ipairs(servers) do
 end
 
 -- Example custom server
-local sumneko_root_path = vim.fn.getenv 'HOME' .. '/.local/bin/sumneko_lua' -- Change to your sumneko root installation
-local sumneko_binary = sumneko_root_path .. '/bin/linux/lua-language-server'
+local sumneko_root_path =  '/usr/share/lua-language-server' -- Change to your sumneko root installation
+local sumneko_binary = '/usr/bin/lua-language-server'
 
 -- Make runtime files discoverable to the server
 local runtime_path = vim.split(package.path, ';')
@@ -329,52 +442,9 @@ require('lspconfig').sumneko_lua.setup {
   },
 }
 
+-- Setup vue language server
+require'lspconfig'.vuels.setup{}
+require'lspconfig'.stylelint_lsp.setup{}
+
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
-
--- luasnip setup
-local luasnip = require 'luasnip'
-
--- nvim-cmp setup
-local cmp = require 'cmp'
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      require('luasnip').lsp_expand(args.body)
-    end,
-  },
-  mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ['<Tab>'] = function(fallback)
-      if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
-      elseif luasnip.expand_or_jumpable() then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
-      else
-        fallback()
-      end
-    end,
-    ['<S-Tab>'] = function(fallback)
-      if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
-      elseif luasnip.jumpable(-1) then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
-      else
-        fallback()
-      end
-    end,
-  },
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-  },
-}
