@@ -5,6 +5,8 @@ vim/.vim/tmp
 vim/.vim/coc/extensions/*
 vim/.vim/.netrwhist
 
+neovim/.config/nvim/plugin/packer_compiled.lua
+
 .cfg
 temp/
 
