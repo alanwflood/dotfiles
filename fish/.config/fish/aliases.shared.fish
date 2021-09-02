@@ -7,6 +7,8 @@ alias tnowdate='date "+%d-%m-%Y"'
 
 # time savers
 alias g="git"
+alias gco='git checkout'
+
 alias h="history"
 alias j="jobs"
 alias be="bundle exec"
