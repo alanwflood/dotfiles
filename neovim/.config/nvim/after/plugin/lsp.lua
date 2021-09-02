@@ -272,6 +272,10 @@ local function setup_servers()
 
 
     -- language specific config
+    if server == "efm" then
+      config = vim.tbl_extend('force', config, require('config.lsp.efm'))
+    end
+
     if server == "lua" then
       config.settings = server_settings.lua
     end

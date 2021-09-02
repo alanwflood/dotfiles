@@ -17,9 +17,6 @@ require('packer').startup(function()
   -- Package manager
   use 'wbthomason/packer.nvim'
 
-  use 'tpope/vim-fugitive' -- Git commands in nvim
-  use 'tpope/vim-rhubarb' -- Fugitive-companion to interact with github
-
   -- "gc" to comment visual regions/lines
   use 'tpope/vim-commentary'
 
@@ -55,8 +52,14 @@ require('packer').startup(function()
   -- Add indentation guides even on blank lines
   use 'lukas-reineke/indent-blankline.nvim'
 
+  -- Git utils {{{
+  use 'tpope/vim-fugitive' -- Git commands in nvim
+  use 'tpope/vim-rhubarb' -- Fugitive-companion to interact with github
+  use 'sindrets/diffview.nvim' -- Git Diff View for files
   -- Add git related info in the signs columns and popups
   use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+  -- }}}
+
 
   -- Auto closes elements
   use { 'https://github.com/windwp/nvim-autopairs' }
@@ -103,7 +106,14 @@ require('packer').startup(function()
         },
         {
           'tjdevries/lsp_extensions.nvim',
-          -- config = require '_.config.lsp.lsp_extenstions',
+          config = function()
+            vim.api.nvim_exec([[
+              augroup __Completion
+              autocmd!
+              autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()
+              augroup end
+            ]], false)
+          end
         },
         {
           'folke/todo-comments.nvim',
@@ -173,12 +183,14 @@ require('packer').startup(function()
         command = "nnn -o -H",
         set_default_mappings = 0,
         replace_netrw = 1,
-        action = {
-          ["<c-t>"] = "tab split",
-          ["<c-s>"] = "split",
-          ["<c-v>"] = "vsplit",
-        },
       })
+
+      -- Fix weird slowdown when opening on osx
+      vim.cmd([[
+        if system('uname -s') == "Darwin\n"
+          let g:nnn#shell = 'zsh'
+        endif
+      ]], "")
     end
   }
 
@@ -276,10 +288,6 @@ vim.api.nvim_set_keymap('', '<Space>', '<Nop>', { noremap = true, silent = true 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
---Remap for dealing with word wrap
-vim.api.nvim_set_keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
-vim.api.nvim_set_keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true })
-
 -- Highlight on yank
 vim.api.nvim_exec(
   [[
@@ -290,9 +298,6 @@ vim.api.nvim_exec(
 ]],
   false
 )
-
--- Y yank until the end of line  (note: this is now a default on master)
-vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true })
 
 --Map blankline
 vim.g.indent_blankline_char = '┊'
