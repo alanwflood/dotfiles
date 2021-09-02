@@ -58,6 +58,12 @@ require('packer').startup(function()
   -- Add git related info in the signs columns and popups
   use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
 
+  -- Auto closes elements
+  use { 'https://github.com/windwp/nvim-autopairs' }
+
+  -- Extends % operator to jump between language specific tags 
+  use 'andymass/vim-matchup'
+
   -- Highlight, edit, and navigate code using a fast incremental parsing library
   use {
     'nvim-treesitter/nvim-treesitter',

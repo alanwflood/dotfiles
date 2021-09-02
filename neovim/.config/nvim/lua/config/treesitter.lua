@@ -1,5 +1,6 @@
 return function()
   local has_treesitter = pcall(require, 'nvim-treesitter')
+  local has_matchup = pcall(require, 'vim-matchup')
 
   if not has_treesitter then
     return
@@ -8,6 +9,7 @@ return function()
   local parsers = require 'nvim-treesitter.parsers'
 
   require('nvim-treesitter.configs').setup {
+    matchup = { enable = has_matchup },
     ensure_installed = 'maintained', -- one of "all", "maintained" (parsers with maintainers), or a list of languages
     ignore_install = { 'verilog' },
     indent = {

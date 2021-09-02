@@ -1,11 +1,13 @@
 -- LSP settings
 local has_lsp, nvim_lsp = pcall(require, 'lspconfig');
+local has_lspsaga = pcall(require, 'lspsaga')
 local utils = require 'utils'
 
 if not has_lsp then
   utils.notify 'LSP config failed to setup'
   return
 end
+
 
 local on_attach = function(client, bufnr)
   vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
@@ -33,55 +35,88 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   local opts = { noremap = true, silent = true }
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
+  local default_mappings = {
+    ['<leader>a'] = { '<Cmd>lua vim.lsp.buf.code_action()<CR>' },
+    ['<leader>f'] = { '<cmd>lua vim.lsp.buf.references()<CR>' },
+    ['<leader>r'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
+    ['K'] = { '<Cmd>lua vim.lsp.buf.hover()<CR>' },
+    ['<leader>ld'] = { '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>', },
+    ['[d'] = { '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<cr>', },
+    [']d'] = { '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', },
+    ['<C-]>'] = { '<Cmd>lua vim.lsp.buf.definition()<CR>' },
+    ['<leader>D'] = { '<Cmd>lua vim.lsp.buf.declaration()<CR>' },
+    ['<leader>i'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
+    ['<leader>so'] = { "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>" },
+  }
+
+  local lspsaga_mappings = {
+    ['<leader>d'] = { "<Cmd>lua require'lspsaga.provider'.preview_definition()<CR>", },
+    ['<leader>a'] = {
+      "<Cmd>lua require'lspsaga.codeaction'.code_action()<CR>",
+      "<Cmd>'<,'>lua require'lspsaga.codeaction'.range_code_action()<CR>",
+    },
+    ['<leader>f'] = { "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>" },
+    ['<leader>s'] = { "<cmd>lua require'lspsaga.signaturehelp'.signature_help()<CR>", },
+    ['<leader>r'] = { "<cmd>lua require'lspsaga.rename'.rename()<CR>" },
+    ['<leader>ld'] = { "<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>", },
+    ['[d'] = { "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>", },
+    [']d'] = { "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>", },
+    ['<C-f>'] = { "<cmd>lua require('lspsaga.hover').smart_scroll_hover(1)<cr>" },
+    ['<C-b>'] = { "<cmd>lua require('lspsaga.hover').smart_scroll_hover(-1)<CR>" },
+  }
+ 
+  local mappings = vim.tbl_extend(
+    'force',
+    default_mappings,
+    has_lspsaga and lspsaga_mappings or {}
+  )
+
+  for lhs, rhs in pairs(mappings) do
+    if lhs == 'K' then
+      if vim.api.nvim_buf_get_option(0, 'filetype') ~= 'vim' then
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs[1], opts)
+      end
+    else
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs[1], opts)
+      if #rhs == 2 then
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs[2], opts)
+      end
+    end
+  end
+
+
+
   vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 
 
   vim.api.nvim_exec([[
-  augroup lsp_line_diagnostics
-  autocmd! * <buffer>
-  autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()
-  augroup END
-  ]], false)
+    augroup lsp_line_diagnostics
+    autocmd!
+    autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()
+    augroup END
+  ]], true)
 
     -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec([[
     augroup lsp_document_highlight
-    autocmd! * <buffer>
+    autocmd!
     autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
     autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
     autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     augroup END
-    ]], false)
+    ]], true)
   end
 
   if client.resolved_capabilities.code_lens then
     vim.api.nvim_exec([[
     augroup lsp_codelense
-    autocmd! * <buffer>
+    autocmd!
     autocmd CursorHold <buffer> lua vim.lsp.codelens.refresh()
     autocmd BufEnter <buffer> lua vim.lsp.codelens.refresh()
     autocmd InsertLeave <buffer> lua vim.lsp.codelens.refresh()
     augroup END
-    ]], false)
+    ]], true)
   end
 
 end
@@ -227,7 +262,7 @@ local function setup_servers()
           or vim.loop.cwd()
       end
     end
- 
+
     if server == 'deno' then
       config.root_dir = function(fname)
         return nvim_lsp.util.root_pattern 'deps.ts'(fname)
