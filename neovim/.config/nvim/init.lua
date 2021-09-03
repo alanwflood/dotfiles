@@ -44,11 +44,11 @@ require('packer').startup(function()
   use 'itchyny/lightline.vim'
 
   -- Transparency for all!
-  use { 'xiyaowong/nvim-transparent', opt = true }
+  use { 'xiyaowong/nvim-transparent' }
 
   -- Themes
-  use { 'joshdick/onedark.vim', opt = true } -- Theme inspired by Atom
-  use { "ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}, opt = true } -- Retro style
+  use { 'joshdick/onedark.vim' } -- Theme inspired by Atom
+  use { "ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"} } -- Retro style
 
   -- Add indentation guides even on blank lines
   use 'lukas-reineke/indent-blankline.nvim'
@@ -64,18 +64,20 @@ require('packer').startup(function()
 
   -- Auto closes elements
   use { 'windwp/nvim-autopairs' }
-
+  use {'andymass/vim-matchup', event = 'VimEnter'}
 
   -- Highlight, edit, and navigate code using a fast incremental parsing library
   use {
     'nvim-treesitter/nvim-treesitter',
+      branch = '0.5-compat',
       run = ':TSUpdate',
-      config = require 'config.treesitter',
+      config = require('config.treesitter'),
       requires = {
         {
 	  -- Additional textobjects for treesitter
           'nvim-treesitter/nvim-treesitter-textobjects',
           after = 'nvim-treesitter',
+          branch = '0.5-compat',
         },
         {
           'p00f/nvim-ts-rainbow',
@@ -172,6 +174,7 @@ require('packer').startup(function()
   -- Replace netrw with something sane
   use {
     "mcchrish/nnn.vim",
+    cmd = { 'NnnPicker' },
     config = function()
       require("nnn").setup({
         command = "nnn -o -H",
@@ -313,57 +316,3 @@ require('gitsigns').setup {
 
 -- NNN
 vim.api.nvim_set_keymap('n', '-', ':NnnPicker %:p:h<CR>', { noremap = true, silent = true })
-
--- Treesitter configuration
--- Parsers must be installed manually via :TSInstall
-require('nvim-treesitter.configs').setup {
-  highlight = {
-    enable = true, -- false will disable the whole extension
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = 'gnn',
-      node_incremental = 'grn',
-      scope_incremental = 'grc',
-      node_decremental = 'grm',
-    },
-  },
-  indent = {
-    enable = true,
-  },
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-      keymaps = {
-        -- You can use the capture groups defined in textobjects.scm
-        ['af'] = '@function.outer',
-        ['if'] = '@function.inner',
-        ['ac'] = '@class.outer',
-        ['ic'] = '@class.inner',
-      },
-    },
-    move = {
-      enable = true,
-      set_jumps = true, -- whether to set jumps in the jumplist
-      goto_next_start = {
-        [']m'] = '@function.outer',
-        [']]'] = '@class.outer',
-      },
-      goto_next_end = {
-        [']M'] = '@function.outer',
-        [']['] = '@class.outer',
-      },
-      goto_previous_start = {
-        ['[m'] = '@function.outer',
-        ['[['] = '@class.outer',
-      },
-      goto_previous_end = {
-        ['[M'] = '@function.outer',
-        ['[]'] = '@class.outer',
-      },
-    },
-  },
-}
-

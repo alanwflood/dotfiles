@@ -127,88 +127,121 @@ table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
 
 local server_settings = {
-  lua = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
-        -- Setup your lua path
-        path = runtime_path,
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = { 'vim' },
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file('', true),
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
-      },
-    },
+  efm = require('config.lsp.efm'),
+  typescript = {
+    root_dir = function(fname)
+      return nvim_lsp.util.root_pattern 'tsconfig.json'(fname)
+        or nvim_lsp.util.root_pattern(
+          'package.json',
+          'jsconfig.json',
+          '.git'
+        )(fname)
+        or vim.loop.cwd()
+    end,
   },
-  yaml_settings = {
-    -- Schemas https://www.schemastore.org
-    schemas = {
-      ['http://json.schemastore.org/gitlab-ci.json'] = { '.gitlab-ci.yml' },
-      ['https://json.schemastore.org/bamboo-spec.json'] = {
-        'bamboo-specs/*.{yml,yaml}',
+  deno = {
+    root_dir = function(fname)
+      return nvim_lsp.util.root_pattern 'deps.ts'(fname)
+        or nvim_lsp.util.root_pattern 'mod.ts'(fname)
+    end,
+  },
+  lua = {
+    settings = {
+      Lua = {
+        runtime = {
+          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+          version = 'LuaJIT',
+          -- Setup your lua path
+          path = runtime_path,
+        },
+        diagnostics = {
+          -- Get the language server to recognize the `vim` global
+          globals = { 'vim' },
+        },
+        workspace = {
+          -- Make the server aware of Neovim runtime files
+          library = vim.api.nvim_get_runtime_file('', true),
+        },
+        -- Do not send telemetry data containing a randomized but unique identifier
+        telemetry = {
+          enable = false,
+        },
       },
-      ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = {
-        'docker-compose*.{yml,yaml}',
-      },
-      ['http://json.schemastore.org/github-workflow.json'] = '.github/workflows/*.{yml,yaml}',
-      ['http://json.schemastore.org/github-action.json'] = '.github/action.{yml,yaml}',
-      ['http://json.schemastore.org/prettierrc.json'] = '.prettierrc.{yml,yaml}',
-      ['http://json.schemastore.org/stylelintrc.json'] = '.stylelintrc.{yml,yaml}',
-      ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}',
-    },
+    }
+  },
+  sourcekit = {
+    filetypes = {"swift", "objective-c", "objective-cpp"}; -- we don't want c and cpp!
+  },
+  clangd = {
+    filetypes = {"c", "cpp"}; -- we don't want objective-c and objective-cpp!
+  },
+  yaml = {
+    settings = {
+      yaml = {
+        -- Schemas https://www.schemastore.org
+        schemas = {
+          ['http://json.schemastore.org/gitlab-ci.json'] = { '.gitlab-ci.yml' },
+          ['https://json.schemastore.org/bamboo-spec.json'] = {
+            'bamboo-specs/*.{yml,yaml}',
+          },
+          ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = {
+            'docker-compose*.{yml,yaml}',
+          },
+          ['http://json.schemastore.org/github-workflow.json'] = '.github/workflows/*.{yml,yaml}',
+          ['http://json.schemastore.org/github-action.json'] = '.github/action.{yml,yaml}',
+          ['http://json.schemastore.org/prettierrc.json'] = '.prettierrc.{yml,yaml}',
+          ['http://json.schemastore.org/stylelintrc.json'] = '.stylelintrc.{yml,yaml}',
+          ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}',
+        },
+      }
+    }
   },
   json = {
-    json = {
-      -- Schemas https://www.schemastore.org
-      schemas = {
-        {
-          fileMatch = { 'package.json' },
-          url = 'https://json.schemastore.org/package.json',
-        },
-        {
-          fileMatch = { 'tsconfig*.json' },
-          url = 'https://json.schemastore.org/tsconfig.json',
-        },
-        {
-          fileMatch = {
-            '.prettierrc',
-            '.prettierrc.json',
-            'prettier.config.json',
+    filetypes = { 'json', 'jsonc' },
+    settings = {
+      json = {
+        -- Schemas https://www.schemastore.org
+        schemas = {
+          {
+            fileMatch = { 'package.json' },
+            url = 'https://json.schemastore.org/package.json',
           },
-          url = 'https://json.schemastore.org/prettierrc.json',
-        },
-        {
-          fileMatch = { '.eslintrc', '.eslintrc.json' },
-          url = 'https://json.schemastore.org/eslintrc.json',
-        },
-        {
-          fileMatch = { '.babelrc', '.babelrc.json', 'babel.config.json' },
-          url = 'https://json.schemastore.org/babelrc.json',
-        },
-        {
-          fileMatch = { 'lerna.json' },
-          url = 'https://json.schemastore.org/lerna.json',
-        },
-        {
-          fileMatch = { 'now.json', 'vercel.json' },
-          url = 'https://json.schemastore.org/now.json',
-        },
-        {
-          fileMatch = {
-            '.stylelintrc',
-            '.stylelintrc.json',
-            'stylelint.config.json',
+          {
+            fileMatch = { 'tsconfig*.json' },
+            url = 'https://json.schemastore.org/tsconfig.json',
           },
-          url = 'http://json.schemastore.org/stylelintrc.json',
+          {
+            fileMatch = {
+              '.prettierrc',
+              '.prettierrc.json',
+              'prettier.config.json',
+            },
+            url = 'https://json.schemastore.org/prettierrc.json',
+          },
+          {
+            fileMatch = { '.eslintrc', '.eslintrc.json' },
+            url = 'https://json.schemastore.org/eslintrc.json',
+          },
+          {
+            fileMatch = { '.babelrc', '.babelrc.json', 'babel.config.json' },
+            url = 'https://json.schemastore.org/babelrc.json',
+          },
+          {
+            fileMatch = { 'lerna.json' },
+            url = 'https://json.schemastore.org/lerna.json',
+          },
+          {
+            fileMatch = { 'now.json', 'vercel.json' },
+            url = 'https://json.schemastore.org/now.json',
+          },
+          {
+            fileMatch = {
+              '.stylelintrc',
+              '.stylelintrc.json',
+              'stylelint.config.json',
+            },
+            url = 'http://json.schemastore.org/stylelintrc.json',
+          },
         },
       },
     },
@@ -242,62 +275,26 @@ end
 local function setup_servers()
   require'lspinstall'.setup()
 
+  local config = make_config()
+
   -- get all installed servers
   local servers = require'lspinstall'.installed_servers()
-  -- ... and add manually installed servers
-  table.insert(servers, "clangd")
-  table.insert(servers, "sourcekit")
+
+  -- -- ... and add manually installed servers
+  -- table.insert(servers, "clangd")
+  -- table.insert(servers, "sourcekit")
 
   for _, server in pairs(servers) do
-    local config = make_config()
+    -- :lua print(vim.lsp.get_log_path())
+    local has_settings = server_settings[server] ~= nil
 
-     if server == 'typescript' then
-       config.root_dir = function(fname)
-        return nvim_lsp.util.root_pattern 'tsconfig.json'(fname)
-          or nvim_lsp.util.root_pattern(
-            'package.json',
-            'jsconfig.json',
-            '.git'
-          )(fname)
-          or vim.loop.cwd()
-      end
-    end
-
-    if server == 'deno' then
-      config.root_dir = function(fname)
-        return nvim_lsp.util.root_pattern 'deps.ts'(fname)
-          or nvim_lsp.util.root_pattern 'mod.ts'(fname)
-      end
-    end
-
-
-    -- language specific config
-    if server == "efm" then
-      config = vim.tbl_extend('force', config, require('config.lsp.efm'))
-    end
-
-    if server == "lua" then
-      config.settings = server_settings.lua
-    end
-
-    if server == "yaml" then
-      config.settings = server_settings.yaml
-    end
-
-    if server == "json" then
-      config.filetypes = { 'json', 'jsonc' }
-      config.settings = server_settings.json
-    end
-
-    if server == "sourcekit" then
-      config.filetypes = {"swift", "objective-c", "objective-cpp"}; -- we don't want c and cpp!
-    end
-
-    if server == "clangd" then
-      config.filetypes = {"c", "cpp"}; -- we don't want objective-c and objective-cpp!
-    end
-
-    require'lspconfig'[server].setup(config)
+    require'lspconfig'[server].setup(
+      vim.tbl_deep_extend(
+        'force',
+        has_settings and server_settings[server] or {},
+        config
+      )
+    )
   end
 end
 
