@@ -39,15 +39,16 @@ require('packer').startup(function()
     end,
   }
 
-  -- Transparency for all!
-  use 'xiyaowong/nvim-transparent'
 
   -- Fancier statusline
   use 'itchyny/lightline.vim'
 
+  -- Transparency for all!
+  use { 'xiyaowong/nvim-transparent', opt = true }
+
   -- Themes
-  use 'joshdick/onedark.vim' -- Theme inspired by Atom
-  use { "ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}} -- Retro style
+  use { 'joshdick/onedark.vim', opt = true } -- Theme inspired by Atom
+  use { "ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}, opt = true } -- Retro style
 
   -- Add indentation guides even on blank lines
   use 'lukas-reineke/indent-blankline.nvim'
@@ -55,17 +56,15 @@ require('packer').startup(function()
   -- Git utils {{{
   use 'tpope/vim-fugitive' -- Git commands in nvim
   use 'tpope/vim-rhubarb' -- Fugitive-companion to interact with github
-  use 'sindrets/diffview.nvim' -- Git Diff View for files
+  use { 'sindrets/diffview.nvim', cmd = { 'DiffviewOpen' } } -- Git Diff View for files
   -- Add git related info in the signs columns and popups
   use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
   -- }}}
 
 
   -- Auto closes elements
-  use { 'https://github.com/windwp/nvim-autopairs' }
+  use { 'windwp/nvim-autopairs' }
 
-  -- Extends % operator to jump between language specific tags 
-  use 'andymass/vim-matchup'
 
   -- Highlight, edit, and navigate code using a fast incremental parsing library
   use {
@@ -80,11 +79,6 @@ require('packer').startup(function()
         },
         {
           'p00f/nvim-ts-rainbow',
-          after = 'nvim-treesitter',
-        },
-        {
-          'nvim-treesitter/playground',
-          cmd = 'TSPlaygroundToggle',
           after = 'nvim-treesitter',
         },
       },
