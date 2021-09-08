@@ -4,7 +4,7 @@ local prettier = {
 }
 
 local eslint = {
-  lintCommand = 'eslint --format visualstudio --stdin --stdin-filename ${INPUT}',
+  lintCommand = 'eslint_d --format visualstudio --stdin --stdin-filename ${INPUT}',
   lintIgnoreExitCode = true,
   lintStdin = true,
   lintFormats = {
@@ -46,13 +46,13 @@ local pylint = {
 
 local languages = {
   python = { pylint },
-  vue = { eslint, prettier },
-  typescript = { eslint, prettier },
-  javascript = { eslint, prettier },
-  ['typescript.tsx'] = { eslint, prettier, },
-  ['javascript.jsx'] = { eslint, prettier },
-  typescriptreact = { eslint, prettier, },
-  javascriptreact = { eslint, prettier },
+  vue = { eslint },
+  typescript = { eslint },
+  javascript = { eslint },
+  ['typescript.tsx'] = { eslint, },
+  ['javascript.jsx'] = { eslint },
+  typescriptreact = { eslint, },
+  javascriptreact = { eslint },
   sh = { shellcheck },
   bash = { shellcheck },
 }
@@ -65,6 +65,8 @@ return {
   settings = {
     rootMarkers = { '.git/', vim.loop.cwd() },
     languages = languages,
+    log_level = 1,
+    log_file = '~/efm.log',
   },
 }
 
