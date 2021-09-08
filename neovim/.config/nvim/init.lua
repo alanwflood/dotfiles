@@ -17,6 +17,9 @@ require('packer').startup(function()
   -- Package manager
   use 'wbthomason/packer.nvim'
 
+  -- Useful shortcuts for commands
+  use 'tpope/vim-unimpaired'
+
   -- "gc" to comment visual regions/lines
   use 'tpope/vim-commentary'
 
@@ -38,7 +41,6 @@ require('packer').startup(function()
       require('config.telescope').setup()
     end,
   }
-
 
   -- Fancier statusline
   use 'itchyny/lightline.vim'
@@ -64,7 +66,7 @@ require('packer').startup(function()
 
   -- Auto closes elements
   use { 'windwp/nvim-autopairs' }
-  use {'andymass/vim-matchup', event = 'VimEnter'}
+  use { 'andymass/vim-matchup', event = 'VimEnter' }
 
   -- Highlight, edit, and navigate code using a fast incremental parsing library
   use {
@@ -92,6 +94,9 @@ require('packer').startup(function()
        require('colorizer').setup()
      end,
   }
+
+  -- Better Quick Fix window
+  use 'kevinhwang91/nvim-bqf'
 
   -- Collection of configurations for built-in LSP client
   use {
@@ -128,6 +133,9 @@ require('packer').startup(function()
       },
     }
 
+  -- Format runner
+  -- use 'mhartington/formatter.nvim'
+
   -- Snippets plugin
   use {
     'L3MON4D3/LuaSnip',
@@ -149,6 +157,13 @@ require('packer').startup(function()
       { 'hrsh7th/cmp-emoji' },
       { 'f3fora/cmp-spell' },
     },
+  }
+
+  use { 
+    'editorconfig/editorconfig-vim',
+    config = function()
+      vim.g.EditorConfig_exclude_patterns = { 'fugitive://.*', 'scp://.*' }
+    end
   }
 
   -- Surround plugins
@@ -202,6 +217,9 @@ require('packer').startup(function()
 
   -- Make looking up paths easier
   use 'tpope/vim-apathy'
+
+  -- Time tracking files
+  use 'wakatime/vim-wakatime'
 
   -- emacs style which key
   use {
