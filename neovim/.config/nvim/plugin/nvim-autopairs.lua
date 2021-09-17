@@ -1,6 +1,6 @@
 local utils = require 'utils'
 
-local autopais_loaded = pcall(function()
+local autopairs_loaded = pcall(function()
   require('nvim-autopairs').setup {
     close_triple_quotes = true,
     check_ts = true,
@@ -8,6 +8,6 @@ local autopais_loaded = pcall(function()
   }
 end)
 
-if not autopais_loaded then
+if not autopairs_loaded then
   utils.notify 'nvim-autopairs failed to load'
 end

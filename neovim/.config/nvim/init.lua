@@ -48,8 +48,11 @@ require('packer').startup(function()
   -- Fancier statusline
   use 'itchyny/lightline.vim'
 
+  -- Lua-fied Icons
+  use 'kyazdani42/nvim-web-devicons'
+
   -- Transparency for all!
-  use { 'xiyaowong/nvim-transparent' }
+  use 'xiyaowong/nvim-transparent'
 
   -- Themes
   use { 'joshdick/onedark.vim' } -- Theme inspired by Atom
@@ -63,7 +66,13 @@ require('packer').startup(function()
   use 'tpope/vim-rhubarb' -- Fugitive-companion to interact with github
   use { 'sindrets/diffview.nvim', cmd = { 'DiffviewOpen' } } -- Git Diff View for files
   -- Add git related info in the signs columns and popups
-  use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+  use {
+    'lewis6991/gitsigns.nvim',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('config.gitsigns')
+    end
+  }
   -- }}}
 
 
@@ -162,7 +171,7 @@ require('packer').startup(function()
     },
   }
 
-  use { 
+  use {
     'editorconfig/editorconfig-vim',
     config = function()
       vim.g.EditorConfig_exclude_patterns = { 'fugitive://.*', 'scp://.*' }
@@ -324,16 +333,6 @@ vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile' }
 vim.g.indent_blankline_char_highlight = 'LineNr'
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 
--- Gitsigns
-require('gitsigns').setup {
-  signs = {
-    add = { hl = 'GitGutterAdd', text = '+' },
-    change = { hl = 'GitGutterChange', text = '~' },
-    delete = { hl = 'GitGutterDelete', text = '_' },
-    topdelete = { hl = 'GitGutterDelete', text = '‾' },
-    changedelete = { hl = 'GitGutterChange', text = '~' },
-  },
-}
 
 -- NNN
 vim.api.nvim_set_keymap('n', '-', ':NnnPicker %:p:h<CR>', { noremap = true, silent = true })

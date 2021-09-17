@@ -46,11 +46,11 @@ function M.setup()
           mirror = true,
         },
       },
-      -- mappings = {
-      --   i = {
-      --     ['<esc>'] = require('telescope.actions').close,
-      --   },
-      -- },
+      mappings = {
+        n = {
+          ['q'] = require('telescope.actions').close,
+        }
+      },
       sorting_strategy = 'ascending',
       generic_sorter = require('telescope.sorters').get_fzy_sorter,
       file_sorter = require('telescope.sorters').get_fzy_sorter,
@@ -69,17 +69,18 @@ function M.setup()
   vim.api.nvim_set_keymap('n', '<leader>sc', [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>]], opts)
 
   -- Files
-  vim.api.nvim_set_keymap('n', '<leader>sf', [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]], opts)
+  vim.api.nvim_set_keymap('n', '<leader>sf', [[<cmd>lua require('telescope.builtin').find_files()<CR>]], opts)
+  vim.api.nvim_set_keymap('n', '<leader>sa', [[<cmd>lua require('telescope.builtin').find_files { hidden = true } <CR>]], opts)
   vim.api.nvim_set_keymap('n', '<leader>sr', [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]], opts)
 
   -- Tags
   vim.api.nvim_set_keymap('n', '<leader>s?', [[<cmd>lua require('telescope.builtin').help_tags()<CR>]], opts)
   vim.api.nvim_set_keymap('n', '<leader>st', [[<cmd>lua require('telescope.builtin').tags()<CR>]], opts)
-  vim.api.nvim_set_keymap('n', '<leader>so', [[<cmd>lua require('telescope.builtin').tags{ only_current_buffer = true }<CR>]], opts)
+  vim.api.nvim_set_keymap('n', '<leader>so', [[<cmd>lua require('telescope.builtin').tags { only_current_buffer = true }<CR>]], opts)
 
   -- Grep
   vim.api.nvim_set_keymap('n', '<leader>ss', [[<cmd>lua require('telescope.builtin').grep_string()<CR>]], opts)
-  vim.api.nvim_set_keymap('n', '<leader>sg', [[<cmd>lua require('telescope.builtin').live_grep()<CR>]], opts)
+  vim.api.nvim_set_keymap('n', '<leader>sg', [[<cmd>lua require('telescope.builtin').live_grep({ prompt_prefix="🔍" })<CR>]], opts)
 
   vim.api.nvim_set_keymap('n', 'z=', [[<cmd>lua require('telescope.builtin').spell_suggest()<CR>]], opts)
 end

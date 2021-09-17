@@ -24,8 +24,8 @@ vim.api.nvim_set_keymap('n', '<leader>wh', '<C-w>t<C-w>K<CR>', { noremap = true 
 vim.api.nvim_set_keymap('n', '<leader>wv', '<C-w>t<C-w>H<CR>', { noremap = true })
 
 -- https://github.com/mhinz/vim-galore#dont-lose-selection-when-shifting-sidewards
-  vim.api.nvim_set_keymap('x', '<', '<gv', { noremap = true })
-  vim.api.nvim_set_keymap('x', '>', '>gv', { noremap = true })
+vim.api.nvim_set_keymap('x', '<', '<gv', { noremap = true })
+vim.api.nvim_set_keymap('x', '>', '>gv', { noremap = true })
 
 -- qq to record, Q to replay
 vim.api.nvim_set_keymap('n', 'Q', '@@', { noremap = true })

@@ -88,16 +88,26 @@ local on_attach = function(client, bufnr)
 
   vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 
+  vim.o.updatetime = 250
 
   vim.api.nvim_exec([[
     augroup lsp_line_diagnostics
     autocmd!
-    autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()
+    autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})
     augroup END
   ]], true)
 
     -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_exec(
+      [[
+        hi! link LspReferenceRead SpecialKey
+        hi! link LspReferenceText SpecialKey
+        hi! link LspReferenceWrite SpecialKey
+      ]],
+      false
+    )
+
     vim.api.nvim_exec([[
     augroup lsp_document_highlight
     autocmd!
