@@ -210,7 +210,13 @@ require('packer').startup(function()
   }
 
   use { 'kyazdani42/nvim-web-devicons' } -- for file icons
-  use { 'kyazdani42/nvim-tree.lua' } -- File Tree
+  use {
+    'kyazdani42/nvim-tree.lua',
+    requires = 'kyazdani42/nvim-web-devicons',
+    config = function()
+      require'nvim-tree'.setup {}
+    end
+  }
 
   -- Extends " and @ to show what's contained in those registers
   use {
