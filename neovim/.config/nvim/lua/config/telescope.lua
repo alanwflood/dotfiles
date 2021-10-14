@@ -62,6 +62,7 @@ function M.setup()
   local opts = { noremap = true, silent = true }
   -- Quick shortcuts
   vim.api.nvim_set_keymap('n', '<leader><space>', [[<cmd>lua require('telescope.builtin').buffers { sort_lastused = true }<CR>]], opts)
+  vim.api.nvim_set_keymap('n', '<leader><C-space>', [[<cmd>lua require('telescope.builtin').resume()<CR>]], opts)
   vim.api.nvim_set_keymap('n', '<C-p>', [[<cmd>lua require('telescope.builtin').find_files()<CR>]], opts)
 
   -- Buffers
@@ -82,6 +83,7 @@ function M.setup()
   vim.api.nvim_set_keymap('n', '<leader>ss', [[<cmd>lua require('telescope.builtin').grep_string()<CR>]], opts)
   vim.api.nvim_set_keymap('n', '<leader>sg', [[<cmd>lua require('telescope.builtin').live_grep({ prompt_prefix="🔍" })<CR>]], opts)
 
+  vim.api.nvim_set_keymap('n', '<leader>sl', [[<cmd>lua require('telescope.builtin').resume()<CR>]], opts)
   vim.api.nvim_set_keymap('n', 'z=', [[<cmd>lua require('telescope.builtin').spell_suggest()<CR>]], opts)
 end
 

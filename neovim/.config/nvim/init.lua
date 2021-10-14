@@ -48,9 +48,6 @@ require('packer').startup(function()
   -- Fancier statusline
   use 'itchyny/lightline.vim'
 
-  -- Lua-fied Icons
-  use 'kyazdani42/nvim-web-devicons'
-
   -- Transparency for all!
   use 'xiyaowong/nvim-transparent'
 
@@ -134,12 +131,6 @@ require('packer').startup(function()
             require('todo-comments').setup {}
           end,
         },
-        {
-          'https://github.com/glepnir/lspsaga.nvim',
-          config = function()
-            require('lspsaga').init_lsp_saga {}
-          end,
-        },
         { 'ray-x/lsp_signature.nvim' },
         { 'folke/lua-dev.nvim' },
       },
@@ -217,6 +208,9 @@ require('packer').startup(function()
       ]], "")
     end
   }
+
+  use { 'kyazdani42/nvim-web-devicons' } -- for file icons
+  use { 'kyazdani42/nvim-tree.lua' } -- File Tree
 
   -- Extends " and @ to show what's contained in those registers
   use {

@@ -1,6 +1,5 @@
 -- LSP settings
 local has_lsp, nvim_lsp = pcall(require, 'lspconfig');
-local has_lspsaga = pcall(require, 'lspsaga')
 local utils = require 'utils'
 
 if not has_lsp then
@@ -10,72 +9,74 @@ end
 
 
 local on_attach = function(client, bufnr)
+  local popup_opts = { border = 'rounded', max_width = 80 }
   vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-    vim.lsp.handlers.hover,
-    { border = 'single' }
+    vim.lsp.handlers.hover, popup_opts
   )
 
   vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-    vim.lsp.handlers.hover,
-    { border = 'single' }
+    vim.lsp.handlers.hover, popup_opts
+  )
+
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+     vim.lsp.diagnostic.on_publish_diagnostics,
+    {
+       virtual_text = {
+          prefix = ">",
+          spacing = 0,
+       },
+       signs = true,
+       underline = true,
+       update_in_insert = false, -- update diagnostics insert mode
+    }
   )
 
   -- ---------------
   -- GENERAL
   -- ---------------
   client.config.flags.allow_incremental_sync = true
-  local lsd_signature_loaded = pcall(function()
+  local lsp_signature_loaded = pcall(function()
     require('lsp_signature').on_attach()
   end)
 
-  if not lsd_signature_loaded then
+  if not lsp_signature_loaded then
     utils.notify 'LSP Signature failed to set up'
   end
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  local opts = { noremap = true, silent = true }
   local default_mappings = {
-    ['<leader>a'] = { '<Cmd>lua vim.lsp.buf.code_action()<CR>' },
-    ['<leader>f'] = { '<cmd>lua vim.lsp.buf.references()<CR>' },
-    ['<leader>r'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
-    ['K'] = { '<Cmd>lua vim.lsp.buf.hover()<CR>' },
-    ['<leader>ld'] = { '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>', },
-    ['[d'] = { '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<cr>', },
+    ['K'] = { '<cmd>lua vim.lsp.buf.hover()<CR>' },
+    ['C-k'] = { "<cmd>lua vim.lsp.signature_help()" },
+    ['[d'] = { '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', },
     [']d'] = { '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', },
-    ['<C-]>'] = { '<Cmd>lua vim.lsp.buf.definition()<CR>' },
-    ['<leader>D'] = { '<Cmd>lua vim.lsp.buf.declaration()<CR>' },
-    ['<leader>i'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
+    ['<leader>LD'] = { '<cmd>lua vim.lsp.buf.declaration()<CR>' },
+    ['<leader>la'] = { '<cmd>lua vim.lsp.buf.code_action()<CR>' },
+    ['<leader>ld'] = { '<cmd>lua vim.lsp.buf.definition()<CR>' },
+    ['<leader>le'] = { '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>', },
+    ['<leader>lf'] = { "<cmd>lua vim.lsp.buf.formatting()<CR>" },
+    ['<leader>li'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
+    ['<leader>ll'] = { "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>" },
+    ['<leader>lp'] = { '<cmd>lua vim.lsp.buf.type_definition()<CR>', },
+    ['<leader>lr'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
+    ['<leader>ls'] = { '<cmd>lua vim.lsp.buf.references()<CR>' },
+    ['<leader>lwa'] = { "<cmd>lua <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>" },
+    ['<leader>lwd'] = { "<cmd>lua <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>" },
+    ['<leader>lwl'] = { "<cmd>lua <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>" },
     ['<leader>so'] = { "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>" },
   }
 
-  local lspsaga_mappings = {
-    ['<leader>d'] = { "<Cmd>lua require'lspsaga.provider'.preview_definition()<CR>", },
-    ['<leader>a'] = {
-      "<Cmd>lua require'lspsaga.codeaction'.code_action()<CR>",
-      "<Cmd>'<,'>lua require'lspsaga.codeaction'.range_code_action()<CR>",
-    },
-    ['<leader>f'] = { "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>" },
-    ['<leader>s'] = { "<cmd>lua require'lspsaga.signaturehelp'.signature_help()<CR>", },
-    ['<leader>r'] = { "<cmd>lua require'lspsaga.rename'.rename()<CR>" },
-    ['<leader>ld'] = { "<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>", },
-    ['[d'] = { "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>", },
-    [']d'] = { "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>", },
-    ['<C-f>'] = { "<cmd>lua require('lspsaga.hover').smart_scroll_hover(1)<cr>" },
-    ['<C-b>'] = { "<cmd>lua require('lspsaga.hover').smart_scroll_hover(-1)<CR>" },
-  }
- 
   local mappings = vim.tbl_extend(
     'force',
-    default_mappings,
-    has_lspsaga and lspsaga_mappings or {}
+    default_mappings
   )
 
+  local opts = { noremap = true, silent = true }
   for lhs, rhs in pairs(mappings) do
     if lhs == 'K' then
-      if vim.api.nvim_buf_get_option(0, 'filetype') ~= 'vim' then
+    --   if vim.api.nvim_buf_get_option(0, 'filetype') ~= 'vim' then
         vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs[1], opts)
-      end
+    --   end
     else
       vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs[1], opts)
       if #rhs == 2 then
@@ -97,38 +98,28 @@ local on_attach = function(client, bufnr)
     augroup END
   ]], true)
 
-    -- Set autocommands conditional on server_capabilities
+  -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec(
-      [[
-        hi! link LspReferenceRead SpecialKey
-        hi! link LspReferenceText SpecialKey
-        hi! link LspReferenceWrite SpecialKey
-      ]],
-      false
-    )
-
     vim.api.nvim_exec([[
-    augroup lsp_document_highlight
-    autocmd!
-    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    augroup END
+      augroup lsp_document_highlight
+      autocmd!
+      autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+      autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+      autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
     ]], true)
   end
 
   if client.resolved_capabilities.code_lens then
     vim.api.nvim_exec([[
-    augroup lsp_codelense
-    autocmd!
-    autocmd CursorHold <buffer> lua vim.lsp.codelens.refresh()
-    autocmd BufEnter <buffer> lua vim.lsp.codelens.refresh()
-    autocmd InsertLeave <buffer> lua vim.lsp.codelens.refresh()
-    augroup END
+      augroup lsp_codelense
+      autocmd!
+      autocmd CursorHold <buffer> lua vim.lsp.codelens.refresh()
+      autocmd BufEnter <buffer> lua vim.lsp.codelens.refresh()
+      autocmd InsertLeave <buffer> lua vim.lsp.codelens.refresh()
+      augroup END
     ]], true)
   end
-
 end
 
 -- Make runtime files discoverable to the server
