@@ -189,33 +189,12 @@ require('packer').startup(function()
     end,
   }
 
-  -- Replace netrw with something sane
-  use {
-    "mcchrish/nnn.vim",
-    cmd = { 'NnnPicker' },
-    config = function()
-      require("nnn").setup({
-        command = "nnn -o -H",
-        set_default_mappings = 0,
-        replace_netrw = 1,
-      })
-
-      -- Fix weird slowdown when opening on osx
-      vim.cmd([[
-        if system('uname -s') == "Darwin\n"
-          let g:nnn#shell = 'zsh'
-        endif
-      ]], "")
-    end
-  }
-
-  use { 'kyazdani42/nvim-web-devicons' } -- for file icons
+  -- use { 'kyazdani42/nvim-web-devicons' } -- for file icons
   use {
     'kyazdani42/nvim-tree.lua',
-    requires = 'kyazdani42/nvim-web-devicons',
-    config = function()
-      require'nvim-tree'.setup {}
-    end
+    keys = { '-' },
+    cmd = { 'NvimTreeToggle', 'NvimTreeFindFile' },
+    config = require('config.nvim-tree')
   }
 
   -- Extends " and @ to show what's contained in those registers
@@ -332,7 +311,3 @@ vim.g.indent_blankline_filetype_exclude = { 'help', 'packer' }
 vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile' }
 vim.g.indent_blankline_char_highlight = 'LineNr'
 vim.g.indent_blankline_show_trailing_blankline_indent = false
-
-
--- NNN
-vim.api.nvim_set_keymap('n', '-', ':NnnPicker %:p:h<CR>', { noremap = true, silent = true })

@@ -19,10 +19,9 @@ local on_attach = function(client, bufnr)
   )
 
   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-     vim.lsp.diagnostic.on_publish_diagnostics,
-    {
+     vim.lsp.diagnostic.on_publish_diagnostics, {
        virtual_text = {
-          prefix = ">",
+          prefix = "<<-",
           spacing = 0,
        },
        signs = true,
@@ -45,19 +44,19 @@ local on_attach = function(client, bufnr)
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  local default_mappings = {
+  local mappings = {
     ['K'] = { '<cmd>lua vim.lsp.buf.hover()<CR>' },
     ['C-k'] = { "<cmd>lua vim.lsp.signature_help()" },
-    ['[d'] = { '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', },
-    [']d'] = { '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', },
+    ['[d'] = { '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>' },
+    [']d'] = { '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>' },
     ['<leader>LD'] = { '<cmd>lua vim.lsp.buf.declaration()<CR>' },
     ['<leader>la'] = { '<cmd>lua vim.lsp.buf.code_action()<CR>' },
     ['<leader>ld'] = { '<cmd>lua vim.lsp.buf.definition()<CR>' },
-    ['<leader>le'] = { '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>', },
+    ['<leader>le'] = { '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>' },
     ['<leader>lf'] = { "<cmd>lua vim.lsp.buf.formatting()<CR>" },
     ['<leader>li'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
     ['<leader>ll'] = { "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>" },
-    ['<leader>lp'] = { '<cmd>lua vim.lsp.buf.type_definition()<CR>', },
+    ['<leader>lp'] = { '<cmd>lua vim.lsp.buf.type_definition()<CR>' },
     ['<leader>lr'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
     ['<leader>ls'] = { '<cmd>lua vim.lsp.buf.references()<CR>' },
     ['<leader>lwa'] = { "<cmd>lua <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>" },
@@ -66,31 +65,16 @@ local on_attach = function(client, bufnr)
     ['<leader>so'] = { "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>" },
   }
 
-  local mappings = vim.tbl_extend(
-    'force',
-    default_mappings
-  )
-
   local opts = { noremap = true, silent = true }
   for lhs, rhs in pairs(mappings) do
-    if lhs == 'K' then
-    --   if vim.api.nvim_buf_get_option(0, 'filetype') ~= 'vim' then
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs[1], opts)
-    --   end
-    else
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs[1], opts)
-      if #rhs == 2 then
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs[2], opts)
-      end
-    end
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs[1], opts)
   end
-
-
 
   vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 
   vim.o.updatetime = 250
 
+  -- Show diagnostics on line hover
   vim.api.nvim_exec([[
     augroup lsp_line_diagnostics
     autocmd!
