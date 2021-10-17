@@ -21,7 +21,13 @@ require('packer').startup(function()
   use 'tpope/vim-unimpaired'
 
   -- "gc" to comment visual regions/lines
-  use 'tpope/vim-commentary'
+  use { 
+    'terrortylor/nvim-comment',
+    event = "BufRead",
+    config = function()
+      require("config.comment")
+    end
+  }
 
   -- 'Add's plenty of sugar syntax for unix commands like, :Move, :Rename, :Mkdir etc,
   use 'tpope/vim-eunuch'
@@ -56,7 +62,16 @@ require('packer').startup(function()
   use { "ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"} } -- Retro style
 
   -- Add indentation guides even on blank lines
-  use 'lukas-reineke/indent-blankline.nvim'
+  use {
+    'lukas-reineke/indent-blankline.nvim',
+    config = function()
+      vim.g.indent_blankline_char = '┊'
+      vim.g.indent_blankline_filetype_exclude = { 'help', 'packer' }
+      vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile' }
+      vim.g.indent_blankline_char_highlight = 'LineNr'
+      vim.g.indent_blankline_show_trailing_blankline_indent = false
+    end
+  }
 
   -- Git utils {{{
   use 'tpope/vim-fugitive' -- Git commands in nvim
@@ -66,6 +81,7 @@ require('packer').startup(function()
   use {
     'lewis6991/gitsigns.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
+    event = "BufRead",
     config = function()
       require('config.gitsigns')
     end
@@ -109,49 +125,43 @@ require('packer').startup(function()
 
   -- Collection of configurations for built-in LSP client
   use {
-      'neovim/nvim-lspconfig',
-      requires = {
-        {
-          'kabouzeid/nvim-lspinstall'
-        },
-        {
-          'tjdevries/lsp_extensions.nvim',
-          config = function()
-            vim.api.nvim_exec([[
-              augroup __Completion
-              autocmd!
-              autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()
-              augroup end
-            ]], false)
-          end
-        },
-        {
-          'folke/todo-comments.nvim',
-          config = function()
-            require('todo-comments').setup {}
-          end,
-        },
-        { 'ray-x/lsp_signature.nvim' },
-        { 'folke/lua-dev.nvim' },
+    'neovim/nvim-lspconfig',
+    requires = {
+      { 'williamboman/nvim-lsp-installer' },
+      {
+        'tjdevries/lsp_extensions.nvim',
+        config = function()
+          vim.api.nvim_exec([[
+            augroup __Completion
+            autocmd!
+            autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()
+            augroup end
+          ]], false)
+        end
       },
-    }
+      {
+        'folke/todo-comments.nvim',
+        config = function()
+          require('todo-comments').setup {}
+        end,
+      },
+      { 'ray-x/lsp_signature.nvim' },
+      { 'folke/lua-dev.nvim' },
+    },
+  }
 
   -- Format runner
   -- use 'mhartington/formatter.nvim'
 
   -- Snippets plugin
-  use {
-    'L3MON4D3/LuaSnip',
-    requires = {
-      { 'rafamadriz/friendly-snippets' },
-    },
-  }
+  use 'rafamadriz/friendly-snippets'
 
   -- Autocompletion plugin
   use {
     'hrsh7th/nvim-cmp',
     config = require 'config.completion',
     requires = {
+      { 'L3MON4D3/LuaSnip'},
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'andersevenrud/compe-tmux', branch = 'cmp' },
       { 'saadparwaiz1/cmp_luasnip' },
@@ -197,15 +207,6 @@ require('packer').startup(function()
     config = require('config.nvim-tree')
   }
 
-  -- Extends " and @ to show what's contained in those registers
-  use {
-    'junegunn/vim-peekaboo',
-    event = 'BufReadPre',
-    config = function()
-      vim.g.peekaboo_window = 'vertical botright 60new'
-    end,
-  }
-
   -- Make looking up paths easier
   use 'tpope/vim-apathy'
 
@@ -216,7 +217,7 @@ require('packer').startup(function()
   use {
     "folke/which-key.nvim",
     config = function()
-      require("which-key").setup()
+      require("config.which-key").setup()
     end
   }
 end)
@@ -305,9 +306,3 @@ vim.api.nvim_exec(
   false
 )
 
---Map blankline
-vim.g.indent_blankline_char = '┊'
-vim.g.indent_blankline_filetype_exclude = { 'help', 'packer' }
-vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile' }
-vim.g.indent_blankline_char_highlight = 'LineNr'
-vim.g.indent_blankline_show_trailing_blankline_indent = false

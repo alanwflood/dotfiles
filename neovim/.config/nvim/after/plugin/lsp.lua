@@ -1,5 +1,6 @@
 -- LSP settings
 local has_lsp, nvim_lsp = pcall(require, 'lspconfig');
+local has_lsp_installer, lsp_installer = pcall(require, "nvim-lsp-installer")
 local utils = require 'utils'
 
 if not has_lsp then
@@ -113,7 +114,7 @@ table.insert(runtime_path, 'lua/?/init.lua')
 
 local server_settings = {
   efm = require('config.lsp.efm'),
-  typescript = {
+  tsserver = {
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern 'tsconfig.json'(fname)
         or nvim_lsp.util.root_pattern(
@@ -124,13 +125,13 @@ local server_settings = {
         or vim.loop.cwd()
     end,
   },
-  deno = {
+  denols = {
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern 'deps.ts'(fname)
         or nvim_lsp.util.root_pattern 'mod.ts'(fname)
     end,
   },
-  lua = {
+  sumneko = {
     settings = {
       Lua = {
         runtime = {
@@ -160,7 +161,7 @@ local server_settings = {
   clangd = {
     filetypes = {"c", "cpp"}; -- we don't want objective-c and objective-cpp!
   },
-  yaml = {
+  yamlls = {
     settings = {
       yaml = {
         -- Schemas https://www.schemastore.org
@@ -181,7 +182,7 @@ local server_settings = {
       }
     }
   },
-  json = {
+  jsonls = {
     filetypes = { 'json', 'jsonc' },
     settings = {
       json = {
@@ -256,40 +257,19 @@ local function make_config()
   }
 end
 
--- lsp-install
-local function setup_servers()
-  require'lspinstall'.setup()
+lsp_installer.on_server_ready(function(server)
+    local config = make_config()
+    local has_settings = server_settings[server.name] ~= nill
 
-  local config = make_config()
-
-  -- get all installed servers
-  local servers = require'lspinstall'.installed_servers()
-
-  -- -- ... and add manually installed servers
-  -- table.insert(servers, "clangd")
-  -- table.insert(servers, "sourcekit")
-
-  for _, server in pairs(servers) do
-    -- :lua print(vim.lsp.get_log_path())
-    local has_settings = server_settings[server] ~= nil
-
-    require'lspconfig'[server].setup(
+    server:setup(
       vim.tbl_deep_extend(
         'force',
-        has_settings and server_settings[server] or {},
+        has_settings and server_settings[server.name] or {},
         config
       )
     )
-  end
-end
-
-setup_servers()
-
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require'lspinstall'.post_install_hook = function ()
-  setup_servers() -- reload installed servers
-  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
-end
+    vim.cmd [[ do User LspAttachBuffers ]]
+end)
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
