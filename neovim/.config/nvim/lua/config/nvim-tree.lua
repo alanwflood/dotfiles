@@ -8,12 +8,10 @@ return function()
     files = 0,
     folder_arrows = 0,
   }
-
-  vim.api.nvim_set_keymap('', '-', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-
+  vim.api.nvim_set_keymap('n', '-', '<cmd>NvimTreeToggle<CR>', { noremap = true, silent = true })
   require('nvim-tree').setup {
     view = {
-      width = '10%',
+      width = '20%',
       auto_resize = true,
     },
     auto_close = true,
@@ -22,4 +20,3 @@ return function()
     },
   }
 end
-

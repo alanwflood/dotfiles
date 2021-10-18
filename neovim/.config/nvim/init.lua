@@ -25,7 +25,7 @@ require('packer').startup(function()
     'terrortylor/nvim-comment',
     event = "BufRead",
     config = function()
-      require("config.comment")
+      require("config.comment").setup()
     end
   }
 
@@ -65,17 +65,13 @@ require('packer').startup(function()
   use {
     'lukas-reineke/indent-blankline.nvim',
     config = function()
-      vim.g.indent_blankline_char = '┊'
-      vim.g.indent_blankline_filetype_exclude = { 'help', 'packer' }
-      vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile' }
-      vim.g.indent_blankline_char_highlight = 'LineNr'
-      vim.g.indent_blankline_show_trailing_blankline_indent = false
+      require('config.indent-blankline').setup()
     end
   }
 
   -- Git utils {{{
   use 'tpope/vim-fugitive' -- Git commands in nvim
-  use 'tpope/vim-rhubarb' -- Fugitive-companion to interact with github
+  -- use 'tpope/vim-rhubarb' -- Fugitive-companion to interact with github
   use { 'sindrets/diffview.nvim', cmd = { 'DiffviewOpen' } } -- Git Diff View for files
   -- Add git related info in the signs columns and popups
   use {
@@ -83,7 +79,7 @@ require('packer').startup(function()
     requires = { 'nvim-lua/plenary.nvim' },
     event = "BufRead",
     config = function()
-      require('config.gitsigns')
+      require('config.gitsigns').setup()
     end
   }
   -- }}}
@@ -98,7 +94,9 @@ require('packer').startup(function()
     'nvim-treesitter/nvim-treesitter',
       branch = '0.5-compat',
       run = ':TSUpdate',
-      config = require('config.treesitter'),
+      config = function()
+        require('config.treesitter').setup()
+      end,
       requires = {
         {
 	  -- Additional textobjects for treesitter
@@ -202,8 +200,6 @@ require('packer').startup(function()
   -- use { 'kyazdani42/nvim-web-devicons' } -- for file icons
   use {
     'kyazdani42/nvim-tree.lua',
-    keys = { '-' },
-    cmd = { 'NvimTreeToggle', 'NvimTreeFindFile' },
     config = require('config.nvim-tree')
   }
 

@@ -1,3 +1,4 @@
+local M = {}
 
 config = {
   -- Linters prefer comment and line to have a space in between markers
@@ -14,7 +15,9 @@ config = {
   hook = nil,
 }
 
-return function()
+function M.setup()
   local nvim_comment = require "nvim_comment"
   nvim_comment.setup(config)
 end
+
+return M

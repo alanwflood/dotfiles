@@ -1,11 +1,9 @@
-return function()
-  local has_treesitter = pcall(require, 'nvim-treesitter')
+local M = {}
 
-  if not has_treesitter then
-    return
-  end
+function M.setup()
+  local treesitter = require('nvim-treesitter.configs')
 
-  require('nvim-treesitter.configs').setup {
+  treesitter.setup {
     -- ensure_installed = 'maintained', -- one of "all", "maintained" (parsers with maintainers), or a list of languagen
     matchup = { enable = true },
     rainbow = { enable = true, },
@@ -58,3 +56,5 @@ return function()
     },
   }
 end
+
+return M
