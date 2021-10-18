@@ -83,6 +83,14 @@ local on_attach = function(client, bufnr)
     augroup END
   ]], true)
 
+  -- Populate location list with errors
+  vim.api.nvim_exec([[
+    augroup lsp_line_diagnostics
+    autocmd!
+    autocmd BufWrite,BufEnter,InsertLeave * lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
+    augroup END
+  ]], true)
+
   -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec([[
@@ -131,7 +139,7 @@ local server_settings = {
         or nvim_lsp.util.root_pattern 'mod.ts'(fname)
     end,
   },
-  sumneko = {
+  sumneko_lua = {
     settings = {
       Lua = {
         runtime = {

@@ -120,6 +120,7 @@ require('packer').startup(function()
 
   -- Better Quick Fix window
   use 'kevinhwang91/nvim-bqf'
+  use 'ten3roberts/qf.nvim'
 
   -- Collection of configurations for built-in LSP client
   use {
@@ -301,4 +302,7 @@ vim.api.nvim_exec(
 ]],
   false
 )
+
+-- Sets :vimgrep to use ripgrep
+vim.opt.grepprg = "rg --hidden --vimgrep --smart-case --"
 
