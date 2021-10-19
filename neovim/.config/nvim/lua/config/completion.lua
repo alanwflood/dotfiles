@@ -2,7 +2,7 @@ return function()
   local utils = require 'utils'
 
   local completion_loaded = pcall(function()
-    local cmp = require 'cmp'
+    local cmp = require('cmp')
     local has_luasnip, luasnip = pcall(require, 'luasnip')
 
     cmp.setup {
@@ -11,13 +11,10 @@ return function()
       },
       sources = {
         { name = 'buffer' },
-        { name = 'nvim_lsp' },
-        { name = 'tmux' },
         { name = 'luasnip' },
+        { name = 'nvim_lsp' },
         { name = 'path' },
-        { name = 'conjure' },
-        { name = 'emoji' },
-        { name = 'spell' },
+        { name = 'tmux' },
         -- { name = 'orgmode' },
         -- { name = 'tags' },
       },
@@ -25,6 +22,20 @@ return function()
         expand = has_luasnip and function(args)
           luasnip.lsp_expand(args.body)
         end or nil,
+      },
+      formatting = {
+        format = function(entry, item)
+            item.kind = lsp_symbols[item.kind]
+            item.menu = ({
+                buffer = "[Buffer]",
+                luasnip = "[Snippet]",
+                nvim_lsp = "[LSP]",
+                path = "[Path]",
+                tmux = "[Tmux]",
+            })[entry.source.name]
+
+            return item
+        end,
       },
       mapping = {
         ['<C-p>'] = cmp.mapping.select_prev_item(),

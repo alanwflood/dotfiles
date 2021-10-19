@@ -7,9 +7,9 @@ local setup = {
     -- the presets plugin, adds help for a bunch of default keybindings in Neovim
     -- No actual key bindings are created
     presets = {
-      operators = false, -- adds help for operators like d, y, ...
-      motions = false, -- adds help for motions
-      text_objects = false, -- help for text objects triggered after entering an operator
+      operators = true, -- adds help for operators like d, y, ...
+      motions = true, -- adds help for motions
+      text_objects = true, -- help for text objects triggered after entering an operator
       windows = true, -- default bindings on <c-w>
       nav = true, -- misc bindings to work with windows
       z = true, -- bindings for folds, spelling and others prefixed with z
@@ -39,12 +39,12 @@ local setup = {
 
 local leader = {
   mappings = {
-    ["<space>"] = { '<cmd>lua require(telescope.builtin).buffers { sort_lastused = true}<CR>', 'Buffers' },
+    ["<space>"] = { "<cmd>lua require('telescope.builtin').buffers { sort_lastused = true}<CR>", 'Buffers' },
     ['<C-space>'] = { '<cmd>Telescope resume<CR>', 'Last Search' },
     s = {
       -- Set in telescope.lua
       name = "Search",
-      b = { '<cmd>lua require(telescope.builtin).buffers { sort_lastused = true }<CR>', 'Buffers' },
+      b = { "<cmd>lua require('telescope.builtin').buffers { sort_lastused = true }<CR>", 'Buffers' },
       c = { "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>", "In Current Buffer" },
       f = {  "<cmd>lua require('telescope.builtin').find_files()<CR>", "Files" },
       F = { "<cmd>lua require('telescope.builtin').find_files { hidden = true }<CR>", "All Files" },
@@ -124,6 +124,12 @@ local other = {
   mappings = {
     ["z="] = { "<cmd>lua require('telescope.builtin').spell_suggest()<CR>", 'Correct Spelling',},
     ["<C-p>"] = { "<cmd>lua require('telescope.builtin').find_files()<CR>", 'Find Files',},
+    [">p"] = { 'Paste below and increase indent' },
+    [">P"] = { 'Paste above and increase indent' },
+    ["<p"] = { 'Paste below and reduce indent' },
+    ["<P"] = { 'Paste above and reduce indent' },
+    ["=p"] = { 'Paste below and reindent' },
+    ["=P"] = { 'Paste above and reindent' },
     ["["] = {
       ['<space>'] = { 'Add [count] blank lines above' },
       a = { 'Previous file' },
@@ -140,12 +146,11 @@ local other = {
       T = { 'First tag' },
       ["<C-T>"] = { 'Previous tag preview' },
       e = { 'Exchange line above [count]' },
-      c = { 'Previous SCM hunk' }, -- Gitsigns
-      f = { 'Previous file in directory' },
-      n = { 'Previous SCM conflict' },
-      d = { 'Previous diagnostic' },
+      p = { 'Paste above' },
+      P = { 'Paste above' },
       x = { 'XML encode' },
       u = { 'Url encode' },
+      y = { 'C String encode' },
       C = { 'C string encode' },
       o = {
         name = "+enable",
@@ -163,6 +168,17 @@ local other = {
         w = { "wrap" },
         x = { "cursorline & cursorcolumn" },
       },
+      -- Gitsigns
+      c = { 'Previous SCM hunk' },
+      f = { 'Previous file in directory' },
+      n = { 'Previous SCM conflict' },
+      d = { 'Previous diagnostic' },
+      -- treesitter
+      r = { 'Swap previous parameter' },
+      m = { 'Previous outer function start' },
+      M = { 'Previous outer function end' },
+      [']'] = { 'Previous outer class start' },
+      ['['] = { 'Previous outer class end' },
     },
     ["]"] = {
       ['<space>'] = { 'Add [count] blank lines below' },
@@ -180,12 +196,11 @@ local other = {
       T = { 'Last tag' },
       ["<C-T>"] = { 'Next tag preview' },
       e = { 'Exchange line below [count]' },
-      c = { 'Next SCM hunk' }, -- Gitsigns
-      f = { 'Next file in directory' },
-      n = { 'Next SCM conflict' },
-      d = { 'Next diagnostic' },
+      p = { 'Paste below' },
+      P = { 'Paste below' },
       x = { 'XML decode' },
       u = { 'Url decode' },
+      y = { 'C string decode' },
       C = { 'C string decode' },
       o = {
         name = "+disable",
@@ -203,6 +218,17 @@ local other = {
         w = { "wrap" },
         x = { "cursorline & cursorcolumn" },
       },
+       -- Gitsigns
+      c = { 'Next SCM hunk' },
+      f = { 'Next file in directory' },
+      n = { 'Next SCM conflict' },
+      d = { 'Next diagnostic' },
+      -- Treesitter
+      r = { 'Swap next parameter' },
+      m = { 'Next outer function start' },
+      M = { 'Next outer function end' },
+      [']'] = { 'Next outer class start' },
+      ['['] = { 'Next outer class end' },
     },
     ["y"] = {
       o = {
@@ -232,11 +258,40 @@ local other = {
         }
       },
     },
+    -- vim-sandwich
+    ['ds'] = { 'delete surrounding' },
+    ['cs'] = { 'change surrounding' },
+    ['ys'] = { 
+        name = 'add surrounding',
+        s = "line"
+    },
+    ['yS'] = { 'add surrounding to line end' }
   },
   opts = {
     silent = true,
     noremap = true,
     nowait = true,
+  }
+}
+
+visual = {
+  mappings = {
+    -- treesitter
+    ['ac'] = { 'class' },
+    ['af'] = { 'function' },
+    ['ic'] = { 'class' },
+    ['if'] = { 'function' },
+    -- Matchup
+    ['a%'] = { 'block' },
+    ['i%'] = { 'block' },
+    -- Sandwich
+    ['S'] = { 'surround' }
+  },
+  opts = {
+    mode = "v", -- NORMAL mode
+    silent = true, -- use `silent` when creating keymaps
+    noremap = true, -- use `noremap` when creating keymaps
+    nowait = true, -- use `nowait` when creating keymaps
   }
 }
 
@@ -250,6 +305,7 @@ function M.setup()
   wk.setup(setup)
   wk.register(leader.mappings, leader.opts)
   wk.register(other.mappings, other.opts)
+  wk.register(visual.mappings, visual.opts)
 end
 
 return M

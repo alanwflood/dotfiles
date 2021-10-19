@@ -6,10 +6,15 @@ function M.setup()
   treesitter.setup {
     -- ensure_installed = 'maintained', -- one of "all", "maintained" (parsers with maintainers), or a list of languagen
     matchup = { enable = true },
-    rainbow = { enable = true, },
+    rainbow = { 
+      enable = true,
+      extended_mode = true,
+      max_file_lines = 1000,
+    },
     autopairs = { enable = true, },
     highlight = {
       enable = true, -- false will disable the whole extension
+      additional_vim_regex_highlighting = true,
     },
     indent = { enable = true, },
     incremental_selection = {
@@ -18,7 +23,7 @@ function M.setup()
         init_selection = 'gnn',
         node_incremental = 'grn',
         scope_incremental = 'grc',
-        node_decremental = 'grm',
+        node_decrementan = 'grm',
       },
     },
     textobjects = {
@@ -31,6 +36,15 @@ function M.setup()
           ['if'] = '@function.inner',
           ['ac'] = '@class.outer',
           ['ic'] = '@class.inner',
+        },
+      },
+      swap = {
+        enable = true,
+        swap_next = {
+          ["]r"] = "@parameter.inner",
+        }, 
+        swap_previous = {
+          ["[r"] = "@parameter.inner",
         },
       },
       move = {

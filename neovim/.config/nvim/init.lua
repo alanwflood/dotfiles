@@ -141,11 +141,17 @@ require('packer').startup(function()
       {
         'folke/todo-comments.nvim',
         config = function()
-          require('todo-comments').setup {}
+          require('todo-comments').setup()
         end,
       },
       { 'ray-x/lsp_signature.nvim' },
       { 'folke/lua-dev.nvim' },
+      {
+        'jose-elias-alvarez/null-ls.nvim',
+        config = function()
+          require('config.null-ls').setup()
+        end,
+      }
     },
   }
 
