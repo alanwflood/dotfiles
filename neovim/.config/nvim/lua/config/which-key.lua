@@ -41,23 +41,32 @@ local leader = {
   mappings = {
     ["<space>"] = { "<cmd>lua require('telescope.builtin').buffers { sort_lastused = true}<CR>", 'Buffers' },
     ['<C-space>'] = { '<cmd>Telescope resume<CR>', 'Last Search' },
+    p = {
+      name = "Packer",
+      C = { "<cmd>PackerClean", "Packer Clean" },
+      S = { "<cmd>PackerStatus", "Packer Status" },
+      c = { "<cmd>PackerCompile", "Packer Compile" },
+      i = { "<cmd>PackerInstall", "Packer Install" },
+      s = { "<cmd>PackerSync", "Packer Sync" },
+      u = { "<cmd>PackerUpdate", "Packer Update" },
+    },
     s = {
-      -- Set in telescope.lua
+      -- Telescope
       name = "Search",
       b = { "<cmd>lua require('telescope.builtin').buffers { sort_lastused = true }<CR>", 'Buffers' },
-      c = { "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>", "In Current Buffer" },
+      c = { "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>", "In current buffer" },
       f = {  "<cmd>lua require('telescope.builtin').find_files()<CR>", "Files" },
-      F = { "<cmd>lua require('telescope.builtin').find_files { hidden = true }<CR>", "All Files" },
-      r = { "<cmd>lua require('telescope.builtin').oldfiles()<CR>", "Recent Files" },
-      ['?'] = { "<cmd>lua require('telescope.builtin').help_tags()<CR>", "Help Tags",},
+      F = { "<cmd>lua require('telescope.builtin').find_files { hidden = true }<CR>", "All files" },
+      r = { "<cmd>lua require('telescope.builtin').oldfiles()<CR>", "Recent files" },
+      ['?'] = { "<cmd>lua require('telescope.builtin').help_tags()<CR>", "Help tags",},
       t = { "<cmd>lua require('telescope.builtin').tags()<CR>", "Tags" },
-      o = { "<cmd>lua require('telescope.builtin').tags { only_current_buffer = true }<CR>", "Tags in Current Buffer" },
-      s = { "<cmd>lua require('telescope.builtin').grep_string({ prompt_prefix='🔍' })<CR>", "Grep String" },
-      g = { "<cmd>lua require('telescope.builtin').live_grep({ prompt_prefix='🔍' })<CR>", "Grep" },
+      o = { "<cmd>lua require('telescope.builtin').tags { only_current_buffer = true }<CR>", "Tags in current buffer" },
+      s = { "<cmd>lua require('telescope.builtin').grep_string({ prompt_prefix='🔍 ' })<CR>", "Grep under cursor" },
+      g = { "<cmd>lua require('telescope.builtin').live_grep({ prompt_prefix='🔍 ' })<CR>", "Grep" },
       l = { "<cmd>lua require('telescope.builtin').resume()<CR>", 'Last Search' },
     },
     l = {
-      -- Set in lsp.lua
+      -- Most are set in lsp.lua
       name = "LSP",
       a = { "<cmd>lua require('telescope.builtin').lsp_code_actions()<CR>", "Code Action" },
       d = { 'Go to definition' },
@@ -85,10 +94,8 @@ local leader = {
       name = 'Git',
       g = { "<cmd>Git<CR>", "Open Fugitive" },
       b = { "Blame line" },
-      B = { "<dmd>Git blame<CR>", "Open Blame" },
-      d = { "<cmd>DiffviewOpen<CR>", "Open Diffview" },
       o = { "<cmd>Telescope git_status<CR>", "Open changed file" },
-      b = { "<cmd>Telescope git_branches<CR>", "Checkout branch" },
+      B = { "<cmd>Telescope git_branches<CR>", "Checkout branch" },
       c = { "<cmd>Telescope git_commits<CR>", "Checkout commit" },
       C = { "<cmd>Telescope git_bcommits<CR>", "Checkout commit (for current file)" },
       h = {
@@ -122,8 +129,8 @@ local leader = {
 -- Vim Unimpaired, LSP, Gitsigns bindings
 local other = {
   mappings = {
-    ["z="] = { "<cmd>lua require('telescope.builtin').spell_suggest()<CR>", 'Correct Spelling',},
-    ["<C-p>"] = { "<cmd>lua require('telescope.builtin').find_files()<CR>", 'Find Files',},
+    ["z="] = { "<cmd>lua require('telescope.builtin').spell_suggest()<CR>", 'Spelling',},
+    ["<C-p>"] = { "<cmd>lua require('telescope.builtin').find_files()<CR>", 'Find File',},
     [">p"] = { 'Paste below and increase indent' },
     [">P"] = { 'Paste above and increase indent' },
     ["<p"] = { 'Paste below and reduce indent' },
@@ -154,6 +161,7 @@ local other = {
       C = { 'C string encode' },
       o = {
         name = "+enable",
+        t = { "<cmd>TransparentEnable<CR>", "background transparency" },
         b = { "background dark" },
         c = { "cursorline" },
         d = { "diff" },
@@ -204,6 +212,7 @@ local other = {
       C = { 'C string decode' },
       o = {
         name = "+disable",
+        t = { "<cmd>TransparentDisable<CR>", "background transparency" },
         b = { "background light" },
         c = { "cursorline" },
         d = { "diff" },
@@ -233,6 +242,7 @@ local other = {
     ["y"] = {
       o = {
         name = "+toggle",
+        t = { "<cmd>TransparentToggle<CR>", "background transparency" },
         b = { "background" },
         c = { "cursorline" },
         d = { "diff" },
@@ -261,7 +271,7 @@ local other = {
     -- vim-sandwich
     ['ds'] = { 'delete surrounding' },
     ['cs'] = { 'change surrounding' },
-    ['ys'] = { 
+    ['ys'] = {
         name = 'add surrounding',
         s = "line"
     },
@@ -274,11 +284,13 @@ local other = {
   }
 }
 
-visual = {
+local visual = {
   mappings = {
     -- treesitter
+    ['aC'] = { 'conditional' },
     ['ac'] = { 'class' },
     ['af'] = { 'function' },
+    ['iC'] = { 'conditional' },
     ['ic'] = { 'class' },
     ['if'] = { 'function' },
     -- Matchup

@@ -1,4 +1,6 @@
-local ok = pcall(function()
+local M = {}
+
+function M.setup()
   vim.api.nvim_command 'runtime macros/sandwich/keymap/surround.vim'
   vim.g['sandwich#recipes'] =
     vim.tbl_extend(
@@ -36,5 +38,6 @@ local ok = pcall(function()
         },
       }
     )
-end)
+end
 
+return M

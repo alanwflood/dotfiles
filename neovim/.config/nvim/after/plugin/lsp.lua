@@ -1,9 +1,12 @@
 -- LSP settings
-local has_lsp, nvim_lsp = pcall(require, 'lspconfig');
-local has_lsp_installer, lsp_installer = pcall(require, "nvim-lsp-installer")
+local nvim_lsp_exists, nvim_lsp = pcall(require, 'lspconfig');
+local lsp_installer_exists, lsp_installer = pcall(require, "nvim-lsp-installer")
+local nvim_lightbulb_exists = pcall(require, 'nvim-lightbulb');
+local lsp_extensions_exists = pcall(require, 'lsp_extensions');
+local lsp_signature_exists, lsp_signature = pcall(require, 'lsp_signature');
 local utils = require 'utils'
 
-if not has_lsp then
+if not nvim_lsp_exists then
   utils.notify 'LSP config failed to setup'
   return
 end
@@ -35,12 +38,9 @@ local on_attach = function(client, bufnr)
   -- GENERAL
   -- ---------------
   client.config.flags.allow_incremental_sync = true
-  local lsp_signature_loaded = pcall(function()
-    require('lsp_signature').on_attach()
-  end)
 
-  if not lsp_signature_loaded then
-    utils.notify 'LSP Signature failed to set up'
+  if lsp_signature_exists then
+    lsp_signature.on_attach()
   end
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -113,6 +113,26 @@ local on_attach = function(client, bufnr)
       augroup END
     ]], true)
   end
+
+  -- Setup lsp_extensions
+  if lsp_extensions_exists then
+    vim.api.nvim_exec([[
+      augroup lsp_extensions_completion
+      autocmd!
+      autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()
+      augroup end
+    ]], false)
+  end
+
+  -- Setup nvim-lightbulb
+  if nvim_lightbulb_exists then
+    vim.api.nvim_exec([[
+      augroup lsp_nvim_lightbulb
+      autocmd!
+      autocmd CursorHold,CursorHoldI <buffer> lua require'nvim-lightbulb'.update_lightbulb()
+      augroup end
+    ]], false)
+  end
 end
 
 -- Make runtime files discoverable to the server
@@ -121,7 +141,6 @@ table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
 
 local server_settings = {
-  efm = require('config.lsp.efm'),
   tsserver = {
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern 'tsconfig.json'(fname)
@@ -265,19 +284,21 @@ local function make_config()
   }
 end
 
-lsp_installer.on_server_ready(function(server)
-    local config = make_config()
-    local has_settings = server_settings[server.name] ~= nill
+if lsp_installer_exists then
+  lsp_installer.on_server_ready(function(server)
+      local config = make_config()
+      local has_settings = server_settings[server.name] ~= nill
 
-    server:setup(
-      vim.tbl_deep_extend(
-        'force',
-        has_settings and server_settings[server.name] or {},
-        config
+      server:setup(
+        vim.tbl_deep_extend(
+          'force',
+          has_settings and server_settings[server.name] or {},
+          config
+        )
       )
-    )
-    vim.cmd [[ do User LspAttachBuffers ]]
-end)
+      vim.cmd [[ do User LspAttachBuffers ]]
+  end)
+end
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'

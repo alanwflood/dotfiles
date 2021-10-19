@@ -5,6 +5,19 @@ return function()
     local cmp = require('cmp')
     local has_luasnip, luasnip = pcall(require, 'luasnip')
 
+    local menu = {
+      buffer = ' Buffer',
+      nvim_lsp = ' LSP',
+      luasnip = ' Snip',
+      path = ' Path',
+      tmux = ' Tmux',
+      -- orgmode = ' Org',
+      -- emoji = ' Emoji',
+      -- spell = ' Spell',
+      -- conjure = ' Conjure',
+    }
+
+
     cmp.setup {
       completion = {
         completeopt = 'menu,menuone,noinsert',
@@ -24,18 +37,11 @@ return function()
         end or nil,
       },
       formatting = {
-        format = function(entry, item)
-            item.kind = lsp_symbols[item.kind]
-            item.menu = ({
-                buffer = "[Buffer]",
-                luasnip = "[Snippet]",
-                nvim_lsp = "[LSP]",
-                path = "[Path]",
-                tmux = "[Tmux]",
-            })[entry.source.name]
-
-            return item
-        end,
+        format = require('lspkind').cmp_format({
+          with_text = true,
+          max_width = 100,
+          menu = menu
+        })
       },
       mapping = {
         ['<C-p>'] = cmp.mapping.select_prev_item(),

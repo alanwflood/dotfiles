@@ -6,7 +6,7 @@ function M.setup()
   treesitter.setup {
     -- ensure_installed = 'maintained', -- one of "all", "maintained" (parsers with maintainers), or a list of languagen
     matchup = { enable = true },
-    rainbow = { 
+    rainbow = {
       enable = true,
       extended_mode = true,
       max_file_lines = 1000,
@@ -17,15 +17,6 @@ function M.setup()
       additional_vim_regex_highlighting = true,
     },
     indent = { enable = true, },
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = 'gnn',
-        node_incremental = 'grn',
-        scope_incremental = 'grc',
-        node_decrementan = 'grm',
-      },
-    },
     textobjects = {
       select = {
         enable = true,
@@ -36,6 +27,8 @@ function M.setup()
           ['if'] = '@function.inner',
           ['ac'] = '@class.outer',
           ['ic'] = '@class.inner',
+          ['aC'] = '@conditional.outer',
+          ['iC'] = '@conditional.inner',
         },
       },
       swap = {
