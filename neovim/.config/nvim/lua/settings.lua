@@ -1,3 +1,6 @@
+-- bash is way faster than using fish for vim
+vim.opt.shell = "/bin/bash"
+
 -- spaces per tab
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
