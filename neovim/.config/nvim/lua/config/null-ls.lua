@@ -22,7 +22,11 @@ function M.setup()
       -- null_ls.builtins.formatting.clang_format,
 
       -- Markdown
-      null_ls.builtins.diagnostics.markdownlint,
+      null_ls.builtins.diagnostics.markdownlint.with({
+        condition = function(utils)
+          return vim.fn.exepath('markdownlint') ~= ''
+        end,
+      }),
 
       -- Lua
       -- cargo install stylua
@@ -32,6 +36,9 @@ function M.setup()
       -- Spell checking
       null_ls.builtins.diagnostics.codespell.with({
         args = { "--builtin", "clear,rare,code", "-" },
+        condition = function(utils)
+          return vim.fn.exepath('codespell') ~= ''
+        end,
       }),
       
       -- sh
