@@ -183,6 +183,8 @@ return require('packer').startup({
             require('lsp_signature').setup({
               hint_prefix = '⏵',
               zindex = 50,
+              doc_lines = 4,
+              transpancy = 50,
             })
           end
         },

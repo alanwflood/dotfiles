@@ -18,10 +18,9 @@ vim.api.nvim_set_keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { noremap = true,
 -- Y yank until the end of line  (note: this is now a default on master)
 vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true })
 
-
--- Quick pane rotate
-vim.api.nvim_set_keymap('n', '<leader>wh', '<C-w>t<C-w>K<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>wv', '<C-w>t<C-w>H<CR>', { noremap = true })
+-- Visual mode pressing * or # searches for the current selection
+vim.api.nvim_set_keymap('v', '*', ":<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>", { noremap = true })
+vim.api.nvim_set_keymap('v', '#', ":<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>", { noremap = true })
 
 -- https://github.com/mhinz/vim-galore#dont-lose-selection-when-shifting-sidewards
 vim.api.nvim_set_keymap('x', '<', '<gv', { noremap = true })
