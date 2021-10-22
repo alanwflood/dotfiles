@@ -82,6 +82,8 @@ return require('packer').startup({
     -- Themes
     use 'joshdick/onedark.vim' -- Theme inspired by Atom
     use { "ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"} } -- Retro style
+    use 'folke/tokyonight.nvim'
+
 
     -- Add indentation guides even on blank lines
     use {
@@ -264,7 +266,6 @@ return require('packer').startup({
     -- use { 'kyazdani42/nvim-web-devicons' } -- for file icons
     use {
       'kyazdani42/nvim-tree.lua',
-      cmd = { "NvimTreeToggle", "NvimTreeFindFile" },
       config = require('config.nvim-tree')
     }
 
