@@ -1,304 +1,304 @@
 -- LSP settings
-local nvim_lsp_exists, nvim_lsp = pcall(require, 'lspconfig');
+local nvim_lsp_exists, nvim_lsp = pcall(require, "lspconfig")
 local lsp_installer_exists, lsp_installer = pcall(require, "nvim-lsp-installer")
-local nvim_lightbulb_exists = pcall(require, 'nvim-lightbulb');
-local lsp_extensions_exists = pcall(require, 'lsp_extensions');
-local lsp_signature_exists, lsp_signature = pcall(require, 'lsp_signature');
-local utils = require 'utils'
+local nvim_lightbulb_exists = pcall(require, "nvim-lightbulb")
+local lsp_extensions_exists = pcall(require, "lsp_extensions")
+local lsp_signature_exists, lsp_signature = pcall(require, "lsp_signature")
+local utils = require("utils")
 
 if not nvim_lsp_exists then
-  utils.notify 'LSP config failed to setup'
-  return
+	utils.notify("LSP config failed to setup")
+	return
 end
 
-
 local on_attach = function(client, bufnr)
-  local popup_opts = { border = 'rounded', max_width = 80 }
-  vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-    vim.lsp.handlers.hover, popup_opts
-  )
+	local popup_opts = { border = "rounded", max_width = 80 }
+	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, popup_opts)
 
-  vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-    vim.lsp.handlers.hover, popup_opts
-  )
+	vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, popup_opts)
 
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-     vim.lsp.diagnostic.on_publish_diagnostics, {
-       virtual_text = {
-          prefix = "<<-",
-          spacing = 0,
-       },
-       signs = true,
-       underline = true,
-       update_in_insert = false, -- update diagnostics insert mode
-    }
-  )
+	vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+		virtual_text = {
+			prefix = "<<-",
+			spacing = 0,
+		},
+		signs = true,
+		underline = true,
+		update_in_insert = false, -- update diagnostics insert mode
+	})
 
-  -- ---------------
-  -- GENERAL
-  -- ---------------
-  client.config.flags.allow_incremental_sync = true
+	-- ---------------
+	-- GENERAL
+	-- ---------------
+	client.config.flags.allow_incremental_sync = true
 
-  if lsp_signature_exists then
-    lsp_signature.on_attach()
-  end
+	if lsp_signature_exists then
+		lsp_signature.on_attach()
+	end
 
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-  local mappings = {
-    ['K'] = { '<cmd>lua vim.lsp.buf.hover()<CR>' },
-    ['C-k'] = { "<cmd>lua vim.lsp.signature_help()" },
-    ['[d'] = { '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>' },
-    [']d'] = { '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>' },
-    ['<leader>LD'] = { '<cmd>lua vim.lsp.buf.declaration()<CR>' },
-    ['<leader>la'] = { '<cmd>lua vim.lsp.buf.code_action()<CR>' },
-    ['<leader>ld'] = { '<cmd>lua vim.lsp.buf.definition()<CR>' },
-    ['<leader>le'] = { '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>' },
-    ['<leader>lf'] = { "<cmd>lua vim.lsp.buf.formatting()<CR>" },
-    ['<leader>li'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
-    ['<leader>ll'] = { "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>" },
-    ['<leader>lp'] = { '<cmd>lua vim.lsp.buf.type_definition()<CR>' },
-    ['<leader>lr'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
-    ['<leader>ls'] = { '<cmd>lua vim.lsp.buf.references()<CR>' },
-    ['<leader>lwa'] = { "<cmd>lua <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>" },
-    ['<leader>lwd'] = { "<cmd>lua <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>" },
-    ['<leader>lwl'] = { "<cmd>lua <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>" },
-    ['<leader>so'] = { "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>" },
-  }
+	local mappings = {
+		["K"] = { "<cmd>lua vim.lsp.buf.hover()<CR>" },
+		["C-k"] = { "<cmd>lua vim.lsp.signature_help()" },
+		["[d"] = { '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>' },
+		["]d"] = { '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>' },
+		["<leader>LD"] = { "<cmd>lua vim.lsp.buf.declaration()<CR>" },
+		["<leader>la"] = { "<cmd>lua vim.lsp.buf.code_action()<CR>" },
+		["<leader>ld"] = { "<cmd>lua vim.lsp.buf.definition()<CR>" },
+		["<leader>le"] = { "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>" },
+		["<leader>lf"] = { "<cmd>lua vim.lsp.buf.formatting()<CR>" },
+		["<leader>li"] = { "<cmd>lua vim.lsp.buf.implementation()<CR>" },
+		["<leader>ll"] = { "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>" },
+		["<leader>lp"] = { "<cmd>lua vim.lsp.buf.type_definition()<CR>" },
+		["<leader>lr"] = { "<cmd>lua vim.lsp.buf.rename()<CR>" },
+		["<leader>ls"] = { "<cmd>lua vim.lsp.buf.references()<CR>" },
+		["<leader>lwa"] = { "<cmd>lua <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>" },
+		["<leader>lwd"] = { "<cmd>lua <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>" },
+		["<leader>lwl"] = { "<cmd>lua <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>" },
+		["<leader>so"] = { "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>" },
+	}
 
-  local opts = { noremap = true, silent = true }
-  for lhs, rhs in pairs(mappings) do
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs[1], opts)
-  end
+	local opts = { noremap = true, silent = true }
+	for lhs, rhs in pairs(mappings) do
+		vim.api.nvim_buf_set_keymap(bufnr, "n", lhs, rhs[1], opts)
+	end
 
-  vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
 
-  vim.o.updatetime = 250
+	vim.o.updatetime = 250
 
-  -- Show diagnostics on line hover
-  vim.api.nvim_exec([[
+	-- Show diagnostics on line hover
+	vim.api.nvim_exec(
+		[[
     augroup lsp_line_diagnostics
     autocmd!
     autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})
     augroup END
-  ]], true)
+  ]],
+		true
+	)
 
-  -- Populate location list with errors
-  vim.api.nvim_exec([[
+	-- Populate location list with errors
+	vim.api.nvim_exec(
+		[[
     augroup lsp_line_diagnostics
     autocmd!
     autocmd BufWrite,BufEnter,InsertLeave * lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
     augroup END
-  ]], true)
+  ]],
+		true
+	)
 
-  -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
+	-- Set autocommands conditional on server_capabilities
+	if client.resolved_capabilities.document_highlight then
+		vim.api.nvim_exec(
+			[[
       augroup lsp_document_highlight
       autocmd!
       autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
       autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
       autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
       augroup END
-    ]], true)
-  end
+    ]],
+			true
+		)
+	end
 
-  if client.resolved_capabilities.code_lens then
-    vim.api.nvim_exec([[
+	if client.resolved_capabilities.code_lens then
+		vim.api.nvim_exec(
+			[[
       augroup lsp_codelense
       autocmd!
       autocmd CursorHold <buffer> lua vim.lsp.codelens.refresh()
       autocmd BufEnter <buffer> lua vim.lsp.codelens.refresh()
       autocmd InsertLeave <buffer> lua vim.lsp.codelens.refresh()
       augroup END
-    ]], true)
-  end
+    ]],
+			true
+		)
+	end
 
-  -- Setup lsp_extensions
-  if lsp_extensions_exists then
-    vim.api.nvim_exec([[
+	-- Setup lsp_extensions
+	if lsp_extensions_exists then
+		vim.api.nvim_exec(
+			[[
       augroup lsp_extensions_completion
       autocmd!
       autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()
       augroup end
-    ]], false)
-  end
+    ]],
+			false
+		)
+	end
 
-  -- Setup nvim-lightbulb
-  if nvim_lightbulb_exists then
-    vim.api.nvim_exec([[
+	-- Setup nvim-lightbulb
+	if nvim_lightbulb_exists then
+		vim.api.nvim_exec(
+			[[
       augroup lsp_nvim_lightbulb
       autocmd!
       autocmd CursorHold,CursorHoldI <buffer> lua require'nvim-lightbulb'.update_lightbulb()
       augroup end
-    ]], false)
-  end
+    ]],
+			false
+		)
+	end
 end
 
 -- Make runtime files discoverable to the server
-local runtime_path = vim.split(package.path, ';')
-table.insert(runtime_path, 'lua/?.lua')
-table.insert(runtime_path, 'lua/?/init.lua')
+local runtime_path = vim.split(package.path, ";")
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
 
 local server_settings = {
-  tsserver = {
-    root_dir = function(fname)
-      return nvim_lsp.util.root_pattern 'tsconfig.json'(fname)
-        or nvim_lsp.util.root_pattern(
-          'package.json',
-          'jsconfig.json',
-          '.git'
-        )(fname)
-        or vim.loop.cwd()
-    end,
-  },
-  denols = {
-    root_dir = function(fname)
-      return nvim_lsp.util.root_pattern 'deps.ts'(fname)
-        or nvim_lsp.util.root_pattern 'mod.ts'(fname)
-    end,
-  },
-  sumneko_lua = {
-    settings = {
-      Lua = {
-        runtime = {
-          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-          version = 'LuaJIT',
-          -- Setup your lua path
-          path = runtime_path,
-        },
-        diagnostics = {
-          -- Get the language server to recognize the `vim` global
-          globals = { 'vim' },
-        },
-        workspace = {
-          -- Make the server aware of Neovim runtime files
-          library = vim.api.nvim_get_runtime_file('', true),
-        },
-        -- Do not send telemetry data containing a randomized but unique identifier
-        telemetry = {
-          enable = false,
-        },
-      },
-    }
-  },
-  sourcekit = {
-    filetypes = {"swift", "objective-c", "objective-cpp"}; -- we don't want c and cpp!
-  },
-  clangd = {
-    filetypes = {"c", "cpp"}; -- we don't want objective-c and objective-cpp!
-  },
-  yamlls = {
-    settings = {
-      yaml = {
-        -- Schemas https://www.schemastore.org
-        schemas = {
-          ['http://json.schemastore.org/gitlab-ci.json'] = { '.gitlab-ci.yml' },
-          ['https://json.schemastore.org/bamboo-spec.json'] = {
-            'bamboo-specs/*.{yml,yaml}',
-          },
-          ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = {
-            'docker-compose*.{yml,yaml}',
-          },
-          ['http://json.schemastore.org/github-workflow.json'] = '.github/workflows/*.{yml,yaml}',
-          ['http://json.schemastore.org/github-action.json'] = '.github/action.{yml,yaml}',
-          ['http://json.schemastore.org/prettierrc.json'] = '.prettierrc.{yml,yaml}',
-          ['http://json.schemastore.org/stylelintrc.json'] = '.stylelintrc.{yml,yaml}',
-          ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}',
-        },
-      }
-    }
-  },
-  jsonls = {
-    filetypes = { 'json', 'jsonc' },
-    settings = {
-      json = {
-        -- Schemas https://www.schemastore.org
-        schemas = {
-          {
-            fileMatch = { 'package.json' },
-            url = 'https://json.schemastore.org/package.json',
-          },
-          {
-            fileMatch = { 'tsconfig*.json' },
-            url = 'https://json.schemastore.org/tsconfig.json',
-          },
-          {
-            fileMatch = {
-              '.prettierrc',
-              '.prettierrc.json',
-              'prettier.config.json',
-            },
-            url = 'https://json.schemastore.org/prettierrc.json',
-          },
-          {
-            fileMatch = { '.eslintrc', '.eslintrc.json' },
-            url = 'https://json.schemastore.org/eslintrc.json',
-          },
-          {
-            fileMatch = { '.babelrc', '.babelrc.json', 'babel.config.json' },
-            url = 'https://json.schemastore.org/babelrc.json',
-          },
-          {
-            fileMatch = { 'lerna.json' },
-            url = 'https://json.schemastore.org/lerna.json',
-          },
-          {
-            fileMatch = { 'now.json', 'vercel.json' },
-            url = 'https://json.schemastore.org/now.json',
-          },
-          {
-            fileMatch = {
-              '.stylelintrc',
-              '.stylelintrc.json',
-              'stylelint.config.json',
-            },
-            url = 'http://json.schemastore.org/stylelintrc.json',
-          },
-        },
-      },
-    },
-  },
+	tsserver = {
+		root_dir = function(fname)
+			return nvim_lsp.util.root_pattern("tsconfig.json")(fname)
+				or nvim_lsp.util.root_pattern("package.json", "jsconfig.json", ".git")(fname)
+				or vim.loop.cwd()
+		end,
+	},
+	denols = {
+		root_dir = function(fname)
+			return nvim_lsp.util.root_pattern("deps.ts")(fname) or nvim_lsp.util.root_pattern("mod.ts")(fname)
+		end,
+	},
+	sumneko_lua = {
+		settings = {
+			Lua = {
+				runtime = {
+					-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+					version = "LuaJIT",
+					-- Setup your lua path
+					path = runtime_path,
+				},
+				diagnostics = {
+					-- Get the language server to recognize the `vim` global
+					globals = { "vim" },
+				},
+				workspace = {
+					-- Make the server aware of Neovim runtime files
+					library = vim.api.nvim_get_runtime_file("", true),
+				},
+				-- Do not send telemetry data containing a randomized but unique identifier
+				telemetry = {
+					enable = false,
+				},
+			},
+		},
+	},
+	sourcekit = {
+		filetypes = { "swift", "objective-c", "objective-cpp" }, -- we don't want c and cpp!
+	},
+	clangd = {
+		filetypes = { "c", "cpp" }, -- we don't want objective-c and objective-cpp!
+	},
+	yamlls = {
+		settings = {
+			yaml = {
+				-- Schemas https://www.schemastore.org
+				schemas = {
+					["http://json.schemastore.org/gitlab-ci.json"] = { ".gitlab-ci.yml" },
+					["https://json.schemastore.org/bamboo-spec.json"] = {
+						"bamboo-specs/*.{yml,yaml}",
+					},
+					["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = {
+						"docker-compose*.{yml,yaml}",
+					},
+					["http://json.schemastore.org/github-workflow.json"] = ".github/workflows/*.{yml,yaml}",
+					["http://json.schemastore.org/github-action.json"] = ".github/action.{yml,yaml}",
+					["http://json.schemastore.org/prettierrc.json"] = ".prettierrc.{yml,yaml}",
+					["http://json.schemastore.org/stylelintrc.json"] = ".stylelintrc.{yml,yaml}",
+					["http://json.schemastore.org/circleciconfig"] = ".circleci/**/*.{yml,yaml}",
+				},
+			},
+		},
+	},
+	jsonls = {
+		filetypes = { "json", "jsonc" },
+		settings = {
+			json = {
+				-- Schemas https://www.schemastore.org
+				schemas = {
+					{
+						fileMatch = { "package.json" },
+						url = "https://json.schemastore.org/package.json",
+					},
+					{
+						fileMatch = { "tsconfig*.json" },
+						url = "https://json.schemastore.org/tsconfig.json",
+					},
+					{
+						fileMatch = {
+							".prettierrc",
+							".prettierrc.json",
+							"prettier.config.json",
+						},
+						url = "https://json.schemastore.org/prettierrc.json",
+					},
+					{
+						fileMatch = { ".eslintrc", ".eslintrc.json" },
+						url = "https://json.schemastore.org/eslintrc.json",
+					},
+					{
+						fileMatch = { ".babelrc", ".babelrc.json", "babel.config.json" },
+						url = "https://json.schemastore.org/babelrc.json",
+					},
+					{
+						fileMatch = { "lerna.json" },
+						url = "https://json.schemastore.org/lerna.json",
+					},
+					{
+						fileMatch = { "now.json", "vercel.json" },
+						url = "https://json.schemastore.org/now.json",
+					},
+					{
+						fileMatch = {
+							".stylelintrc",
+							".stylelintrc.json",
+							"stylelint.config.json",
+						},
+						url = "http://json.schemastore.org/stylelintrc.json",
+					},
+				},
+			},
+		},
+	},
 }
 
 -- config that activates keymaps and enables snippet support
 local function make_config()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = {
-      'documentation',
-      'detail',
-      'additionalTextEdits',
-    },
-  }
+	local capabilities = vim.lsp.protocol.make_client_capabilities()
+	capabilities.textDocument.completion.completionItem.snippetSupport = true
+	capabilities.textDocument.completion.completionItem.resolveSupport = {
+		properties = {
+			"documentation",
+			"detail",
+			"additionalTextEdits",
+		},
+	}
 
-  -- nvim-cmp supports additional completion capabilities
-  capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+	-- nvim-cmp supports additional completion capabilities
+	capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
-  return {
-    -- enable snippet support
-    capabilities = capabilities,
-    -- map buffer local keybindings when the language server attaches
-    on_attach = on_attach,
-  }
+	return {
+		-- enable snippet support
+		capabilities = capabilities,
+		-- map buffer local keybindings when the language server attaches
+		on_attach = on_attach,
+	}
 end
 
 if lsp_installer_exists then
-  lsp_installer.on_server_ready(function(server)
-      local config = make_config()
-      local has_settings = server_settings[server.name] ~= nill
+	lsp_installer.on_server_ready(function(server)
+		local config = make_config()
+		local has_settings = server_settings[server.name] ~= nill
 
-      server:setup(
-        vim.tbl_deep_extend(
-          'force',
-          has_settings and server_settings[server.name] or {},
-          config
-        )
-      )
-      vim.cmd [[ do User LspAttachBuffers ]]
-  end)
+		server:setup(vim.tbl_deep_extend("force", has_settings and server_settings[server.name] or {}, config))
+		vim.cmd([[ do User LspAttachBuffers ]])
+	end)
 end
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
+vim.o.completeopt = "menuone,noselect"
