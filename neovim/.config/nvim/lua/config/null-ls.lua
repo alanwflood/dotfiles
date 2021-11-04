@@ -23,8 +23,15 @@ function M.setup()
 
 			-- Markdown
 			null_ls.builtins.diagnostics.markdownlint.with({
-				condition = function(utils)
+				condition = function()
 					return vim.fn.exepath("markdownlint") ~= ""
+				end,
+			}),
+
+
+			null_ls.builtins.diagnostics.proselint.with({
+				condition = function()
+					return vim.fn.exepath("proselint") ~= ""
 				end,
 			}),
 
@@ -36,7 +43,7 @@ function M.setup()
 			-- Spell checking
 			null_ls.builtins.diagnostics.codespell.with({
 				args = { "--builtin", "clear,rare,code", "-" },
-				condition = function(utils)
+				condition = function()
 					return vim.fn.exepath("codespell") ~= ""
 				end,
 			}),
