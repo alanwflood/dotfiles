@@ -38,7 +38,11 @@ function M.setup()
 			-- Lua
 			-- cargo install stylua
 			-- add ~/.cargo/bin to PATH
-			null_ls.builtins.formatting.stylua,
+			null_ls.builtins.formatting.stylua.with({
+				condition = function()
+					return vim.fn.exepath("stylua") ~= ""
+				end,
+			}),
 
 			-- Spell checking
 			null_ls.builtins.diagnostics.codespell.with({
