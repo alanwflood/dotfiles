@@ -8,10 +8,7 @@ end
 return require("packer").startup({
 	function(use)
 		-- Package manager
-		use({
-			"wbthomason/packer.nvim",
-			event = "VimEnter",
-		})
+    use { 'https://github.com/wbthomason/packer.nvim' }
 
 		use({
 			"nvim-lua/plenary.nvim",
@@ -201,25 +198,25 @@ return require("packer").startup({
 		-- Snippets plugin
 		use({
 			"L3MON4D3/LuaSnip",
-			wants = "friendly-snippets",
-			after = "nvim-cmp",
-		})
-
-		use({
-			"rafamadriz/friendly-snippets",
-			event = "InsertEnter",
+      require = {
+        { "rafamadriz/friendly-snippets" },
+      },
 		})
 
 		-- Autocompletion plugin
 		use({
 			"hrsh7th/nvim-cmp",
-			config = require("config.completion"),
+			config = function() 
+        require("config.completion").setup()
+      end,
 			requires = {
 				{ "hrsh7th/cmp-nvim-lsp" },
 				{ "andersevenrud/compe-tmux", branch = "cmp" },
 				{ "saadparwaiz1/cmp_luasnip" },
 				{ "hrsh7th/cmp-path" },
 				{ "hrsh7th/cmp-buffer" },
+				{ "hrsh7th/cmp-cmdline" },
+				{ "hrsh7th/cmp-calc" },
 				{ "hrsh7th/cmp-emoji" },
 				{ "f3fora/cmp-spell" },
 				{ "onsails/lspkind-nvim" },
