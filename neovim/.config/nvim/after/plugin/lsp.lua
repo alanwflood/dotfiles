@@ -12,14 +12,19 @@ if not nvim_lsp_exists then
 end
 
 local on_attach = function(client, bufnr)
+	local function buf_set_keymap(...)
+		vim.api.nvim_buf_set_keymap(bufnr, ...)
+	end
+
 	local popup_opts = { border = "rounded", max_width = 80 }
+
 	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, popup_opts)
 
 	vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, popup_opts)
 
 	vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
 		virtual_text = {
-			prefix = "<<-",
+			prefix = "◁",
 			spacing = 0,
 		},
 		signs = true,
@@ -38,112 +43,77 @@ local on_attach = function(client, bufnr)
 
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-	local mappings = {
-		["K"] = { "<cmd>lua vim.lsp.buf.hover()<CR>" },
-		["C-k"] = { "<cmd>lua vim.lsp.signature_help()" },
-		["[d"] = { '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>' },
-		["]d"] = { '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>' },
-		["<leader>LD"] = { "<cmd>lua vim.lsp.buf.declaration()<CR>" },
-		["<leader>la"] = { "<cmd>lua vim.lsp.buf.code_action()<CR>" },
-		["<leader>ld"] = { "<cmd>lua vim.lsp.buf.definition()<CR>" },
-		["<leader>le"] = { "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>" },
-		["<leader>lf"] = { "<cmd>lua vim.lsp.buf.formatting()<CR>" },
-		["<leader>li"] = { "<cmd>lua vim.lsp.buf.implementation()<CR>" },
-		["<leader>ll"] = { "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>" },
-		["<leader>lp"] = { "<cmd>lua vim.lsp.buf.type_definition()<CR>" },
-		["<leader>lr"] = { "<cmd>lua vim.lsp.buf.rename()<CR>" },
-		["<leader>ls"] = { "<cmd>lua vim.lsp.buf.references()<CR>" },
-		["<leader>lwa"] = { "<cmd>lua <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>" },
-		["<leader>lwd"] = { "<cmd>lua <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>" },
-		["<leader>lwl"] = { "<cmd>lua <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>" },
-		["<leader>so"] = { "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>" },
-	}
-
 	local opts = { noremap = true, silent = true }
-	for lhs, rhs in pairs(mappings) do
-		vim.api.nvim_buf_set_keymap(bufnr, "n", lhs, rhs[1], opts)
-	end
+	buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+	buf_set_keymap("n", "C-k", "<cmd>lua vim.lsp.signature_help()", opts)
+	buf_set_keymap("n", "[d", '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', opts)
+	buf_set_keymap("n", "]d", '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', opts)
+	buf_set_keymap("n", "<leader>LD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+	buf_set_keymap("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+	buf_set_keymap("n", "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+	buf_set_keymap("n", "<leader>le", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>", opts)
+	buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+	buf_set_keymap("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+	buf_set_keymap("n", "<leader>ll", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
+	buf_set_keymap("n", "<leader>lp", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+	buf_set_keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+	buf_set_keymap("n", "<leader>ls", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+	buf_set_keymap("n", "<leader>lwa", "<cmd>lua <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+	buf_set_keymap("n", "<leader>lwd", "<cmd>lua <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+	buf_set_keymap(
+		"n",
+		"<leader>lwl",
+		"<cmd>lua <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
+		opts
+	)
+	buf_set_keymap("n", "<leader>so", "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", opts)
 
 	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
 
 	vim.o.updatetime = 250
 
-	-- Show diagnostics on line hover
-	vim.api.nvim_exec(
-		[[
-    augroup lsp_line_diagnostics
-    autocmd!
-    autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})
-    augroup END
-  ]],
-		true
-	)
+	utils.nvim_create_augroups({
+		-- Show diagnostics on line hover
+		lsp_line_diagnostics = {
+			{ "CursorHold", "*", "lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})" },
+			{ "CursorHoldI", "*", "lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})" },
+		},
 
-	-- Populate location list with errors
-	vim.api.nvim_exec(
-		[[
-    augroup lsp_line_diagnostics
-    autocmd!
-    autocmd BufWrite,BufEnter,InsertLeave * lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
-    augroup END
-  ]],
-		true
-	)
+		-- Populate location list with errors
+		lsp_loc_diagnostics = {
+			{ "BufWrite", "*", "lua vim.lsp.diagnostic.set_loclist({open_loclist = false})" },
+			{ "BufEnter", "*", "lua vim.lsp.diagnostic.set_loclist({open_loclist = false})" },
+			{ "InsertLeave", "*", "lua vim.lsp.diagnostic.set_loclist({open_loclist = false})" },
+		},
 
-	-- Set autocommands conditional on server_capabilities
-	if client.resolved_capabilities.document_highlight then
-		vim.api.nvim_exec(
-			[[
-      augroup lsp_document_highlight
-      autocmd!
-      autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-      autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-      autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]],
-			true
-		)
-	end
+		-- Set autocommands conditional on server_capabilities
+		lsp_document_highlight = client.resolved_capabilities.document_highlight and {
+			{ "CursorHold", "<buffer>", "lua vim.lsp.buf.document_highlight()" },
+			{ "CursorHoldI", "<buffer>", "lua vim.lsp.buf.document_highlight()" },
+			{ "CursorMoved", "<buffer>", "lua vim.lsp.buf.clear_references()" },
+		} or {},
 
-	if client.resolved_capabilities.code_lens then
-		vim.api.nvim_exec(
-			[[
-      augroup lsp_codelense
-      autocmd!
-      autocmd CursorHold <buffer> lua vim.lsp.codelens.refresh()
-      autocmd BufEnter <buffer> lua vim.lsp.codelens.refresh()
-      autocmd InsertLeave <buffer> lua vim.lsp.codelens.refresh()
-      augroup END
-    ]],
-			true
-		)
-	end
+		lsp_codelense = client.resolved_capabilities.code_lens and {
+			{ "CursorHold", "<buffer>", "lua vim.lsp.codelens.refresh()" },
+			{ "BufEnter", "<buffer>", "lua vim.lsp.codelens.refresh()" },
+			{ "InsertLeave", "<buffer>", "lua vim.lsp.codelens.refresh()" },
+		} or {},
 
-	-- Setup lsp_extensions
-	if lsp_extensions_exists then
-		vim.api.nvim_exec(
-			[[
-      augroup lsp_extensions_completion
-      autocmd!
-      autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()
-      augroup end
-    ]],
-			false
-		)
-	end
+		-- Setup lsp_extensions
+		lsp_extensions_completion = lsp_extensions_exists and {
+			{ "CursorMoved", "*", "lua require'lsp_extensions'.inlay_hints()" },
+			{ "InsertLeave", "*", "lua require'lsp_extensions'.inlay_hints()" },
+			{ "BufEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
+			{ "BufWinEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
+			{ "TabEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
+			{ "BufWritePost", "*", "lua require'lsp_extensions'.inlay_hints()" },
+		} or {},
 
-	-- Setup nvim-lightbulb
-	if nvim_lightbulb_exists then
-		vim.api.nvim_exec(
-			[[
-      augroup lsp_nvim_lightbulb
-      autocmd!
-      autocmd CursorHold,CursorHoldI <buffer> lua require'nvim-lightbulb'.update_lightbulb()
-      augroup end
-    ]],
-			false
-		)
-	end
+		lsp_nvim_lightbulb = nvim_lightbulb_exists and {
+			{ "CursorHold", "<buffer>", "lua require'nvim-lightbulb'.update_lightbulb()" },
+			{ "CursorHoldI", "<buffer>", "lua require'nvim-lightbulb'.update_lightbulb()" },
+		} or {},
+	})
 end
 
 -- Make runtime files discoverable to the server

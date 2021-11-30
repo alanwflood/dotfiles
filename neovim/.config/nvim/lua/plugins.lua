@@ -8,7 +8,7 @@ end
 return require("packer").startup({
 	function(use)
 		-- Package manager
-    use { 'https://github.com/wbthomason/packer.nvim' }
+		use({ "https://github.com/wbthomason/packer.nvim" })
 
 		use({
 			"nvim-lua/plenary.nvim",
@@ -68,7 +68,12 @@ return require("packer").startup({
 		})
 
 		-- Fancier statusline
-		use("itchyny/lightline.vim")
+		use({
+      "nvim-lualine/lualine.nvim",
+			config = function()
+				require("config.statusline").setup()
+			end,
+    })
 
 		-- Transparency for all!
 		use({
@@ -198,17 +203,17 @@ return require("packer").startup({
 		-- Snippets plugin
 		use({
 			"L3MON4D3/LuaSnip",
-      require = {
-        { "rafamadriz/friendly-snippets" },
-      },
+			require = {
+				{ "rafamadriz/friendly-snippets" },
+			},
 		})
 
 		-- Autocompletion plugin
 		use({
 			"hrsh7th/nvim-cmp",
-			config = function() 
-        require("config.completion").setup()
-      end,
+			config = function()
+				require("config.completion").setup()
+			end,
 			requires = {
 				{ "hrsh7th/cmp-nvim-lsp" },
 				{ "andersevenrud/compe-tmux", branch = "cmp" },
@@ -254,6 +259,13 @@ return require("packer").startup({
 				end
 			end,
 		})
+
+    use {
+      "akinsho/bufferline.nvim",
+      config = function()
+         require("config.bufferline").setup()
+      end,
+   }
 
 		-- use { 'kyazdani42/nvim-web-devicons' } -- for file icons
 		use({
