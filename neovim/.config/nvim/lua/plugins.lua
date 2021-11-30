@@ -261,9 +261,9 @@ return require("packer").startup({
 		})
 
     use {
-      "akinsho/bufferline.nvim",
+      "seblj/nvim-tabline",
       config = function()
-         require("config.bufferline").setup()
+         require("tabline").setup({})
       end,
    }
 
