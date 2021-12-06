@@ -2,8 +2,6 @@ local M = {}
 
 function M.setup()
 	local null_ls = require("null-ls")
-	local nvim_lsp_exists, nvim_lsp = pcall(require, "lspconfig")
-
 	null_ls.config({
 		-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
 		sources = {
@@ -53,17 +51,13 @@ function M.setup()
 			}),
 
 			-- sh
-			null_ls.builtins.diagnostics.shellcheck,
+			null_ls.builtins.diagnostics.codespell.with({
+				condition = function()
+					return vim.fn.exepath("shellcheck") ~= ""
+				end,
+			}),
 		},
 	})
-
-	if nvim_lsp_exists then
-		nvim_lsp["null-ls"].setup({
-			on_attach = function()
-				vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
-			end,
-		})
-	end
 end
 
 return M
