@@ -6,6 +6,10 @@ local lsp_extensions_exists = pcall(require, "lsp_extensions")
 local lsp_signature_exists, lsp_signature = pcall(require, "lsp_signature")
 local utils = require("utils")
 
+-- Pulling out things from
+local diagnostic = vim.diagnostic
+local lsp = vim.lsp
+
 if not nvim_lsp_exists then
 	utils.notify("LSP config failed to setup")
 	return
@@ -16,21 +20,23 @@ local on_attach = function(client, bufnr)
 		vim.api.nvim_buf_set_keymap(bufnr, ...)
 	end
 
-	local popup_opts = { border = "rounded", max_width = 80 }
+	local popup_opts = { border = "rounded", max_width = 80, silent = true, focusable = false }
 
-	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, popup_opts)
+	lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, popup_opts)
 
-	vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, popup_opts)
+	lsp.handlers["textDocument/signatureHelp"] = lsp.with(lsp.handlers.hover, popup_opts)
 
-	vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  diagnostic.config {
 		virtual_text = {
+      show_source = 'always',
 			prefix = "◁",
 			spacing = 0,
 		},
 		signs = true,
 		underline = true,
 		update_in_insert = false, -- update diagnostics insert mode
-	})
+}
+
 
 	-- ---------------
 	-- GENERAL
@@ -46,15 +52,15 @@ local on_attach = function(client, bufnr)
 	local opts = { noremap = true, silent = true }
 	buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 	buf_set_keymap("n", "C-k", "<cmd>lua vim.lsp.signature_help()", opts)
-	buf_set_keymap("n", "[d", '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', opts)
-	buf_set_keymap("n", "]d", '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', opts)
+	buf_set_keymap("n", "[d", '<cmd>lua vim.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', opts)
+	buf_set_keymap("n", "]d", '<cmd>lua vim.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', opts)
 	buf_set_keymap("n", "<leader>LD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 	buf_set_keymap("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 	buf_set_keymap("n", "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-	buf_set_keymap("n", "<leader>le", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>", opts)
+	buf_set_keymap("n", "<leader>le", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 	buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 	buf_set_keymap("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-	buf_set_keymap("n", "<leader>ll", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
+	buf_set_keymap("n", "<leader>ll", "<cmd>lua vim.lsp.diagnostic.setloclist()<CR>", opts)
 	buf_set_keymap("n", "<leader>lp", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
 	buf_set_keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 	buf_set_keymap("n", "<leader>ls", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
@@ -75,15 +81,15 @@ local on_attach = function(client, bufnr)
 	utils.nvim_create_augroups({
 		-- Show diagnostics on line hover
 		lsp_line_diagnostics = {
-			{ "CursorHold", "*", "lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})" },
-			{ "CursorHoldI", "*", "lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})" },
+			{ "CursorHold", "*", "lua vim.diagnostic.open_float()" },
+			{ "CursorHoldI", "*", "lua vim.diagnostic.open_float()" },
 		},
 
 		-- Populate location list with errors
 		lsp_loc_diagnostics = {
-			{ "BufWrite", "*", "lua vim.lsp.diagnostic.set_loclist({open_loclist = false})" },
-			{ "BufEnter", "*", "lua vim.lsp.diagnostic.set_loclist({open_loclist = false})" },
-			{ "InsertLeave", "*", "lua vim.lsp.diagnostic.set_loclist({open_loclist = false})" },
+			{ "BufWrite", "*", "lua vim.diagnostic.setqflist({ open = false })" },
+			{ "BufEnter", "*", "lua vim.diagnostic.setqflist({ open = false })" },
+			{ "InsertLeave", "*", "lua vim.diagnostic.setqflist({ open = false })" },
 		},
 
 		-- Set autocommands conditional on server_capabilities
@@ -239,7 +245,7 @@ local server_settings = {
 
 -- config that activates keymaps and enables snippet support
 local function make_config()
-	local capabilities = vim.lsp.protocol.make_client_capabilities()
+	local capabilities = lsp.protocol.make_client_capabilities()
 	capabilities.textDocument.completion.completionItem.snippetSupport = true
 	capabilities.textDocument.completion.completionItem.resolveSupport = {
 		properties = {
@@ -263,7 +269,7 @@ end
 if lsp_installer_exists then
 	lsp_installer.on_server_ready(function(server)
 		local config = make_config()
-		local has_settings = server_settings[server.name] ~= nill
+		local has_settings = server_settings[server.name] ~= nil
 
 		server:setup(vim.tbl_deep_extend("force", has_settings and server_settings[server.name] or {}, config))
 		vim.cmd([[ do User LspAttachBuffers ]])
