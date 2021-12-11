@@ -26,9 +26,6 @@ vim.opt.listchars = {
 
 vim.opt.ruler = true
 
---Incremental live completion (note: this is now a default on master)
-vim.o.inccommand = "nosplit"
-
 --Set highlight on search
 vim.o.hlsearch = false
 

@@ -15,9 +15,6 @@ vim.api.nvim_set_keymap("n", "gV", [[`[v`]']], {})
 vim.api.nvim_set_keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
 vim.api.nvim_set_keymap("n", "j", "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true })
 
--- Y yank until the end of line  (note: this is now a default on master)
-vim.api.nvim_set_keymap("n", "Y", "y$", { noremap = true })
-
 -- Quick pane rotate
 vim.api.nvim_set_keymap("n", "<leader>wh", "<C-w>t<C-w>K<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>wv", "<C-w>t<C-w>H<CR>", { noremap = true })

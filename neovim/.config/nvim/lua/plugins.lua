@@ -8,7 +8,9 @@ end
 return require("packer").startup({
 	function(use)
 		-- Package manager
-		use({ "https://github.com/wbthomason/packer.nvim" })
+		use({ "wbthomason/packer.nvim" })
+
+    use({ 'lewis6991/impatient.nvim' })
 
 		use({
 			"nvim-lua/plenary.nvim",
@@ -96,8 +98,14 @@ return require("packer").startup({
 		})
 
 		-- Git utils {{{
-		use("tpope/vim-fugitive") -- Git commands in nvim
-		use({ "sindrets/diffview.nvim", cmd = { "DiffviewOpen" } }) -- Git Diff View for files
+		use({ 
+      'tpope/vim-fugitive',
+      cmd = { 'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull', 'Gclog', 'G' },
+    })
+
+     -- Git Diff View for files
+		use({ "sindrets/diffview.nvim", cmd = { "DiffviewOpen" } })
+
 		-- Add git related info in the signs columns and popups
 		use({
 			"lewis6991/gitsigns.nvim",

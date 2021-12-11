@@ -17,6 +17,15 @@ function M.setup()
 			additional_vim_regex_highlighting = true,
 		},
 		indent = { enable = true },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = '<CR>',
+        scope_incremental = '<CR>',
+        node_incremental = '<TAB>',
+        node_decremental = '<S-TAB>',
+      }
+    },
 		textobjects = {
 			select = {
 				enable = true,
@@ -63,5 +72,4 @@ function M.setup()
 		},
 	})
 end
-
 return M
