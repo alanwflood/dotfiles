@@ -98,7 +98,7 @@ return require("packer").startup({
 		})
 
 		-- Git utils {{{
-		use({ 
+		use({
       'tpope/vim-fugitive',
       cmd = { 'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull', 'Gclog', 'G' },
     })

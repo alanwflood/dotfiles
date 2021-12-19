@@ -63,33 +63,26 @@ M.setup = function()
 				behavior = cmp.ConfirmBehavior.Replace,
 				select = true,
 			}),
-			["<Tab>"] = function(fallback)
-				if vim.fn.pumvisible() == 1 then
-					vim.fn.feedkeys(utils.t("<C-n>"), "n")
-				elseif has_luasnip and luasnip.expand_or_jumpable() then
-					vim.fn.feedkeys(utils.t("<Plug>luasnip-expand-or-jump"), "")
-				else
-					fallback()
-				end
-			end,
-			["<S-Tab>"] = function(fallback)
-				if vim.fn.pumvisible() == 1 then
-					vim.fn.feedkeys(utils.t("<C-p>"), "n")
-				elseif has_luasnip and luasnip.jumpable(-1) then
-					vim.fn.feedkeys(utils.t("<Plug>luasnip-jump-prev"), "")
-				else
-					fallback()
-				end
-			end,
+      ["<Tab>"] = function(fallback)
+         if cmp.visible() then
+            cmp.select_next_item()
+         elseif require("luasnip").expand_or_jumpable() then
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+         else
+            fallback()
+         end
+      end,
+      ["<S-Tab>"] = function(fallback)
+         if cmp.visible() then
+            cmp.select_prev_item()
+         elseif require("luasnip").jumpable(-1) then
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+         else
+            fallback()
+         end
+      end,
 		},
 	})
-
-	pcall(function()
-		require("nvim-autopairs.completion.cmp").setup({
-			map_cr = true, --  map <CR> on insert mode
-			map_complete = true, -- it will auto insert `(` after select function or method item
-		})
-	end)
 end
 
 return M
