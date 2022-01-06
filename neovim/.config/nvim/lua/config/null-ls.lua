@@ -2,7 +2,7 @@ local M = {}
 
 function M.setup()
 	local null_ls = require("null-ls")
-	null_ls.config({
+	null_ls.setup({
 		-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
 		sources = {
 			-- Adds gitsigns staging actions to code actions

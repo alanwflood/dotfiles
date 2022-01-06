@@ -1,13 +1,17 @@
 local M = {}
 
+local function t(str)
+	return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 M.setup = function()
-	local status_cmp_ok, cmp = pcall(require, "cmp")
-	if not status_cmp_ok then
+	local has_cmp, cmp = pcall(require, "cmp")
+	if not has_cmp then
 		return
 	end
 
-	local status_luasnip_ok, luasnip = pcall(require, "luasnip")
-	if not status_luasnip_ok then
+	local has_luasnip, luasnip = pcall(require, "luasnip")
+	if not has_luasnip then
 		return
 	end
 
@@ -65,18 +69,18 @@ M.setup = function()
 			}),
 			["<Tab>"] = function(fallback)
 				if vim.fn.pumvisible() == 1 then
-					vim.fn.feedkeys(utils.t("<C-n>"), "n")
+					vim.fn.feedkeys(t("<C-n>"), "n")
 				elseif has_luasnip and luasnip.expand_or_jumpable() then
-					vim.fn.feedkeys(utils.t("<Plug>luasnip-expand-or-jump"), "")
+					vim.fn.feedkeys(t("<Plug>luasnip-expand-or-jump"), "")
 				else
 					fallback()
 				end
 			end,
 			["<S-Tab>"] = function(fallback)
 				if vim.fn.pumvisible() == 1 then
-					vim.fn.feedkeys(utils.t("<C-p>"), "n")
+					vim.fn.feedkeys(t("<C-p>"), "n")
 				elseif has_luasnip and luasnip.jumpable(-1) then
-					vim.fn.feedkeys(utils.t("<Plug>luasnip-jump-prev"), "")
+					vim.fn.feedkeys(t("<Plug>luasnip-jump-prev"), "")
 				else
 					fallback()
 				end
@@ -84,12 +88,6 @@ M.setup = function()
 		},
 	})
 
-	pcall(function()
-		require("nvim-autopairs.completion.cmp").setup({
-			map_cr = true, --  map <CR> on insert mode
-			map_complete = true, -- it will auto insert `(` after select function or method item
-		})
-	end)
 end
 
 return M
