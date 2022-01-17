@@ -1,6 +1,6 @@
 local M = {}
 
-config = {
+local config = {
 	-- Linters prefer comment and line to have a space in between markers
 	marker_padding = true,
 	-- should comment out empty or whitespace only lines
