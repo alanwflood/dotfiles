@@ -2,15 +2,19 @@ local M = {}
 local utils = require("utils")
 
 function M.setup()
-	local autopairs_loaded = pcall(function()
-		require("nvim-autopairs").setup({
+	local has_autopairs, autopairs = pcall(require, "nvim-autopairs")
+	local has_cmp_autopairs, cmp_autopairs = pcall(require, "nvim-autopairs.completion.cmp")
+	local has_cmp, cmp = pcall(require, "cmp")
+
+	if has_autopairs and has_cmp_autopairs and has_cmp then
+		autopairs.setup({
 			close_triple_quotes = true,
 			check_ts = true,
 			disable_filetype = { "TelescopePrompt", "fzf" },
+			fast_wrap = {},
 		})
-	end)
-
-	if not autopairs_loaded then
+		cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+	else
 		utils.notify("nvim-autopairs failed to load")
 	end
 end

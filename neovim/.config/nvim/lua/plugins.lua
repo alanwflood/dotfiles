@@ -10,7 +10,7 @@ return require("packer").startup({
 		-- Package manager
 		use({ "wbthomason/packer.nvim" })
 
-    use({ 'lewis6991/impatient.nvim' })
+		use({ "lewis6991/impatient.nvim" })
 
 		use({
 			"nvim-lua/plenary.nvim",
@@ -71,11 +71,11 @@ return require("packer").startup({
 
 		-- Fancier statusline
 		use({
-      "nvim-lualine/lualine.nvim",
+			"nvim-lualine/lualine.nvim",
 			config = function()
 				require("config.statusline").setup()
 			end,
-    })
+		})
 
 		-- Transparency for all!
 		use({
@@ -99,11 +99,11 @@ return require("packer").startup({
 
 		-- Git utils {{{
 		use({
-      'tpope/vim-fugitive',
-      cmd = { 'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull', 'Gclog', 'G' },
-    })
+			"tpope/vim-fugitive",
+			cmd = { "Git", "Gstatus", "Gblame", "Gpush", "Gpull", "Gclog", "G" },
+		})
 
-     -- Git Diff View for files
+		-- Git Diff View for files
 		use({ "sindrets/diffview.nvim", cmd = { "DiffviewOpen" } })
 
 		-- Add git related info in the signs columns and popups
@@ -190,10 +190,7 @@ return require("packer").startup({
 				{
 					"ray-x/lsp_signature.nvim",
 					config = function()
-						require("lsp_signature").setup({
-							hint_prefix = "⏵",
-							zindex = 50,
-						})
+						require("config.lspsignature").setup()
 					end,
 				},
 				{
@@ -224,7 +221,7 @@ return require("packer").startup({
 			end,
 			requires = {
 				{ "hrsh7th/cmp-nvim-lsp" },
-				{ "andersevenrud/compe-tmux", branch = "cmp" },
+				{ "andersevenrud/cmp-tmux" },
 				{ "saadparwaiz1/cmp_luasnip" },
 				{ "hrsh7th/cmp-path" },
 				{ "hrsh7th/cmp-buffer" },
@@ -268,12 +265,12 @@ return require("packer").startup({
 			end,
 		})
 
-    use {
-      "seblj/nvim-tabline",
-      config = function()
-         require("tabline").setup({})
-      end,
-   }
+		use({
+			"seblj/nvim-tabline",
+			config = function()
+				require("tabline").setup({})
+			end,
+		})
 
 		-- use { 'kyazdani42/nvim-web-devicons' } -- for file icons
 		use({

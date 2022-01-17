@@ -1,13 +1,17 @@
 local M = {}
 
+local function t(str)
+	return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 M.setup = function()
-	local status_cmp_ok, cmp = pcall(require, "cmp")
-	if not status_cmp_ok then
+	local has_cmp, cmp = pcall(require, "cmp")
+	if not has_cmp then
 		return
 	end
 
-	local status_luasnip_ok, luasnip = pcall(require, "luasnip")
-	if not status_luasnip_ok then
+	local has_luasnip, luasnip = pcall(require, "luasnip")
+	if not has_luasnip then
 		return
 	end
 
@@ -63,24 +67,24 @@ M.setup = function()
 				behavior = cmp.ConfirmBehavior.Replace,
 				select = true,
 			}),
-      ["<Tab>"] = function(fallback)
-         if cmp.visible() then
-            cmp.select_next_item()
-         elseif require("luasnip").expand_or_jumpable() then
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
-         else
-            fallback()
-         end
-      end,
-      ["<S-Tab>"] = function(fallback)
-         if cmp.visible() then
-            cmp.select_prev_item()
-         elseif require("luasnip").jumpable(-1) then
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-         else
-            fallback()
-         end
-      end,
+			["<Tab>"] = function(fallback)
+				if cmp.visible() then
+					cmp.select_next_item()
+				elseif luasnip.expand_or_jumpable() then
+					vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+				else
+					fallback()
+				end
+			end,
+			["<S-Tab>"] = function(fallback)
+				if cmp.visible() then
+					cmp.select_prev_item()
+				elseif luasnip.jumpable(-1) then
+					vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+				else
+					fallback()
+				end
+			end,
 		},
 	})
 end
