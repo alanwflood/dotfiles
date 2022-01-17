@@ -81,8 +81,7 @@ local on_attach = function(client, bufnr)
 	utils.nvim_create_augroups({
 		-- Show diagnostics on line hover
 		lsp_line_diagnostics = {
-			{ "CursorHold", "*", "lua vim.diagnostic.open_float()" },
-			{ "CursorHoldI", "*", "lua vim.diagnostic.open_float()" },
+			{ "CursorHold", "*", "lua vim.diagnostic.open_float(0, { scope = 'line', focusable = false })" },
 		},
 
 		-- Populate location list with errors
@@ -95,7 +94,6 @@ local on_attach = function(client, bufnr)
 		-- Set autocommands conditional on server_capabilities
 		lsp_document_highlight = client.resolved_capabilities.document_highlight and {
 			{ "CursorHold", "<buffer>", "lua vim.lsp.buf.document_highlight()" },
-			{ "CursorHoldI", "<buffer>", "lua vim.lsp.buf.document_highlight()" },
 			{ "CursorMoved", "<buffer>", "lua vim.lsp.buf.clear_references()" },
 		} or {},
 
@@ -106,14 +104,14 @@ local on_attach = function(client, bufnr)
 		} or {},
 
 		-- Setup lsp_extensions
-		lsp_extensions_completion = lsp_extensions_exists and {
-			{ "CursorMoved", "*", "lua require'lsp_extensions'.inlay_hints()" },
-			{ "InsertLeave", "*", "lua require'lsp_extensions'.inlay_hints()" },
-			{ "BufEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
-			{ "BufWinEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
-			{ "TabEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
-			{ "BufWritePost", "*", "lua require'lsp_extensions'.inlay_hints()" },
-		} or {},
+		-- lsp_extensions_completion = lsp_extensions_exists and {
+		-- 	{ "CursorMoved", "*", "lua require'lsp_extensions'.inlay_hints()" },
+		-- 	{ "InsertLeave", "*", "lua require'lsp_extensions'.inlay_hints()" },
+		-- 	{ "BufEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
+		-- 	{ "BufWinEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
+		-- 	{ "TabEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
+		-- 	{ "BufWritePost", "*", "lua require'lsp_extensions'.inlay_hints()" },
+		-- } or {},
 
 		lsp_nvim_lightbulb = nvim_lightbulb_exists and {
 			{ "CursorHold", "<buffer>", "lua require'nvim-lightbulb'.update_lightbulb()" },

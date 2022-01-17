@@ -98,9 +98,9 @@ return require("packer").startup({
 		})
 
 		-- Git utils {{{
-		use({ 
+		use({
       'tpope/vim-fugitive',
-      cmd = { 'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull', 'Gclog', 'G' },
+      cmd = { 'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull', 'Gclog', 'G', 'Gedit', 'Gsplit', 'Gdiffsplit', 'Gvdiffsplit', 'Ggrep', 'Ggrep', 'GRename', 'GMove', 'GRemove', 'GDelete', 'GBrowse' },
     })
 
      -- Git Diff View for files
@@ -133,7 +133,6 @@ return require("packer").startup({
 		-- Highlight, edit, and navigate code using a fast incremental parsing library
 		use({
 			"nvim-treesitter/nvim-treesitter",
-			branch = "0.5-compat",
 			run = ":TSUpdate",
 			config = function()
 				require("config.treesitter").setup()
@@ -143,7 +142,6 @@ return require("packer").startup({
 					-- Additional textobjects for treesitter
 					"nvim-treesitter/nvim-treesitter-textobjects",
 					after = "nvim-treesitter",
-					branch = "0.5-compat",
 				},
 				{
 					"p00f/nvim-ts-rainbow",
