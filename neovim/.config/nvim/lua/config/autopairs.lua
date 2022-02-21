@@ -1,5 +1,4 @@
 local M = {}
-local utils = require("utils")
 
 function M.setup()
 	local has_autopairs, autopairs = pcall(require, "nvim-autopairs")
@@ -14,8 +13,6 @@ function M.setup()
 			fast_wrap = {},
 		})
 		cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-	else
-		utils.notify("nvim-autopairs failed to load")
 	end
 end
 

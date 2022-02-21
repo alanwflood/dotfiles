@@ -32,9 +32,6 @@ vim.o.hlsearch = false
 --Make line numbers default
 vim.wo.number = true
 
---Do not save when switching buffers (note: this is now a default on master)
-vim.o.hidden = true
-
 --Enable mouse mode
 vim.o.mouse = "a"
 
@@ -58,13 +55,6 @@ vim.g.onedark_terminal_italics = 2
 vim.o.background = "dark" -- or "light" for light mode
 vim.cmd([[colorscheme gruvbox]])
 vim.g.transparent_enabled = true
-
---Set statusbar
-vim.g.lightline = {
-	colorscheme = "gruvbox",
-	active = { left = { { "mode", "paste" }, { "gitbranch", "readonly", "filename", "modified" } } },
-	component_function = { gitbranch = "fugitive#head" },
-}
 
 --Remap space as leader key
 vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })

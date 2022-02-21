@@ -17,14 +17,14 @@ M.setup = function()
 
 	local menu = {
 		buffer = " Buffer",
-		nvim_lsp = " LSP",
+    cmdline = " Term",
+    calc = " Calc",
+    emoji = " Emoji",
 		luasnip = " Snip",
+		nvim_lsp = " LSP",
 		path = " Path",
+		spell = " Spell",
 		tmux = " Tmux",
-		-- orgmode = ' Org',
-		-- emoji = ' Emoji',
-		-- spell = ' Spell',
-		-- conjure = ' Conjure',
 	}
 
 	cmp.setup({
@@ -33,16 +33,15 @@ M.setup = function()
 		},
 		sources = {
 			{ name = "buffer" },
+			{ name = "calc" },
+			{ name = "cmdline" },
+			{ name = "emoji" },
 			{ name = "luasnip" },
 			{ name = "nvim_lsp" },
 			{ name = "path" },
-			{ name = "tmux" },
-			{ name = "emoji" },
 			{ name = "spell" },
-			{ name = "cmdline" },
-			{ name = "calc" },
-			-- { name = 'orgmode' },
-			-- { name = 'tags' },
+			{ name = "tmux" },
+      { name = 'nvim_lsp_signature_help' }
 		},
 		snippet = {
 			expand = function(args)

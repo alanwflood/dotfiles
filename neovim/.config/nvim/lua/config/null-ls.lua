@@ -1,33 +1,47 @@
 local M = {}
 
 function M.setup()
-	local null_ls = require("null-ls")
+	local status_ok, null_ls = pcall(require, "null-ls")
+	if not status_ok then
+		return
+	end
+
+	-- Check supported formatters
+	-- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
+	local formatting = null_ls.builtins.formatting
+
+	-- Check supported linters
+	-- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
+	local diagnostics = null_ls.builtins.diagnostics
+
+	local code_actions = null_ls.builtins.code_actions
+
 	null_ls.setup({
 		-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
 		sources = {
 			-- Adds gitsigns staging actions to code actions
-			null_ls.builtins.code_actions.gitsigns,
+			code_actions.gitsigns,
 
 			-- Python
-			-- null_ls.builtins.formatting.autopep8,
-			-- null_ls.builtins.formatting.isort,
-			-- null_ls.builtins.diagnostics.flake8,
+			-- formatting.autopep8,
+			-- formatting.isort,
+			-- diagnostics.flake8,
 
 			-- JS yaml html markdown
-			null_ls.builtins.formatting.prettier,
+			formatting.prettier,
 
 			-- C/C++
 			-- Formatting is handled by clangd language server
-			-- null_ls.builtins.formatting.clang_format,
+			-- formatting.clang_format,
 
 			-- Markdown
-			null_ls.builtins.diagnostics.markdownlint.with({
+			diagnostics.markdownlint.with({
 				condition = function()
 					return vim.fn.exepath("markdownlint") ~= ""
 				end,
 			}),
 
-			null_ls.builtins.diagnostics.proselint.with({
+			diagnostics.proselint.with({
 				condition = function()
 					return vim.fn.exepath("proselint") ~= ""
 				end,
@@ -36,14 +50,14 @@ function M.setup()
 			-- Lua
 			-- cargo install stylua
 			-- add ~/.cargo/bin to PATH
-			null_ls.builtins.formatting.stylua.with({
+			formatting.stylua.with({
 				condition = function()
-					return vim.fn.exepath("stylua") ~= ""
+        return vim.fn.exepath("stylua") ~= ""
 				end,
 			}),
 
 			-- Spell checking
-			null_ls.builtins.diagnostics.codespell.with({
+			diagnostics.codespell.with({
 				args = { "--builtin", "clear,rare,code", "-" },
 				condition = function()
 					return vim.fn.exepath("codespell") ~= ""
@@ -51,7 +65,7 @@ function M.setup()
 			}),
 
 			-- sh
-			null_ls.builtins.diagnostics.codespell.with({
+			diagnostics.codespell.with({
 				condition = function()
 					return vim.fn.exepath("shellcheck") ~= ""
 				end,

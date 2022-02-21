@@ -12,6 +12,14 @@ return require("packer").startup({
 
 		use({ "lewis6991/impatient.nvim" })
 
+     -- Boost startup time
+    use {
+      "nathom/filetype.nvim",
+      config = function()
+        vim.g.did_load_filetypes = 1
+      end,
+    }
+
 		use({
 			"nvim-lua/plenary.nvim",
 			module = "plenary",
@@ -34,6 +42,11 @@ return require("packer").startup({
 				})
 			end,
 		})
+
+    -- Better buffer closing
+    use {
+      "moll/vim-bbye",
+    }
 
 		-- Useful shortcuts for commands
 		use({
@@ -69,6 +82,14 @@ return require("packer").startup({
 			end,
 		})
 
+    -- Terminal
+    use {
+      "akinsho/nvim-toggleterm.lua",
+      config = function()
+        require("config.toggleterm").setup()
+      end,
+    }
+
 		-- Fancier statusline
 		use({
 			"nvim-lualine/lualine.nvim",
@@ -82,11 +103,6 @@ return require("packer").startup({
 			"xiyaowong/nvim-transparent",
 			cmd = { "TransparentToggle", "TransparentEnable", "TransparentEnable" },
 		})
-
-		-- Themes
-		use("joshdick/onedark.vim") -- Theme inspired by Atom
-		use({ "ellisonleao/gruvbox.nvim", requires = { "rktjmp/lush.nvim" } }) -- Retro style
-		use("folke/tokyonight.nvim")
 
 		-- Add indentation guides even on blank lines
 		use({
@@ -133,7 +149,18 @@ return require("packer").startup({
 		-- Highlight, edit, and navigate code using a fast incremental parsing library
 		use({
 			"nvim-treesitter/nvim-treesitter",
-			run = ":TSUpdate",
+      run = ":TSUpdate",
+      event = "BufRead",
+      cmd = {
+        "TSInstall",
+        "TSInstallInfo",
+        "TSInstallSync",
+        "TSUninstall",
+        "TSUpdate",
+        "TSUpdateSync",
+        "TSDisableAll",
+        "TSEnableAll",
+      },
 			config = function()
 				require("config.treesitter").setup()
 			end,
@@ -156,6 +183,11 @@ return require("packer").startup({
 						})
 					end,
 				},
+        {
+          -- Context based commenting
+          "JoosepAlviste/nvim-ts-context-commentstring",
+          after = "nvim-treesitter",
+        },
 			},
 		})
 
@@ -183,12 +215,6 @@ return require("packer").startup({
 					"folke/todo-comments.nvim",
 					config = function()
 						require("todo-comments").setup()
-					end,
-				},
-				{
-					"ray-x/lsp_signature.nvim",
-					config = function()
-						require("config.lspsignature").setup()
 					end,
 				},
 				{
@@ -228,6 +254,7 @@ return require("packer").startup({
 				{ "hrsh7th/cmp-emoji" },
 				{ "f3fora/cmp-spell" },
 				{ "onsails/lspkind-nvim" },
+        { "hrsh7th/cmp-nvim-lsp-signature-help" },
 			},
 		})
 
@@ -257,16 +284,18 @@ return require("packer").startup({
 				return vim.env.TMUX ~= nil
 			end,
 			config = function()
-				if vim.fn.exists("g:loaded_tmux_navigator") == 0 then
-					vim.g.tmux_navigator_disable_when_zoomed = 1
-				end
+				require("config.nvim-tmux-navigation").setup()
 			end,
 		})
 
 		use({
 			"seblj/nvim-tabline",
 			config = function()
-				require("tabline").setup({})
+				require("tabline").setup({
+          padding = 2,
+          separator = "▌",
+          close_icon = '✖',
+        })
 			end,
 		})
 
@@ -293,5 +322,11 @@ return require("packer").startup({
 				require("config.which-key").setup()
 			end,
 		})
+
+		-- Themes
+		use("joshdick/onedark.vim") -- Theme inspired by Atom
+		use({ "ellisonleao/gruvbox.nvim", requires = { "rktjmp/lush.nvim" } }) -- Retro style
+		use("folke/tokyonight.nvim")
+
 	end,
 })

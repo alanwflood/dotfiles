@@ -1,9 +1,6 @@
 -- LSP settings
 local nvim_lsp_exists, nvim_lsp = pcall(require, "lspconfig")
 local lsp_installer_exists, lsp_installer = pcall(require, "nvim-lsp-installer")
-local nvim_lightbulb_exists = pcall(require, "nvim-lightbulb")
-local lsp_extensions_exists = pcall(require, "lsp_extensions")
-local lsp_signature_exists, lsp_signature = pcall(require, "lsp_signature")
 local utils = require("utils")
 
 -- Pulling out things from
@@ -11,7 +8,7 @@ local diagnostic = vim.diagnostic
 local lsp = vim.lsp
 
 if not nvim_lsp_exists then
-	utils.notify("LSP config failed to setup")
+	vim.notify("LSP config failed to setup", vim.log.levels.INFO, { title = ":: Local ::" })
 	return
 end
 
@@ -32,28 +29,29 @@ local lsp_handlers = function()
 	lsp.handlers["textDocument/signatureHelp"] = lsp.with(lsp.handlers.hover, popup_opts)
 
 	diagnostic.config({
-		virtual_text = {
-			show_source = "always",
-			prefix = "◁",
-			spacing = 0,
-		},
+		virtual_text = false,
 		signs = true,
 		underline = true,
+		severity_sort = true,
 		update_in_insert = false, -- update diagnostics insert mode
+		float = {
+			focusable = false,
+			style = "minimal",
+			border = "rounded",
+			source = "always",
+			header = "",
+			prefix = "",
+		},
 	})
 end
 
 local on_attach = function(client, bufnr)
-  lsp_handlers()
+	lsp_handlers()
 
 	-- ---------------
 	-- GENERAL
 	-- ---------------
 	client.config.flags.allow_incremental_sync = true
-
-	if lsp_signature_exists then
-		lsp_signature.on_attach()
-	end
 
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -113,21 +111,6 @@ local on_attach = function(client, bufnr)
 			{ "CursorHold", "<buffer>", "lua vim.lsp.codelens.refresh()" },
 			{ "BufEnter", "<buffer>", "lua vim.lsp.codelens.refresh()" },
 			{ "InsertLeave", "<buffer>", "lua vim.lsp.codelens.refresh()" },
-		} or {},
-
-		-- Setup lsp_extensions
-		-- lsp_extensions_completion = lsp_extensions_exists and {
-		-- 	{ "CursorMoved", "*", "lua require'lsp_extensions'.inlay_hints()" },
-		-- 	{ "InsertLeave", "*", "lua require'lsp_extensions'.inlay_hints()" },
-		-- 	{ "BufEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
-		-- 	{ "BufWinEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
-		-- 	{ "TabEnter", "*", "lua require'lsp_extensions'.inlay_hints()" },
-		-- 	{ "BufWritePost", "*", "lua require'lsp_extensions'.inlay_hints()" },
-		-- } or {},
-
-		lsp_nvim_lightbulb = nvim_lightbulb_exists and {
-			{ "CursorHold", "<buffer>", "lua require'nvim-lightbulb'.update_lightbulb()" },
-			{ "CursorHoldI", "<buffer>", "lua require'nvim-lightbulb'.update_lightbulb()" },
 		} or {},
 	})
 end

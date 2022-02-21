@@ -3,6 +3,11 @@ local M = {}
 function M.setup()
 	local treesitter = require("nvim-treesitter.configs")
 
+  vim.wo.foldmethod="expr"
+  vim.o.foldexpr="nvim_treesitter#foldexpr()"  
+ -- can be enabled directly in opened file - using 'zi' - toggle fold
+  vim.wo.foldenable=false
+
 	treesitter.setup({
 		-- ensure_installed = 'maintained', -- one of "all", "maintained" (parsers with maintainers), or a list of languagen
 		matchup = { enable = true },
@@ -72,4 +77,5 @@ function M.setup()
 		},
 	})
 end
+
 return M

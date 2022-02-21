@@ -80,6 +80,7 @@ local leader = {
 			e = { "Show diagnostics" },
 			f = { "Format buffer" },
 			i = { "Go to implementation" },
+      I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
 			l = { "Diagnostics list" },
 			p = { "Preview definition" },
 			r = { "Rename" },
@@ -115,12 +116,18 @@ local leader = {
 				U = { "Reset buffer index" },
 			},
 		},
-		t = {
+		f = {
 			name = "File Tree",
 			t = { "<cmd>NvimTreeToggle<CR>", "Toggle file tree" },
 			r = { "<cmd>NvimTreeRefresh<CR>", "Refresh file tree" },
 			f = { "<cmd>NvimTreeFindFile<CR>", "Find file in tree" },
 		},
+    t = {
+      name = "Terminal",
+      f = { "<cmd>ToggleTerm direction=float<cr>", "Float" },
+      h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" },
+      v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
+    },
 	},
 	opts = {
 		mode = "n", -- NORMAL mode
