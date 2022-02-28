@@ -207,8 +207,20 @@ return require("packer").startup({
 		use({
 			"neovim/nvim-lspconfig",
 			requires = {
-				"kosayoda/nvim-lightbulb",
-				"tjdevries/lsp_extensions.nvim",
+        {
+          'https://github.com/j-hui/fidget.nvim',
+          config = function()
+            require('fidget').setup {
+              window = {
+                relative = 'editor', -- where to anchor the window, either `"win"` or `"editor"`
+                blend = 0, -- `&winblend` for the window
+              },
+              text = {
+                spinner = 'dots',
+              },
+            }
+          end,
+        },
 				"folke/lua-dev.nvim",
 				"williamboman/nvim-lsp-installer",
 				{
