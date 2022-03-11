@@ -1,6 +1,4 @@
 return function()
-	vim.g.nvim_tree_quit_on_open = 0
-	vim.g.nvim_tree_disable_window_picker = 1
 	vim.g.nvim_tree_indent_markers = 1
 	vim.g.nvim_tree_show_icons = {
 		git = 1,
