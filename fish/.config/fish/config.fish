@@ -57,6 +57,7 @@ set -g theme_color_scheme gruvbox
 alias nnn="nnn -e"
 set -Ux NNN_USE_EDITOR 1
 set -Ux NNN_TRASH 1
+set -Ux NNN_PLUG "p:rsynccp"
 
 # Compatability for vterm inside emacs
 function vterm_printf
