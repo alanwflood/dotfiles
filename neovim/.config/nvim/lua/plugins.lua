@@ -10,6 +10,7 @@ return require("packer").startup({
 		-- Package manager
 		use({ "wbthomason/packer.nvim" })
 
+    -- Optimiser
 		use({ "lewis6991/impatient.nvim" })
 
      -- Boost startup time
@@ -43,10 +44,19 @@ return require("packer").startup({
 			end,
 		})
 
+    -- Cursorhold fix
+    use({
+      "antoinemadec/FixCursorHold.nvim",
+      event = "BufRead",
+      config = function()
+        vim.g.cursorhold_updatetime = 100
+      end,
+    })
+
     -- Better buffer closing
-    use {
+    use({
       "moll/vim-bbye",
-    }
+    })
 
 		-- Useful shortcuts for commands
 		use({
@@ -56,7 +66,7 @@ return require("packer").startup({
 
 		-- "gc" to comment visual regions/lines
 		use({
-			"terrortylor/nvim-comment",
+			"numToStr/Comment.nvim",
 			event = "BufRead",
 			config = function()
 				require("config.comment").setup()
@@ -184,6 +194,10 @@ return require("packer").startup({
 					end,
 				},
         {
+          "windwp/nvim-ts-autotag",
+          after = "nvim-treesitter",
+        }, 
+        {
           -- Context based commenting
           "JoosepAlviste/nvim-ts-context-commentstring",
           after = "nvim-treesitter",
@@ -235,6 +249,16 @@ return require("packer").startup({
 						require("config.null-ls").setup()
 					end,
 				},
+        -- LSP enhancer
+        {
+          "tami5/lspsaga.nvim",
+          event = "BufRead",
+          config = function()
+            require("config.lspsaga").config()
+          end,
+        },
+        -- JSON Schemas
+        { "b0o/SchemaStore.nvim" }
 			},
 		})
 
@@ -285,9 +309,6 @@ return require("packer").startup({
 			end,
 		})
 
-		-- Extend repeating plugin actions
-		use("tpope/vim-repeat")
-
 		-- Make nvim easier to use inside tmux
 		use({
 			"christoomey/vim-tmux-navigator",
@@ -317,9 +338,6 @@ return require("packer").startup({
 			config = require("config.nvim-tree"),
 		})
 
-		-- Make looking up paths easier
-		use("tpope/vim-apathy")
-
 		-- Time tracking files
 		use({
 			"wakatime/vim-wakatime",
@@ -339,6 +357,5 @@ return require("packer").startup({
 		use("joshdick/onedark.vim") -- Theme inspired by Atom
 		use({ "ellisonleao/gruvbox.nvim", requires = { "rktjmp/lush.nvim" } }) -- Retro style
 		use("folke/tokyonight.nvim")
-
 	end,
 })
