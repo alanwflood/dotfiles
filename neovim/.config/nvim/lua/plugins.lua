@@ -73,8 +73,11 @@ return require("packer").startup({
 			end,
 		})
 
-		-- 'Add's plenty of sugar syntax for unix commands like, :Move, :Rename, :Mkdir etc,
+		-- Add's plenty of sugar syntax for unix commands like, :Move, :Rename, :Mkdir etc,
 		use("tpope/vim-eunuch")
+
+    -- Lots of helpers for string manipulation
+    use("tpope/vim-abolish")
 
 		-- Automatic tags management
 		use("ludovicchabant/vim-gutentags")

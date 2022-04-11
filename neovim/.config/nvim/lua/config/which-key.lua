@@ -141,7 +141,7 @@ local leader = {
 	},
 }
 
--- Vim Unimpaired, LSP, Gitsigns bindings
+-- Vim Unimpaired, Vim abolish, LSP, Gitsigns bindings
 local other = {
 	mappings = {
 		["z="] = { "<cmd>lua require('telescope.builtin').spell_suggest()<CR>", "Spelling" },
@@ -291,6 +291,20 @@ local other = {
 			s = "line",
 		},
 		["yS"] = { "add surrounding to line end" },
+    -- vim-abolish
+		["c"] = {
+      r = {
+        name = "Coercion",
+        c = {"to camelCase"},
+        m = {"to MixedCase"},
+        s = {"to snake_case"},
+        t = {"to TitleCase"},
+        u = {"to UPPER_CASE"},
+        ["-"] = {"to dash-case"},
+        ["."] = {"to dot.case"},
+        ["<space>"] = {"to space case"},
+      }
+    },
 	},
 	opts = {
 		silent = true,

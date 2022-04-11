@@ -24,7 +24,6 @@ return function()
 				},
 			},
 		},
-		auto_close = true,
 		update_focused_file = {
 			enable = false,
 		},
