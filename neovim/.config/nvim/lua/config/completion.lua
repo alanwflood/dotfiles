@@ -17,20 +17,18 @@ M.setup = function()
 
 	local menu = {
 		buffer = " Buffer",
-    cmdline = " Term",
-    calc = " Calc",
-    emoji = " Emoji",
+		cmdline = " Term",
+		calc = " Calc",
+		emoji = " Emoji",
 		luasnip = " Snip",
 		nvim_lsp = " LSP",
 		path = " Path",
 		spell = " Spell",
 		tmux = " Tmux",
+    copilot = " Copilot"
 	}
 
 	cmp.setup({
-		completion = {
-			completeopt = "menu,menuone,noinsert",
-		},
 		sources = {
 			{ name = "buffer" },
 			{ name = "calc" },
@@ -41,13 +39,11 @@ M.setup = function()
 			{ name = "path" },
 			{ name = "spell" },
 			{ name = "tmux" },
-      { name = 'nvim_lsp_signature_help' }
+			{ name = "nvim_lsp_signature_help" },
+      { name = "lsp"},
+      { name = "copilot" },
 		},
-		snippet = {
-			expand = function(args)
-				require("luasnip").lsp_expand(args.body)
-			end,
-		},
+		preselect = cmp.PreselectMode.None,
 		formatting = {
 			format = require("lspkind").cmp_format({
 				with_text = true,
@@ -55,35 +51,74 @@ M.setup = function()
 				menu = menu,
 			}),
 		},
+		snippet = {
+			expand = function(args)
+				luasnip.lsp_expand(args.body)
+			end,
+		},
+		duplicates = {
+			nvim_lsp = 1,
+			luasnip = 1,
+			buffer = 1,
+			path = 1,
+		},
+		confirm_opts = {
+			behavior = cmp.ConfirmBehavior.Replace,
+			select = false,
+		},
+		window = {
+			documentation = {
+				border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+			},
+		},
+		experimental = {
+			ghost_text = false,
+			native_menu = false,
+		},
+		completion = {
+			completeopt = "menu,menuone,noinsert",
+			keyword_length = 1,
+		},
 		mapping = {
+			["<Up>"] = cmp.mapping.select_prev_item(),
+			["<Down>"] = cmp.mapping.select_next_item(),
 			["<C-p>"] = cmp.mapping.select_prev_item(),
 			["<C-n>"] = cmp.mapping.select_next_item(),
-			["<C-d>"] = cmp.mapping.scroll_docs(-4),
-			["<C-f>"] = cmp.mapping.scroll_docs(4),
-			["<C-Space>"] = cmp.mapping.complete(),
-			["<C-e>"] = cmp.mapping.close(),
-			["<CR>"] = cmp.mapping.confirm({
-				behavior = cmp.ConfirmBehavior.Replace,
-				select = true,
+			["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
+			["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
+			["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+			["<C-y>"] = cmp.config.disable,
+			["<C-e>"] = cmp.mapping({
+				i = cmp.mapping.abort(),
+				c = cmp.mapping.close(),
 			}),
-			["<Tab>"] = function(fallback)
+			["<CR>"] = cmp.mapping.confirm({ select = true }),
+			["<Tab>"] = cmp.mapping(function(fallback)
 				if cmp.visible() then
 					cmp.select_next_item()
+				elseif luasnip.expandable() then
+					luasnip.expand()
 				elseif luasnip.expand_or_jumpable() then
-					vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+					luasnip.expand_or_jump()
 				else
 					fallback()
 				end
-			end,
-			["<S-Tab>"] = function(fallback)
+			end, {
+				"i",
+				"s",
+			}),
+			["<S-Tab>"] = cmp.mapping(function(fallback)
 				if cmp.visible() then
 					cmp.select_prev_item()
 				elseif luasnip.jumpable(-1) then
-					vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+					luasnip.jump(-1)
 				else
 					fallback()
 				end
-			end,
+			end, {
+				"i",
+				"s",
+			}),
 		},
 	})
 end

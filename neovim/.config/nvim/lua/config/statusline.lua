@@ -3,6 +3,7 @@ local M = {}
 function M.setup()
 	require("lualine").setup({
 		options = {
+      globalstatus = true,
 			icons_enabled = true,
 			theme = "auto",
 			component_separators = { left = "", right = "" },

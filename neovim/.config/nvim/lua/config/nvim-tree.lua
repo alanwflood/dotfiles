@@ -1,5 +1,4 @@
 return function()
-	vim.g.nvim_tree_indent_markers = 1
 	vim.g.nvim_tree_show_icons = {
 		git = 1,
 		folders = 0,
@@ -11,6 +10,7 @@ return function()
 
 	local tree_cb = require("nvim-tree.config").nvim_tree_callback
 	require("nvim-tree").setup({
+    renderer = { indent_markers = { enable = true } },
 		view = {
 			width = "15%",
 			auto_resize = true,

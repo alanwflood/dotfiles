@@ -53,7 +53,9 @@ vim.wo.signcolumn = "yes"
 vim.o.termguicolors = true
 vim.g.onedark_terminal_italics = 2
 vim.o.background = "dark" -- or "light" for light mode
-vim.cmd([[colorscheme gruvbox]])
+
+local colorscheme = "gruvbox"
+vim.api.nvim_command(("colorscheme %s"):format(colorscheme))
 vim.g.transparent_enabled = true
 
 --Remap space as leader key

@@ -102,12 +102,12 @@ local on_attach = function(client, bufnr)
 		},
 
 		-- Set autocommands conditional on server_capabilities
-		lsp_document_highlight = client.resolved_capabilities.document_highlight and {
+		lsp_document_highlight = client.resolved_capabilities.documentFormattingProvider and {
 			{ "CursorHold", "<buffer>", "lua vim.lsp.buf.document_highlight()" },
 			{ "CursorMoved", "<buffer>", "lua vim.lsp.buf.clear_references()" },
 		} or {},
 
-		lsp_codelense = client.resolved_capabilities.code_lens and {
+		lsp_codelense = client.resolved_capabilities.codeLensProvider and {
 			{ "CursorHold", "<buffer>", "lua vim.lsp.codelens.refresh()" },
 			{ "BufEnter", "<buffer>", "lua vim.lsp.codelens.refresh()" },
 			{ "InsertLeave", "<buffer>", "lua vim.lsp.codelens.refresh()" },

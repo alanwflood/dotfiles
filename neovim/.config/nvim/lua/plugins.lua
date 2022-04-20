@@ -10,16 +10,16 @@ return require("packer").startup({
 		-- Package manager
 		use({ "wbthomason/packer.nvim" })
 
-    -- Optimiser
+		-- Optimiser
 		use({ "lewis6991/impatient.nvim" })
 
-     -- Boost startup time
-    use {
-      "nathom/filetype.nvim",
-      config = function()
-        vim.g.did_load_filetypes = 1
-      end,
-    }
+		-- Boost startup time
+		use({
+			"nathom/filetype.nvim",
+			config = function()
+				vim.g.did_load_filetypes = 1
+			end,
+		})
 
 		use({
 			"nvim-lua/plenary.nvim",
@@ -44,19 +44,19 @@ return require("packer").startup({
 			end,
 		})
 
-    -- Cursorhold fix
-    use({
-      "antoinemadec/FixCursorHold.nvim",
-      event = "BufRead",
-      config = function()
-        vim.g.cursorhold_updatetime = 100
-      end,
-    })
+		-- Cursorhold fix
+		use({
+			"antoinemadec/FixCursorHold.nvim",
+			event = "BufRead",
+			config = function()
+				vim.g.cursorhold_updatetime = 100
+			end,
+		})
 
-    -- Better buffer closing
-    use({
-      "moll/vim-bbye",
-    })
+		-- Better buffer closing
+		use({
+			"moll/vim-bbye",
+		})
 
 		-- Useful shortcuts for commands
 		use({
@@ -76,8 +76,8 @@ return require("packer").startup({
 		-- Add's plenty of sugar syntax for unix commands like, :Move, :Rename, :Mkdir etc,
 		use("tpope/vim-eunuch")
 
-    -- Lots of helpers for string manipulation
-    use("tpope/vim-abolish")
+		-- Lots of helpers for string manipulation
+		use("tpope/vim-abolish")
 
 		-- Automatic tags management
 		use("ludovicchabant/vim-gutentags")
@@ -95,13 +95,13 @@ return require("packer").startup({
 			end,
 		})
 
-    -- Terminal
-    use {
-      "akinsho/nvim-toggleterm.lua",
-      config = function()
-        require("config.toggleterm").setup()
-      end,
-    }
+		-- Terminal
+		use({
+			"akinsho/nvim-toggleterm.lua",
+			config = function()
+				require("config.toggleterm").setup()
+			end,
+		})
 
 		-- Fancier statusline
 		use({
@@ -128,9 +128,28 @@ return require("packer").startup({
 
 		-- Git utils {{{
 		use({
-      'tpope/vim-fugitive',
-      cmd = { 'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull', 'Gclog', 'G', 'Gedit', 'Gsplit', 'Gdiffsplit', 'Gvdiffsplit', 'Ggrep', 'Ggrep', 'GRename', 'GMove', 'GRemove', 'GDelete', 'GBrowse' },
-    })
+			"tpope/vim-fugitive",
+			cmd = {
+				"Git",
+				"Gstatus",
+				"Gblame",
+				"Gpush",
+				"Gpull",
+				"Gclog",
+				"G",
+				"Gedit",
+				"Gsplit",
+				"Gdiffsplit",
+				"Gvdiffsplit",
+				"Ggrep",
+				"Ggrep",
+				"GRename",
+				"GMove",
+				"GRemove",
+				"GDelete",
+				"GBrowse",
+			},
+		})
 
 		-- Git Diff View for files
 		use({ "sindrets/diffview.nvim", cmd = { "DiffviewOpen" } })
@@ -162,18 +181,18 @@ return require("packer").startup({
 		-- Highlight, edit, and navigate code using a fast incremental parsing library
 		use({
 			"nvim-treesitter/nvim-treesitter",
-      run = ":TSUpdate",
-      event = "BufRead",
-      cmd = {
-        "TSInstall",
-        "TSInstallInfo",
-        "TSInstallSync",
-        "TSUninstall",
-        "TSUpdate",
-        "TSUpdateSync",
-        "TSDisableAll",
-        "TSEnableAll",
-      },
+			run = ":TSUpdate",
+			event = "BufRead",
+			cmd = {
+				"TSInstall",
+				"TSInstallInfo",
+				"TSInstallSync",
+				"TSUninstall",
+				"TSUpdate",
+				"TSUpdateSync",
+				"TSDisableAll",
+				"TSEnableAll",
+			},
 			config = function()
 				require("config.treesitter").setup()
 			end,
@@ -196,15 +215,15 @@ return require("packer").startup({
 						})
 					end,
 				},
-        {
-          "windwp/nvim-ts-autotag",
-          after = "nvim-treesitter",
-        }, 
-        {
-          -- Context based commenting
-          "JoosepAlviste/nvim-ts-context-commentstring",
-          after = "nvim-treesitter",
-        },
+				{
+					"windwp/nvim-ts-autotag",
+					after = "nvim-treesitter",
+				},
+				{
+					-- Context based commenting
+					"JoosepAlviste/nvim-ts-context-commentstring",
+					after = "nvim-treesitter",
+				},
 			},
 		})
 
@@ -224,20 +243,20 @@ return require("packer").startup({
 		use({
 			"neovim/nvim-lspconfig",
 			requires = {
-        {
-          'https://github.com/j-hui/fidget.nvim',
-          config = function()
-            require('fidget').setup {
-              window = {
-                relative = 'editor', -- where to anchor the window, either `"win"` or `"editor"`
-                blend = 0, -- `&winblend` for the window
-              },
-              text = {
-                spinner = 'dots',
-              },
-            }
-          end,
-        },
+				{
+					"https://github.com/j-hui/fidget.nvim",
+					config = function()
+						require("fidget").setup({
+							window = {
+								relative = "editor", -- where to anchor the window, either `"win"` or `"editor"`
+								blend = 0, -- `&winblend` for the window
+							},
+							text = {
+								spinner = "dots",
+							},
+						})
+					end,
+				},
 				"folke/lua-dev.nvim",
 				"williamboman/nvim-lsp-installer",
 				{
@@ -252,16 +271,16 @@ return require("packer").startup({
 						require("config.null-ls").setup()
 					end,
 				},
-        -- LSP enhancer
-        {
-          "tami5/lspsaga.nvim",
-          event = "BufRead",
-          config = function()
-            require("config.lspsaga").config()
-          end,
-        },
-        -- JSON Schemas
-        { "b0o/SchemaStore.nvim" }
+				-- LSP enhancer
+				{
+					"tami5/lspsaga.nvim",
+					event = "BufRead",
+					config = function()
+						require("config.lspsaga").config()
+					end,
+				},
+				-- JSON Schemas
+				{ "b0o/SchemaStore.nvim" },
 			},
 		})
 
@@ -293,8 +312,24 @@ return require("packer").startup({
 				{ "hrsh7th/cmp-emoji" },
 				{ "f3fora/cmp-spell" },
 				{ "onsails/lspkind-nvim" },
-        { "hrsh7th/cmp-nvim-lsp-signature-help" },
+				{ "hrsh7th/cmp-nvim-lsp-signature-help" },
+				-- { "tzachar/cmp-tabnine", run = "./install.sh" },
 			},
+		})
+
+    use({"github/copilot.vim"})
+
+		use({
+			"zbirenbaum/copilot.lua",
+			event = { "VimEnter" },
+			config = vim.defer_fn(function()
+				require("copilot").setup()
+			end, 100),
+		})
+
+		use({
+			"zbirenbaum/copilot-cmp",
+			after = { "copilot.lua", "nvim-cmp" },
 		})
 
 		use({
@@ -328,10 +363,10 @@ return require("packer").startup({
 			"seblj/nvim-tabline",
 			config = function()
 				require("tabline").setup({
-          padding = 2,
-          separator = "▌",
-          close_icon = '✖',
-        })
+					padding = 2,
+					separator = "▌",
+					close_icon = "✖",
+				})
 			end,
 		})
 
