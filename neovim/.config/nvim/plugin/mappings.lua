@@ -29,21 +29,21 @@ vim.api.nvim_set_keymap("n", "Q", "@@", { noremap = true })
 -- For neovim terminal :term, escape insert mode with esc
 vim.api.nvim_set_keymap("t", "<esc>", [["\<c-\>\<c-n>"]], { expr = true })
 
-local terminalAugroupId = vim.api.nvim_create_augroup('user', { clear = true })
+local terminalAugroupId = vim.api.nvim_create_augroup("user", { clear = true })
 local terminalAugroupAutocmd = function(event, opts)
-  return vim.api.nvim_create_autocmd(event, vim.tbl_extend('force', { group = terminalAugroupId }, opts))
+  return vim.api.nvim_create_autocmd(event, vim.tbl_extend("force", { group = terminalAugroupId }, opts))
 end
-terminalAugroupAutocmd('TermOpen', {
+terminalAugroupAutocmd("TermOpen", {
   pattern = "*",
-  command = 'setl nonumber norelativenumber',
+  command = "setl nonumber norelativenumber",
 })
-terminalAugroupAutocmd('TermOpen', {
-  pattern = 'term://*',
-  command = 'startinsert',
+terminalAugroupAutocmd("TermOpen", {
+  pattern = "term://*",
+  command = "startinsert",
 })
-terminalAugroupAutocmd('TermClose', {
-  pattern = 'term://*',
-  command = 'stopinsert',
+terminalAugroupAutocmd("TermClose", {
+  pattern = "term://*",
+  command = "stopinsert",
 })
 
 -- Allows you to visually select a section and then hit @ to run a macro on all lines

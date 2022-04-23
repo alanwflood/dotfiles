@@ -17,11 +17,11 @@ vim.opt.lazyredraw = true
 -- show trailing whitespace
 vim.opt.list = true
 vim.opt.listchars = {
-	tab = "………",
-	nbsp = "░",
-	extends = "»",
-	precedes = "«",
-	trail = "·",
+  tab = "………",
+  nbsp = "░",
+  extends = "»",
+  precedes = "«",
+  trail = "·",
 }
 
 vim.opt.ruler = true
@@ -65,13 +65,13 @@ vim.g.maplocalleader = " "
 
 -- Highlight on yank
 vim.api.nvim_exec(
-	[[
+  [[
   augroup YankHighlight
     autocmd!
     autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   augroup end
 ]],
-	false
+  false
 )
 
 -- Sets :vimgrep to use ripgrep

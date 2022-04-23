@@ -6,9 +6,9 @@ function M.setup()
     return
   end
 
-  toggleterm.setup {
+  toggleterm.setup({
     size = 10,
-    cmd = 'fish',
+    cmd = "fish",
     open_mapping = [[<c-\>]],
     hide_numbers = true,
     shade_filetypes = {},
@@ -28,7 +28,7 @@ function M.setup()
         background = "Normal",
       },
     },
-  }
+  })
 
   function _G.set_terminal_keymaps()
     local opts = { noremap = true }
@@ -40,7 +40,7 @@ function M.setup()
     vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
   end
 
-  vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
+  vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 end
 
 return M

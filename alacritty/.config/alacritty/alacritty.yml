@@ -75,7 +75,8 @@ font:
     #   - (macOS) Menlo
     #   - (Linux) monospace
     #   - (Windows) Consolas
-    family: Iosevka Term
+    # family: Iosevka Term
+    family: Iosevka Nerd Font Mono
     # family: PragmataProLiga Nerd Font
     # family: DankMono Nerd Font
     # The `style` can be specified to pick a specific face.
