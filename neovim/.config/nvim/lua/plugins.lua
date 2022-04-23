@@ -13,14 +13,6 @@ return require("packer").startup({
     -- Optimiser
     use({ "lewis6991/impatient.nvim" })
 
-    -- Boost startup time
-    use({
-      "nathom/filetype.nvim",
-      config = function()
-        vim.g.did_load_filetypes = 1
-      end,
-    })
-
     use({
       "nvim-lua/plenary.nvim",
       module = "plenary",

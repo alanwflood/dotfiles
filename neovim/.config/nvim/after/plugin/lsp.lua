@@ -84,7 +84,7 @@ local on_attach = function(client, bufnr)
   )
   buf_set_keymap("n", "<leader>so", "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", opts)
 
-  vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
+  vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, {})
 
   vim.o.updatetime = 250
 

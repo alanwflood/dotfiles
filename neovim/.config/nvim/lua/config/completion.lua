@@ -30,7 +30,11 @@ M.setup = function()
 
   cmp.setup({
     sources = {
-      { name = "buffer" },
+      { 
+        name = "buffer",
+        max_item_count = 10,
+        keyword_length = 5,
+      },
       { name = "calc" },
       { name = "cmdline" },
       { name = "emoji" },
@@ -38,7 +42,10 @@ M.setup = function()
       { name = "nvim_lsp" },
       { name = "path" },
       { name = "spell" },
-      { name = "tmux" },
+      { 
+        name = "tmux",
+        max_item_count = 10,
+      },
       { name = "nvim_lsp_signature_help" },
       { name = "lsp" },
       { name = "copilot", group_index = 1 },
