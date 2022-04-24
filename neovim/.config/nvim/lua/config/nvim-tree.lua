@@ -12,8 +12,6 @@ return function()
   require("nvim-tree").setup({
     renderer = { indent_markers = { enable = true } },
     view = {
-      width = "15%",
-      auto_resize = true,
       mappings = {
         list = {
           { key = { "l" }, cb = tree_cb("edit") },

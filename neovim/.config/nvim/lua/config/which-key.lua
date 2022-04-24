@@ -63,18 +63,25 @@ local leader = {
       m = { "<cmd>lua require('telescope.builtin').marks()<CR>", "Marks list" },
       q = { "<cmd>lua require('telescope.builtin').quickfix()<CR>", "Quickfix list" },
       Q = { "<cmd>lua require('telescope.builtin').loclist()<CR>", "Location list" },
-      r = { "<cmd>lua require('telescope.builtin').oldfiles()<CR>", "Recent files" },
+      r = { "<cmd>lua require('telescope.builtin').registers()<CR>", "Registers" },
+      o = { "<cmd>lua require('telescope.builtin').oldfiles()<CR>", "Recent files" },
       s = {
         "<cmd>lua require('telescope.builtin').grep_string({ prompt_prefix='🔍 ' })<CR>",
         "Grep under cursor",
+      },
+      y = {
+        "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>",
+        "Document Symbols",
       },
       t = { "<cmd>lua require('telescope.builtin').tags()<CR>", "Tags" },
       T = {
         "<cmd>lua require('telescope.builtin').tags { only_current_buffer = true }<CR>",
         "Tags in current buffer",
       },
-      ["+"] = { "<cmd>lua require('telescope.builtin').colorscheme()<CR>", "Color Schemes" },
+      [";"] = { "<cmd>lua require('telescope.builtin').colorscheme()<CR>", "Color Schemes" },
+      ["+"] = { "<cmd>lua require('telescope.builtin').pickers()<CR>", "More Pickers" },
       ["?"] = { "<cmd>lua require('telescope.builtin').help_tags()<CR>", "Help tags" },
+      ["/"] = { "<cmd>lua require('telescope.builtin').man_pages()<CR>", "Man pages" },
     },
     l = {
       -- Most are set in lsp.lua

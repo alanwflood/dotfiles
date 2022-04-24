@@ -64,15 +64,11 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Highlight on yank
-vim.api.nvim_exec(
-  [[
-  augroup YankHighlight
-    autocmd!
-    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
-  augroup end
-]],
-  false
-)
+local yankHighlightGroup = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+  command = "silent! lua vim.highlight.on_yank()",
+  group = yankHighlightGroup,
+})
 
 -- Sets :vimgrep to use ripgrep
 vim.opt.grepprg = "rg --hidden --vimgrep --smart-case --"

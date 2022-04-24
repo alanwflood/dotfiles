@@ -385,6 +385,13 @@ return require("packer").startup({
       end,
     })
 
+    use({ "karb94/neoscroll.nvim",
+      event = { "BufRead", "BufNewFile" },
+      config = function()
+        require("neoscroll").setup()
+      end,
+    })
+
     use({
       "kyazdani42/nvim-tree.lua",
       config = require("config.nvim-tree"),

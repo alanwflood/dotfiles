@@ -74,45 +74,51 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<leader>lp", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
   buf_set_keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
   buf_set_keymap("n", "<leader>ls", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-  buf_set_keymap("n", "<leader>lwa", "<cmd>lua <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-  buf_set_keymap("n", "<leader>lwd", "<cmd>lua <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+  buf_set_keymap("n", "<leader>lwa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+  buf_set_keymap("n", "<leader>lwd", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
   buf_set_keymap(
     "n",
     "<leader>lwl",
     "<cmd>lua <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
     opts
   )
-  buf_set_keymap("n", "<leader>so", "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", opts)
+  buf_set_keymap("n", "<leader>sy", "", opts)
 
   vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, {})
 
   vim.o.updatetime = 250
 
-  utils.nvim_create_augroups({
-    -- Show diagnostics on line hover
-    lsp_line_diagnostics = {
-      { "CursorHold", "*", "lua vim.diagnostic.open_float(0, { scope = 'line', focusable = false })" },
-    },
-
-    -- Populate location list with errors
-    lsp_loc_diagnostics = {
-      { "BufWrite", "*", "lua vim.diagnostic.setqflist({ open = false })" },
-      { "BufEnter", "*", "lua vim.diagnostic.setqflist({ open = false })" },
-      { "InsertLeave", "*", "lua vim.diagnostic.setqflist({ open = false })" },
-    },
-
-    -- Set autocommands conditional on server_capabilities
-    lsp_document_highlight = client.resolved_capabilities.documentFormattingProvider and {
-      { "CursorHold", "<buffer>", "lua vim.lsp.buf.document_highlight()" },
-      { "CursorMoved", "<buffer>", "lua vim.lsp.buf.clear_references()" },
-    } or {},
-
-    lsp_codelense = client.resolved_capabilities.codeLensProvider and {
-      { "CursorHold", "<buffer>", "lua vim.lsp.codelens.refresh()" },
-      { "BufEnter", "<buffer>", "lua vim.lsp.codelens.refresh()" },
-      { "InsertLeave", "<buffer>", "lua vim.lsp.codelens.refresh()" },
-    } or {},
+  local lspLineDiagnosticsGroup = vim.api.nvim_create_augroup("LspLineDiagnostics", { clear = true })
+  vim.api.nvim_create_autocmd("CursorHold", {
+    group = lspLineDiagnosticsGroup,
+    pattern = "*",
+    command = vim.diagnostic.open_float(0, { scope = "line", focusable = false }),
   })
+
+  local lspLocDiagnosticsGroup = vim.api.nvim_create_augroup("LspLocDiagnostics", { clear = true })
+  vim.api.nvim_create_autocmd({ "BufWrite", "BufEnter", "InsertLeave" }, {
+    group = lspLocDiagnosticsGroup,
+    pattern = "*",
+    command = vim.diagnostic.setqflist({ open = false }),
+  })
+
+  if client.resolved_capabilities.documentFormattingProvider then
+    local lspDocumentHighlightGroup = vim.api.nvim_create_augroup("LspDocumentHighlight", { clear = true })
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorMoved" }, {
+      group = lspDocumentHighlightGroup,
+      pattern = "<buffer>",
+      command = vim.lsp.buf.document_highlight(),
+    })
+  end
+
+  if client.resolved.capabilities.codeLensProvider then
+    local lspCodeLensGroup = vim.api.nvim_create_augroup("LspCodeLens", { clear = true })
+    vim.api.nvim_create_autocmd({ "CursorHold", "BufEnter", "InsertLeave" }, {
+      group = lspCodeLensGroup,
+      pattern = "<buffer>",
+      command = vim.lsp.buf.codelense.refresh(),
+    })
+  end
 end
 
 -- Make runtime files discoverable to the server
@@ -166,20 +172,8 @@ local server_settings = {
   yamlls = {
     settings = {
       yaml = {
-        -- Schemas https://www.schemastore.org
         schemas = {
-          ["http://json.schemastore.org/gitlab-ci.json"] = { ".gitlab-ci.yml" },
-          ["https://json.schemastore.org/bamboo-spec.json"] = {
-            "bamboo-specs/*.{yml,yaml}",
-          },
-          ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = {
-            "docker-compose*.{yml,yaml}",
-          },
-          ["http://json.schemastore.org/github-workflow.json"] = ".github/workflows/*.{yml,yaml}",
-          ["http://json.schemastore.org/github-action.json"] = ".github/action.{yml,yaml}",
-          ["http://json.schemastore.org/prettierrc.json"] = ".prettierrc.{yml,yaml}",
-          ["http://json.schemastore.org/stylelintrc.json"] = ".stylelintrc.{yml,yaml}",
-          ["http://json.schemastore.org/circleciconfig"] = ".circleci/**/*.{yml,yaml}",
+          schemaStore = true,
         },
       },
     },
