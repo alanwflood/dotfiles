@@ -1,7 +1,6 @@
 -- LSP settings
 local nvim_lsp_exists, nvim_lsp = pcall(require, "lspconfig")
 local lsp_installer_exists, lsp_installer = pcall(require, "nvim-lsp-installer")
-local utils = require("utils")
 
 -- Pulling out things from
 local diagnostic = vim.diagnostic
@@ -92,31 +91,40 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_create_autocmd("CursorHold", {
     group = lspLineDiagnosticsGroup,
     pattern = "*",
-    command = vim.diagnostic.open_float(0, { scope = "line", focusable = false }),
+    callback = function() vim.diagnostic.open_float(0, { scope = "line", focusable = false }) end,
   })
 
   local lspLocDiagnosticsGroup = vim.api.nvim_create_augroup("LspLocDiagnostics", { clear = true })
   vim.api.nvim_create_autocmd({ "BufWrite", "BufEnter", "InsertLeave" }, {
     group = lspLocDiagnosticsGroup,
     pattern = "*",
-    command = vim.diagnostic.setqflist({ open = false }),
+    callback = function() vim.diagnostic.setqflist({ open = false }) end, 
   })
 
   if client.resolved_capabilities.documentFormattingProvider then
+    vim.api.nvim_set_hl(0, 'LspReferenceRead', { link = 'SpecialKey' })
+    vim.api.nvim_set_hl(0, 'LspReferenceText', { link = 'SpecialKey' })
+    vim.api.nvim_set_hl(0, 'LspReferenceWrite', { link = 'SpecialKey' })
+
     local lspDocumentHighlightGroup = vim.api.nvim_create_augroup("LspDocumentHighlight", { clear = true })
-    vim.api.nvim_create_autocmd({ "CursorHold", "CursorMoved" }, {
+    vim.api.nvim_create_autocmd({ "CursorHold" }, {
       group = lspDocumentHighlightGroup,
-      pattern = "<buffer>",
-      command = vim.lsp.buf.document_highlight(),
+      callback = function() vim.lsp.buf.document_highlight() end,
+      buffer = 0
+    })
+    vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+      group = lspDocumentHighlightGroup,
+      callback = function() vim.lsp.buf.clear_references() end,
+      buffer = 0
     })
   end
 
-  if client.resolved.capabilities.codeLensProvider then
+  if client.resolved_capabilities.codeLensProvider then
     local lspCodeLensGroup = vim.api.nvim_create_augroup("LspCodeLens", { clear = true })
     vim.api.nvim_create_autocmd({ "CursorHold", "BufEnter", "InsertLeave" }, {
       group = lspCodeLensGroup,
-      pattern = "<buffer>",
-      command = vim.lsp.buf.codelense.refresh(),
+      callback = function() vim.lsp.codelens.refresh() end,
+      buffer = 0
     })
   end
 end

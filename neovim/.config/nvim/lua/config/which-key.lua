@@ -43,12 +43,12 @@ local leader = {
     ["<C-space>"] = { "<cmd>lua require('telescope.builtin').resume()<CR>", "Last Search" },
     p = {
       name = "Packer",
-      C = { "<cmd>PackerClean", "Packer Clean" },
-      S = { "<cmd>PackerStatus", "Packer Status" },
-      c = { "<cmd>PackerCompile", "Packer Compile" },
-      i = { "<cmd>PackerInstall", "Packer Install" },
-      s = { "<cmd>PackerSync", "Packer Sync" },
-      u = { "<cmd>PackerUpdate", "Packer Update" },
+      C = { "<cmd>PackerClean<CR>", "Packer Clean" },
+      S = { "<cmd>PackerStatus<CR>", "Packer Status" },
+      c = { "<cmd>PackerCompile<CR>", "Packer Compile" },
+      i = { "<cmd>PackerInstall<CR>", "Packer Install" },
+      s = { "<cmd>PackerSync<CR>", "Packer Sync" },
+      u = { "<cmd>PackerUpdate<CR>", "Packer Update" },
     },
     s = {
       -- Telescope
