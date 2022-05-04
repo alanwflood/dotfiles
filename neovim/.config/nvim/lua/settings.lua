@@ -26,9 +26,6 @@ vim.opt.listchars = {
 
 vim.opt.ruler = true
 
---Set highlight on search
-vim.o.hlsearch = false
-
 --Make line numbers default
 vim.wo.number = true
 
@@ -55,7 +52,9 @@ vim.g.onedark_terminal_italics = 2
 vim.o.background = "dark" -- or "light" for light mode
 
 local colorscheme = "gruvbox"
-vim.api.nvim_command(("colorscheme %s"):format(colorscheme))
+if vim.tbl_contains(vim.fn.getcompletion("", "color"), colorscheme) then
+  vim.api.nvim_command(("colorscheme %s"):format(colorscheme))
+end
 vim.g.transparent_enabled = true
 
 --Remap space as leader key
