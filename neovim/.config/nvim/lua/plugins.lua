@@ -61,7 +61,8 @@ return require("packer").startup({
 
     -- Better buffer closing
     use({
-      "moll/vim-bbye",
+      "famiu/bufdelete.nvim",
+      cmd = { "Bdelete", "Bwipeout" },
     })
 
     -- Useful shortcuts for commands
