@@ -95,10 +95,10 @@ local on_attach = function(client, bufnr)
   })
 
   local lspLocDiagnosticsGroup = vim.api.nvim_create_augroup("LspLocDiagnostics", { clear = true })
-  vim.api.nvim_create_autocmd({ "BufWrite", "BufEnter", "InsertLeave" }, {
+  vim.api.nvim_create_autocmd({ "BufWrite", "BufEnter" }, {
     group = lspLocDiagnosticsGroup,
     pattern = "*",
-    callback = function() vim.diagnostic.setqflist({ open = false }) end, 
+    callback = function() vim.diagnostic.setloclist({ open = false }) end, 
   })
 
   if client.resolved_capabilities.documentFormattingProvider then
