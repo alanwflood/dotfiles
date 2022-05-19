@@ -234,8 +234,12 @@ return require("packer").startup({
     })
 
     -- Better Quick Fix window
-    use("kevinhwang91/nvim-bqf")
-    use("ten3roberts/qf.nvim")
+    use({ "kevinhwang91/nvim-bqf", ft = 'qf' })
+    use({"ten3roberts/qf.nvim",
+      config = function()
+        require('qf').setup{}
+      end,
+    })
 
     -- Collection of configurations for built-in LSP client
     use({
