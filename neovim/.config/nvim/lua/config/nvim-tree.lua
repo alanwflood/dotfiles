@@ -1,11 +1,4 @@
 return function()
-  vim.g.nvim_tree_show_icons = {
-    git = 1,
-    folders = 0,
-    files = 0,
-    folder_arrows = 0,
-  }
-
   vim.api.nvim_set_keymap("", "-", ":NvimTreeToggle<CR>", { silent = true })
 
   local tree_cb = require("nvim-tree.config").nvim_tree_callback

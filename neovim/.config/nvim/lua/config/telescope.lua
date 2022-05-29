@@ -20,7 +20,28 @@ function M.find_files()
 end
 
 function M.setup()
-  require("telescope").setup({
+  local has_telescope, telescope = pcall("telescope")
+  local has_trouble, trouble = pcall("trouble")
+
+  if not has_telescope then
+    return
+  end
+
+  local actions = require("telescope.actions")
+  local sorters = require("telescope.sorters")
+
+  local mappings = {
+    n = {
+      ["q"] = actions.close,
+      ["<c-t>"] = has_trouble and trouble.open_with_trouble,
+    },
+    i = {
+      ["<c-t>"] = has_trouble and trouble.open_with_trouble,
+      ["<C-u>"] = false,
+    },
+  }
+
+  telescope.setup({
     extensions = {
       fzf = {
         fuzzy = true,
@@ -43,18 +64,14 @@ function M.setup()
           mirror = true,
         },
       },
-      mappings = {
-        n = {
-          ["q"] = require("telescope.actions").close,
-        },
-      },
+      mappings = mappings,
       sorting_strategy = "ascending",
-      generic_sorter = require("telescope.sorters").get_fzy_sorter,
-      file_sorter = require("telescope.sorters").get_fzy_sorter,
+      generic_sorter = sorters.get_fzy_sorter,
+      file_sorter = sorters.get_fzy_sorter,
     },
   })
 
-  require("telescope").load_extension("fzf")
+  telescope.load_extension("fzf")
 end
 
 return M

@@ -105,6 +105,15 @@ local leader = {
         d = { "Delete workspace" },
         l = { "List workspaces" },
       },
+      t = {
+        name = "Trouble",
+        t = {'<cmd>Trouble<cr>', 'Toggle' },
+        w = {'<cmd>Trouble workspace_diagnostics<cr>', 'Toggle Workspace diagnostics' },
+        d = {'<cmd>Trouble workspace_diagnostics<cr>', 'Toggle Document diagnostics' },
+        l = {'<cmd>Trouble loclist<cr>', 'Toggle Loclist' },
+        q = {'<cmd>Trouble quickfix<cr>', 'Toggle Quickfix' },
+        r = {'<cmd>Trouble lsp_references<cr>', 'Toggle References' },
+      }
     },
     g = {
       name = "Git",

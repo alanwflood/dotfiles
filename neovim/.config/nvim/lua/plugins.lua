@@ -235,10 +235,18 @@ return require("packer").startup({
     })
 
     -- Better Quick Fix window
-    use({ "kevinhwang91/nvim-bqf", ft = 'qf' })
-    use({"ten3roberts/qf.nvim",
+    use({ "kevinhwang91/nvim-bqf", ft = "qf" })
+    use({
+      "ten3roberts/qf.nvim",
       config = function()
-        require('qf').setup{}
+        require("qf").setup({})
+      end,
+    })
+    use({
+      "folke/trouble.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("trouble").setup()
       end,
     })
 
@@ -390,7 +398,8 @@ return require("packer").startup({
       end,
     })
 
-    use({ "karb94/neoscroll.nvim",
+    use({
+      "karb94/neoscroll.nvim",
       event = { "BufRead", "BufNewFile" },
       config = function()
         require("neoscroll").setup()

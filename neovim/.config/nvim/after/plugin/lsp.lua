@@ -94,12 +94,12 @@ local on_attach = function(client, bufnr)
     callback = function() vim.diagnostic.open_float(0, { scope = "line", focusable = false }) end,
   })
 
-  local lspLocDiagnosticsGroup = vim.api.nvim_create_augroup("LspLocDiagnostics", { clear = true })
-  vim.api.nvim_create_autocmd({ "BufWrite", "BufEnter" }, {
-    group = lspLocDiagnosticsGroup,
-    pattern = "*",
-    callback = function() vim.diagnostic.setloclist({ open = false }) end, 
-  })
+  -- local lspLocDiagnosticsGroup = vim.api.nvim_create_augroup("LspLocDiagnostics", { clear = true })
+  -- vim.api.nvim_create_autocmd({ "BufWrite", "BufEnter" }, {
+  --   group = lspLocDiagnosticsGroup,
+  --   pattern = "*",
+  --   callback = function() vim.diagnostic.setloclist({ open = false }) end,
+  -- })
 
   if client.resolved_capabilities.documentFormattingProvider then
     vim.api.nvim_set_hl(0, 'LspReferenceRead', { link = 'SpecialKey' })
