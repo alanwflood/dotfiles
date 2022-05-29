@@ -429,6 +429,10 @@ return require("packer").startup({
     -- Themes
     use("joshdick/onedark.vim") -- Theme inspired by Atom
     use({ "ellisonleao/gruvbox.nvim", requires = { "rktjmp/lush.nvim" } }) -- Retro style
+    use({ "rose-pine/neovim", as = "rose-pine" })
+    use("ful1e5/onedark.nvim")
+    use("EdenEast/nightfox.nvim")
     use("folke/tokyonight.nvim")
+    use("bluz71/vim-nightfly-guicolors")
   end,
 })
