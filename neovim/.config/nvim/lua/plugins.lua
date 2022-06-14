@@ -244,7 +244,6 @@ return require("packer").startup({
     })
     use({
       "folke/trouble.nvim",
-      requires = "kyazdani42/nvim-web-devicons",
       config = function()
         require("trouble").setup()
       end,
@@ -373,15 +372,6 @@ return require("packer").startup({
       end,
     })
 
-    -- use({
-    -- 	"seblj/nvim-tabline",
-    -- 	config = function()
-    -- 		require("tabline").setup({
-    -- 			close_icon = "✖",
-    -- 		})
-    -- 	end,
-    -- })
-
     -- Bufferline
     use({
       "akinsho/bufferline.nvim",
@@ -408,7 +398,9 @@ return require("packer").startup({
 
     use({
       "kyazdani42/nvim-tree.lua",
-      config = require("config.nvim-tree"),
+      config = function()
+        require("config.nvim-tree").setup()
+      end,
     })
 
     -- Time tracking files

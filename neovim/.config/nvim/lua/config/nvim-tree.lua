@@ -1,4 +1,6 @@
-return function()
+local M = {}
+
+function M.setup()
   vim.api.nvim_set_keymap("", "-", ":NvimTreeToggle<CR>", { silent = true })
 
   local tree_cb = require("nvim-tree.config").nvim_tree_callback
@@ -20,3 +22,5 @@ return function()
     },
   })
 end
+
+return M
