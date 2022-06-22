@@ -324,25 +324,8 @@ return require("packer").startup({
         { "f3fora/cmp-spell" },
         { "onsails/lspkind-nvim" },
         { "hrsh7th/cmp-nvim-lsp-signature-help" },
-        -- { "tzachar/cmp-tabnine", run = "./install.sh" },
+        { "tzachar/cmp-tabnine", run = "./install.sh" },
       },
-    })
-
-    use({ "github/copilot.vim" })
-
-    use({
-      "zbirenbaum/copilot.lua",
-      event = { "VimEnter" },
-      config = function()
-        vim.defer_fn(function()
-          require("copilot").setup()
-        end, 100)
-      end,
-    })
-
-    use({
-      "zbirenbaum/copilot-cmp",
-      after = { "copilot.lua", "nvim-cmp" },
     })
 
     use({
@@ -379,10 +362,8 @@ return require("packer").startup({
         require("bufferline").setup({
           options = {
             mode = "tabs",
-            max_name_length = 14,
-            max_prefix_length = 13,
-            tab_size = 20,
-            separator_style = "thin",
+            separator_style = "thick",
+            always_show_bufferline = false,
           },
         })
       end,

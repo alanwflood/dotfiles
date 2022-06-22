@@ -25,7 +25,7 @@ M.setup = function()
     path = " Path",
     spell = " Spell",
     tmux = " Tmux",
-    copilot = " AI",
+    tabnine = " AI",
   }
 
   cmp.setup({
@@ -48,7 +48,7 @@ M.setup = function()
       },
       { name = "nvim_lsp_signature_help" },
       { name = "lsp" },
-      { name = "copilot", group_index = 1 },
+      { name = "tabnine" },
     },
     preselect = cmp.PreselectMode.None,
     formatting = {
