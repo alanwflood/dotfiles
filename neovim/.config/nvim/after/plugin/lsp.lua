@@ -1,6 +1,5 @@
 -- LSP settings
 local nvim_lsp_exists, nvim_lsp = pcall(require, "lspconfig")
-local lsp_installer_exists, lsp_installer = pcall(require, "mason.nvim")
 
 -- Pulling out things from
 local diagnostic = vim.diagnostic
@@ -95,13 +94,6 @@ local on_attach = function(client, bufnr)
 			vim.diagnostic.open_float(0, { scope = "line", focusable = false })
 		end,
 	})
-
-	-- local lspLocDiagnosticsGroup = vim.api.nvim_create_augroup("LspLocDiagnostics", { clear = true })
-	-- vim.api.nvim_create_autocmd({ "BufWrite", "BufEnter" }, {
-	--   group = lspLocDiagnosticsGroup,
-	--   pattern = "*",
-	--   callback = function() vim.diagnostic.setloclist({ open = false }) end,
-	-- })
 
 	if client.resolved_capabilities.documentFormattingProvider then
 		vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "SpecialKey" })
@@ -207,12 +199,21 @@ local server_settings = {
 -- config that activates keymaps and enables snippet support
 local function make_config()
 	local capabilities = lsp.protocol.make_client_capabilities()
-	capabilities.textDocument.completion.completionItem.snippetSupport = true
-	capabilities.textDocument.completion.completionItem.resolveSupport = {
-		properties = {
-			"documentation",
-			"detail",
-			"additionalTextEdits",
+	capabilities.textDocument.completion.completionItem = {
+		documentationFormat = { "markdown", "plaintext" },
+		snippetSupport = true,
+		preselectSupport = true,
+		insertReplaceSupport = true,
+		labelDetailsSupport = true,
+		deprecatedSupport = true,
+		commitCharactersSupport = true,
+		tagSupport = { valueSet = { 1 } },
+		resolveSupport = {
+			properties = {
+				"documentation",
+				"detail",
+				"additionalTextEdits",
+			},
 		},
 	}
 
@@ -227,13 +228,21 @@ local function make_config()
 	}
 end
 
-if lsp_installer_exists then
-	for key, settings in pairs(server_settings) do
-		local config = make_config()
-		lsp_installer[key].setup(vim.tbl_deep_extend(settings, config))
-		vim.cmd([[ do User LspAttachBuffers ]])
-	end
+for key, settings in pairs(server_settings) do
+	local config = make_config()
+	nvim_lsp[key].setup(vim.tbl_deep_extend("force", settings, config))
+	vim.cmd([[ do User LspAttachBuffers ]])
 end
 
+local mason_exists, mason = pcall(require, "mason")
+local mason_lsp_config_exists, mason_lsp_config = pcall(require, "mason-lspconfig")
+
+if mason_exists then
+	mason.setup()
+end
+
+if mason_lsp_config_exits then
+	mason_lsp_config.setup()
+end
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"
