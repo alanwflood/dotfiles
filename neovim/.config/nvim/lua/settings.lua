@@ -17,11 +17,11 @@ vim.opt.lazyredraw = true
 -- show trailing whitespace
 vim.opt.list = true
 vim.opt.listchars = {
-  tab = "………",
-  nbsp = "░",
-  extends = "»",
-  precedes = "«",
-  trail = "·",
+	tab = "………",
+	nbsp = "░",
+	extends = "»",
+	precedes = "«",
+	trail = "·",
 }
 
 vim.opt.ruler = true
@@ -53,7 +53,7 @@ vim.o.background = "dark" -- or "light" for light mode
 
 local colorscheme = "gruvbox"
 if vim.tbl_contains(vim.fn.getcompletion("", "color"), colorscheme) then
-  vim.api.nvim_command(("colorscheme %s"):format(colorscheme))
+	vim.api.nvim_command(("colorscheme %s"):format(colorscheme))
 end
 vim.g.transparent_enabled = true
 
@@ -65,8 +65,8 @@ vim.g.maplocalleader = " "
 -- Highlight on yank
 local yankHighlightGroup = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-  command = "silent! lua vim.highlight.on_yank()",
-  group = yankHighlightGroup,
+	command = "silent! lua vim.highlight.on_yank()",
+	group = yankHighlightGroup,
 })
 
 -- Sets :vimgrep to use ripgrep

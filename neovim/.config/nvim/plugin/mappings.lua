@@ -29,29 +29,28 @@ vim.api.nvim_set_keymap("n", "Q", "@@", { noremap = true })
 -- For neovim terminal :term, escape insert mode with esc
 vim.api.nvim_set_keymap("t", "<esc>", [["\<c-\>\<c-n>"]], { expr = true })
 
-vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
-vim.api.nvim_create_autocmd('TermOpen', {
-    group = 'TerminalSetup',
-    pattern = '*',
-    callback = function()
-        vim.opt_local.filetype = 'terminal'
-        vim.opt_local.number = false
-        vim.opt_local.signcolumn = 'no'
-    end
+vim.api.nvim_create_augroup("TerminalSetup", { clear = true })
+vim.api.nvim_create_autocmd("TermOpen", {
+	group = "TerminalSetup",
+	pattern = "*",
+	callback = function()
+		vim.opt_local.filetype = "terminal"
+		vim.opt_local.number = false
+		vim.opt_local.signcolumn = "no"
+	end,
 })
 
 vim.api.nvim_create_autocmd("TermOpen", {
-  group = 'TerminalSetup',
-  pattern = "term://*",
-  command = "startinsert",
+	group = "TerminalSetup",
+	pattern = "term://*",
+	command = "startinsert",
 })
 
 vim.api.nvim_create_autocmd("TermClose", {
-  group = 'TerminalSetup',
-  pattern = "term://*",
-  command = "stopinsert",
+	group = "TerminalSetup",
+	pattern = "term://*",
+	command = "stopinsert",
 })
-
 
 -- Allows you to visually select a section and then hit @ to run a macro on all lines
 -- https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db#.3dcn9prw6
