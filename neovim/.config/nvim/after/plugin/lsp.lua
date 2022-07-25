@@ -228,21 +228,26 @@ local function make_config()
 	}
 end
 
-for key, settings in pairs(server_settings) do
-	local config = make_config()
-	nvim_lsp[key].setup(vim.tbl_deep_extend("force", settings, config))
-	vim.cmd([[ do User LspAttachBuffers ]])
-end
 
 local mason_exists, mason = pcall(require, "mason")
-local mason_lsp_config_exists, mason_lsp_config = pcall(require, "mason-lspconfig")
+local mason_lspconfig_exists, mason_lspconfig = pcall(require, "mason-lspconfig")
 
 if mason_exists then
 	mason.setup()
 end
 
-if mason_lsp_config_exits then
-	mason_lsp_config.setup()
+if mason_lspconfig_exists then
+	mason_lspconfig.setup()
+	mason_lspconfig.setup_handlers({
+		function (server_name)
+			local config = make_config()
+			local has_settings = server_settings[server_name] ~= nil
+			local current_server_settings = vim.tbl_deep_extend("force", has_settings and server_settings[server_name] or {}, config);
+
+			nvim_lsp[server_name].setup(current_server_settings)
+		end
+	})
 end
+
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"

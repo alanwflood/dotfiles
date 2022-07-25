@@ -380,6 +380,20 @@ return require("packer").startup({
 			end,
 		})
 
+		-- Show buffer names by each window
+		use({
+			"b0o/incline.nvim",
+			config = function()
+				require("incline").setup({
+					hide = {
+						cursorline = true,
+						focused_win = true,
+						only_win = true,
+					},
+				})
+			end,
+		})
+
 		use({
 			"karb94/neoscroll.nvim",
 			event = { "BufRead", "BufNewFile" },
