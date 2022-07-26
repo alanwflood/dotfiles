@@ -300,13 +300,12 @@ local other = {
 			},
 		},
 		-- vim-sandwich
-		["ds"] = { "delete surrounding" },
-		["cs"] = { "change surrounding" },
-		["ys"] = {
+		["sd"] = { "delete surrounding" },
+		["sr"] = { "replace surrounding" },
+		["sa"] = {
 			name = "add surrounding",
 			s = "line",
 		},
-		["yS"] = { "add surrounding to line end" },
 		-- vim-abolish
 		["c"] = {
 			r = {
@@ -341,8 +340,6 @@ local visual = {
 		-- Matchup
 		["a%"] = { "block" },
 		["i%"] = { "block" },
-		-- Sandwich
-		["S"] = { "surround" },
 	},
 	opts = {
 		mode = "v", -- NORMAL mode
