@@ -9,7 +9,7 @@ function M.setup()
 	vim.wo.foldenable = false
 
 	treesitter.setup({
-		-- ensure_installed = 'maintained', -- one of "all", "maintained" (parsers with maintainers), or a list of languagen
+	  auto_install = true,
 		matchup = { enable = true },
 		rainbow = {
 			enable = true,

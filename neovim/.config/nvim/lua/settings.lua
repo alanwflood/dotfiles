@@ -71,6 +71,3 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- Sets :vimgrep to use ripgrep
 vim.opt.grepprg = "rg --hidden --vimgrep --smart-case --"
-
-vim.g.do_filetype_lua = 1 -- use filetype.lua
-vim.g.did_load_filetypes = 0 -- don't use filetype.vim

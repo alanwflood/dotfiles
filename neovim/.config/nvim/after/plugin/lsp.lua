@@ -95,7 +95,7 @@ local on_attach = function(client, bufnr)
 		end,
 	})
 
-	if client.resolved_capabilities.documentFormattingProvider then
+	if client.server_capabilities.documentFormattingProvider then
 		vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "SpecialKey" })
 		vim.api.nvim_set_hl(0, "LspReferenceText", { link = "SpecialKey" })
 		vim.api.nvim_set_hl(0, "LspReferenceWrite", { link = "SpecialKey" })
@@ -117,7 +117,7 @@ local on_attach = function(client, bufnr)
 		})
 	end
 
-	if client.resolved_capabilities.codeLensProvider then
+	if client.server_capabilities.codeLensProvider then
 		local lspCodeLensGroup = vim.api.nvim_create_augroup("LspCodeLens", { clear = true })
 		vim.api.nvim_create_autocmd({ "CursorHold", "BufEnter", "InsertLeave" }, {
 			group = lspCodeLensGroup,
@@ -218,7 +218,7 @@ local function make_config()
 	}
 
 	-- nvim-cmp supports additional completion capabilities
-	capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+	capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 	return {
 		-- enable snippet support
