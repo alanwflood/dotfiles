@@ -13,46 +13,47 @@ function checkBrew {
 	brew upgrade
 }
 
-function installCore {
+function installCorePackages {
 	echo 'INSTALLING PACKAGES THROUGH BREW'
 	# Installing the core stuff
-	brew install --cask osxfuse
 	brew tap bramstein/webfonttools
 
-	brew install \
-		coreutils \
-		moreutils \
-		findutils \
-		htop \
-		imagemagick \
-		nmap \
-		speedtest_cli \
-		tmux \
-		bat \
-		tree \
-		reattach-to-user-namespace \
-		rs/tap/curlie \
-		wget \
-		nnn \
-		# Fun stuff
-		cowsay lolcat fortune figlet \
-		# webfont generators
-		sfnt2woff \
-		sfnt2woff-zopfli \
-		woff2 \
-		# the rest
-		dark-mode \
-		git \
-		git-lfs \
-		tig \
-		fd \
-		jq \
-		shellcheck \
-		ripgrep \
-		trash \
-		editorconfig \
-		stow \
+	CORE_PACKAGES=(
+		bat
+		coreutils
+		cowsay
+		dark-mode
+		editorconfig
+		fd
+		figlet
+		findutils
+		fortune 
 		fzf
+		git
+		htop
+		imagemagick
+		jq
+		lazygit
+		lolcat 
+		moreutils
+		nmap
+		nnn
+		reattach-to-user-namespace
+		ripgrep
+		rs/tap/curlie
+		sfnt2woff
+		sfnt2woff-zopfli
+		shellcheck
+		speedtest_cli
+		stow
+		tmux
+		trash
+		tree
+		wget
+		woff2
+	)
+
+	brew install "${CORE_PACKAGES[@]}"
 
 	# Setup fzf
 	$(brew --prefix)/opt/fzf/install --all
@@ -63,31 +64,32 @@ function installCore {
 
 function installFish {
 	echo 'INSTALLING FISH SHELL'
+
 	# Install Fish shell
 	brew install fish
 	# Add fish executable path to shells file
-	grep -xqF "$(which fish)" /etc/shells || echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
+	grep -xqF "$(which fish)" /etc/shells || which fish | sudo tee -a /etc/shells
 	chsh -s "$(which fish)"
 }
 
 function installDevelopmentTools {
-	echo 'INSTALLING DEV TOOLS'
-	# Development
-	brew install \
-		python \
-		postgresql \
-		redis \
-		# node version manager
-		volta \
-		# C/C++
-		cmake \
-		ccls \
-		# Rust
-		rustup \
-		rust-analyzer \
-		# chruby
-		chruby \
+	echo 'INSTALLING DEV TOOLS & LANGUAGES'
+
+	DEV_PACKAGES=(
+		python
+		postgresql
+		redis
+		volta
+		cmake
+		ccls
+		rustup
+		rust-analyzer
+		chruby
 		ruby-install
+	)
+
+	# Development
+	brew install "${DEV_PACKAGES[@]}"
 
 	# Set rust to sane defaults
 	source "$HOME"/.cargo/env
@@ -98,16 +100,16 @@ function installDevelopmentTools {
 	# setup node
 	volta install node
 	volta install npm
-
-	# brew services start postgres
 }
 
 function installNeovim {
-# Neovim
-brew install neovim
-# Install vim plug
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	echo 'INSTALLING NEOVIM'
+
+	# Neovim
+	brew install neovim
+	# Install vim plug
+	curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+			https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 }
 
 function installEmacs {
@@ -126,42 +128,28 @@ function installCasks {
 	echo 'INSTALLING PACKAGES THROUGH BREW CASK'
 
 	CASKS=(
-		aerial
 		alacritty
 		alfred
 		bartender
 		bettertouchtool
-		bitwarden
 		dbeaver-community
 		disk-inventory-x
 		docker
 		google-chrome
 		figma
 		imageoptim
-		intellij-idea-ce
 		macdown
 		miro
 		mpv
-		nextcloud
-		nightowl
 		onyx
 		postman
 		sketch
 		spotify
 		the-unarchiver
-		tunnelblick
 		virtualbox
 	)
 
-	brew install --cask adoptopenjdk
 	brew install --cask "${CASKS[@]}"
-
-	# Fetch and install firefox developer edition
-	brew fetch --cask homebrew/cask-versions/firefox-developer-edition
-	brew install --cask firefox-developer-edition
-
-	# Add cask auto upgrade functionality
-	brew tap buo/cask-upgrade
 
 	# Set associations for new apps
 	brew install duti
@@ -181,6 +169,7 @@ function installCasks {
 		aiff
 		mkv
 	)
+
 	for filetype in $MPV_FILETYPES; do
 		duti -s io.mpv "$filetype" all
 	done
@@ -189,22 +178,21 @@ function installCasks {
 
 function installNpmPackages {
 	echo 'INSTALLING PACKAGES THROUGH NPM'
+
 	# global js packages
 	npm i -g \
 		lighthouse \
 		depcheck \
-		eslint \
-		js-beautify \
 		marked \
 		neovim \
 		npm-check-updates \
 		prettier \
-		stylelint \
 		tldr
 }
 
 function installPipPackages {
 	echo 'INSTALLING PACKAGES THROUGH PIP'
+
 	# global python packages
 	pip3 install wakatime
 	pip3 install --user neovim
@@ -218,29 +206,19 @@ function setupUpMachine {
 	defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
 	echo 'SETTING UP FOLDERS'
-
-	mkdir ~/Code
-	mkdir ~/Code/Misc
-	# git clone https://github.com/sebastiencs/icons-in-terminal.git ~/Code/Misc
-	# sh ~/Code/Misc/icons-in-terminal/install.sh
-
-	mkdir ~/Sites
-	mkdir ~/Sites/Work
-	mkdir ~/Sites/Education
-	mkdir ~/Sites/Personal
 }
 
 checkBrew
-installCore
-intallFish
+installCorePackages
+installFish
 installDevelopmentTools
 installNeovim
-installEmacs
+# installEmacs
 
 # Remove outdated versions from the cellar.
 brew cleanup
 
-installCasks
+# installCasks
 installNpmPackages
 installPipPackages
 setupMachine
