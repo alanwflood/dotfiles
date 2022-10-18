@@ -6,7 +6,10 @@ set -Ux VISUAL nvim
 source $HOME/.config/fish/aliases.shared.fish
 
 function fish_greeting
-    fortune -s | lolcat
+	if type -q fortune
+		and type -q lolcat
+	    fortune -s | lolcat
+	end
 end
 
 
@@ -24,7 +27,7 @@ switch (uname)
         set -gx PATH $PATH $ANDROID_HOME/tools
         set -gx PATH $PATH $ANDROID_HOME/tools/bin
         set -gx PATH $PATH $ANDROID_HOME/platform-tools
-        set -U fish_user_paths "/usr/local/sbin" $fish_user_paths
+        set -U fish_user_paths "/opt/homebrew/bin" $fish_user_paths
     case Linux
         set -Ux BROWSER /usr/bin/firefox-developer-edition
         source /usr/share/chruby/chruby.fish
@@ -47,7 +50,9 @@ set -gx PATH $PATH $HOME/.emacs.d/bin
 set -gx VOLTA_HOME "$HOME/.volta"
 set -gx PATH "$VOLTA_HOME/bin" $PATH
 # thefuck integration
-thefuck --alias | source
+if type -q thefuck
+	thefuck --alias | source
+end
 
 set -g theme_nerd_fonts yes
 set -g theme_display_date no
