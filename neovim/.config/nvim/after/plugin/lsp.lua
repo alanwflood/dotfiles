@@ -95,7 +95,7 @@ local on_attach = function(client, bufnr)
 		end,
 	})
 
-	if client.server_capabilities.documentFormattingProvider then
+	if client.server_capabilities.documentHighlightProvider then
 		vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "SpecialKey" })
 		vim.api.nvim_set_hl(0, "LspReferenceText", { link = "SpecialKey" })
 		vim.api.nvim_set_hl(0, "LspReferenceWrite", { link = "SpecialKey" })
