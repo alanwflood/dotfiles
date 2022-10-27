@@ -47,7 +47,7 @@ function M.setup()
 			lualine_y = {},
 			lualine_z = {},
 		},
-		extensions = { "nvim-tree", "fugitive" },
+		extensions = { "nvim-tree" },
 	})
 end
 

@@ -131,28 +131,19 @@ return require("packer").startup({
 		})
 
 		-- Git utils {{{
-		use({
-			"tpope/vim-fugitive",
-			cmd = {
-				"Git",
-				"Gstatus",
-				"Gblame",
-				"Gpush",
-				"Gpull",
-				"Gclog",
-				"G",
-				"Gedit",
-				"Gsplit",
-				"Gdiffsplit",
-				"Gvdiffsplit",
-				"Ggrep",
-				"Ggrep",
-				"GRename",
-				"GMove",
-				"GRemove",
-				"GDelete",
-				"GBrowse",
-			},
+		use({ 
+			"TimUntersberger/neogit",
+			commit = "4cc4476",
+			config = function()
+				local neogit = require("neogit");
+				-- Create commands
+				vim.api.nvim_create_user_command("G", function(state) neogit.open() end, {})
+				neogit.setup({
+					integrations = {
+						diffview = true
+					}
+				})
+			end
 		})
 
 		-- Git Diff View for files
@@ -223,6 +214,13 @@ return require("packer").startup({
 					"JoosepAlviste/nvim-ts-context-commentstring",
 					after = "nvim-treesitter",
 				},
+				-- Annotation generator
+				{
+					"danymat/neogen",
+					config = function()
+							require('neogen').setup({ snippet_engine = 'luasnip' })
+					end,
+				}
 			},
 		})
 
@@ -253,18 +251,21 @@ return require("packer").startup({
 		use({
 			"neovim/nvim-lspconfig",
 			requires = {
+				-- LSP Installer
 				{
 					"williamboman/mason.nvim",
 					config = function()
 						require("mason").setup()
 					end,
 				},
+				-- Bridges Mason with LSP config
 				{
 					"williamboman/mason-lspconfig.nvim",
 					config = function()
 						require("mason-lspconfig").setup()
 					end,
 				},
+				-- LSP loading status
 				{
 					"j-hui/fidget.nvim",
 					config = function()
@@ -287,8 +288,9 @@ return require("packer").startup({
 						require("todo-comments").setup()
 					end,
 				},
+				"jose-elias-alvarez/null-ls.nvim",
 				{
-					"jose-elias-alvarez/null-ls.nvim",
+					"jayp0521/mason-null-ls.nvim",
 					config = function()
 						require("config.null-ls").setup()
 					end,
@@ -342,7 +344,7 @@ return require("packer").startup({
 		use({
 			"editorconfig/editorconfig-vim",
 			config = function()
-				vim.g.EditorConfig_exclude_patterns = { "fugitive://.*", "scp://.*" }
+				vim.g.EditorConfig_exclude_patterns = { "scp://.*" }
 			end,
 		})
 
@@ -387,7 +389,6 @@ return require("packer").startup({
 				require("incline").setup({
 					hide = {
 						cursorline = true,
-						focused_win = true,
 						only_win = true,
 					},
 				})
@@ -423,6 +424,11 @@ return require("packer").startup({
 				require("config.which-key").setup()
 			end,
 		})
+
+		-- DAP
+		use("mfussenegger/nvim-dap")
+    use("rcarriga/nvim-dap-ui")
+    use("theHamsta/nvim-dap-virtual-text")
 
 		-- Themes
 		-- use("joshdick/onedark.vim") -- Theme inspired by Atom

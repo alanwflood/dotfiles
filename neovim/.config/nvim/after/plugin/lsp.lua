@@ -228,7 +228,6 @@ local function make_config()
 	}
 end
 
-
 local mason_exists, mason = pcall(require, "mason")
 local mason_lspconfig_exists, mason_lspconfig = pcall(require, "mason-lspconfig")
 
@@ -237,15 +236,33 @@ if mason_exists then
 end
 
 if mason_lspconfig_exists then
-	mason_lspconfig.setup()
+	mason_lspconfig.setup({
+		ensure_installed = {
+			"clangd",
+			"cssls",
+			"cssmodules_ls",
+			"denols",
+			"eslint",
+			"gopls",
+			"html",
+			"jsonls",
+			"rust_analyzer",
+			"sumneko_lua",
+			"tailwindcss",
+			"tsserver",
+			"vuels",
+			"yamlls",
+		},
+	})
 	mason_lspconfig.setup_handlers({
-		function (server_name)
+		function(server_name)
 			local config = make_config()
 			local has_settings = server_settings[server_name] ~= nil
-			local current_server_settings = vim.tbl_deep_extend("force", has_settings and server_settings[server_name] or {}, config);
+			local current_server_settings =
+				vim.tbl_deep_extend("force", has_settings and server_settings[server_name] or {}, config)
 
 			nvim_lsp[server_name].setup(current_server_settings)
-		end
+		end,
 	})
 end
 

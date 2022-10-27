@@ -36,6 +36,9 @@ vim.o.mouse = "a"
 vim.o.breakindent = true
 
 --Save undo history
+vim.opt.backupdir = os.getenv("HOME") .. "/.vim/backupdir"
+vim.opt.directory = os.getenv("HOME") .. "/.vim/swapdir"
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 
 --Case insensitive searching UNLESS /C or capital in search

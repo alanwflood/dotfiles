@@ -9,10 +9,10 @@ function M.setup()
 	vim.wo.foldenable = false
 
 	treesitter.setup({
-	  auto_install = true,
+		auto_install = true,
 		matchup = { enable = true },
 		rainbow = {
-			enable = true,
+			enable = false,
 			extended_mode = true,
 			max_file_lines = 1000,
 		},
