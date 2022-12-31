@@ -1,6 +1,7 @@
 set -Ux PAGER less
 set -Ux EDITOR nvim
 set -Ux VISUAL nvim
+set -x LANG en_UK.UTF-8
 
 # Source General Aliases
 source $HOME/.config/fish/aliases.shared.fish
@@ -91,3 +92,7 @@ if not test -d $HOME/.tmux/plugins/tpm
         git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
     end
 end
+
+# tabtab source for packages
+# uninstall by removing these lines
+[ -f ~/.config/tabtab/fish/__tabtab.fish ]; and . ~/.config/tabtab/fish/__tabtab.fish; or true
