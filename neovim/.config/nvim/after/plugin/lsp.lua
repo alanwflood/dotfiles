@@ -137,15 +137,16 @@ table.insert(runtime_path, "lua/?/init.lua")
 local server_settings = {
 	tsserver = {
 		root_dir = function(fname)
-			return nvim_lsp.util.root_pattern("tsconfig.json")(fname)
-				or nvim_lsp.util.root_pattern("package.json", "jsconfig.json", ".git")(fname)
-				or vim.loop.cwd()
+			return not nvim_lsp.util.root_pattern(".flowconfig", "deno.json", "deno.jsonc")(fname)
+				and (
+					nvim_lsp.util.root_pattern("tsconfig.json")(fname)
+					or nvim_lsp.util.root_pattern("package.json", "jsconfig.json", ".git")(fname)
+					or nvim_lsp.util.path.dirname(fname)
+				)
 		end,
 	},
 	denols = {
-		root_dir = function(fname)
-			return nvim_lsp.util.root_pattern("deps.ts")(fname) or nvim_lsp.util.root_pattern("mod.ts")(fname)
-		end,
+		root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
 	},
 	sumneko_lua = {
 		settings = {
@@ -238,6 +239,7 @@ end
 if mason_lspconfig_exists then
 	mason_lspconfig.setup({
 		ensure_installed = {
+			"bashls",
 			"clangd",
 			"cssls",
 			"cssmodules_ls",
@@ -253,6 +255,7 @@ if mason_lspconfig_exists then
 			"vuels",
 			"yamlls",
 		},
+		automatic_installation = true,
 	})
 	mason_lspconfig.setup_handlers({
 		function(server_name)
