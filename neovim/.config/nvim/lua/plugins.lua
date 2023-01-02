@@ -202,23 +202,6 @@ return require("packer").startup({
 					after = "nvim-treesitter",
 				},
 				{
-					"p00f/nvim-ts-rainbow",
-					after = "nvim-treesitter",
-					config = function()
-						require("nvim-treesitter.configs").setup({
-							rainbow = {
-								enable = true,
-								extended_mode = true,
-								max_file_lines = 1000,
-							},
-						})
-					end,
-				},
-				{
-					"windwp/nvim-ts-autotag",
-					after = "nvim-treesitter",
-				},
-				{
 					-- Context based commenting
 					"JoosepAlviste/nvim-ts-context-commentstring",
 					after = "nvim-treesitter",

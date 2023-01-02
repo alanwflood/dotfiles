@@ -1,7 +1,8 @@
 local M = {}
 
-local function t(str)
-	return vim.api.nvim_replace_termcodes(str, true, true, true)
+local function has_words_before()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
 end
 
 M.setup = function()
@@ -32,7 +33,7 @@ M.setup = function()
 		sources = {
 			{
 				name = "buffer",
-				max_item_count = 10,
+				max_item_count = 5,
 				keyword_length = 5,
 			},
 			{ name = "calc" },
@@ -44,7 +45,7 @@ M.setup = function()
 			{ name = "spell" },
 			{
 				name = "tmux",
-				max_item_count = 10,
+				max_item_count = 2,
 			},
 			{ name = "nvim_lsp_signature_help" },
 			{ name = "lsp" },
@@ -66,6 +67,7 @@ M.setup = function()
 		duplicates = {
 			nvim_lsp = 1,
 			luasnip = 1,
+			cmp_tabnine = 1,
 			buffer = 1,
 			path = 1,
 		},
@@ -78,19 +80,17 @@ M.setup = function()
 				border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
 			},
 		},
-		experimental = {
-			ghost_text = false,
-			native_menu = false,
-		},
 		completion = {
 			completeopt = "menu,menuone,noinsert",
 			keyword_length = 1,
 		},
 		mapping = {
-			["<Up>"] = cmp.mapping.select_prev_item(),
-			["<Down>"] = cmp.mapping.select_next_item(),
-			["<C-p>"] = cmp.mapping.select_prev_item(),
-			["<C-n>"] = cmp.mapping.select_next_item(),
+			["<Up>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+			["<Down>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+			["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+			["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+			["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+			["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
 			["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
 			["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
 			["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
@@ -99,7 +99,7 @@ M.setup = function()
 				i = cmp.mapping.abort(),
 				c = cmp.mapping.close(),
 			}),
-			["<CR>"] = cmp.mapping.confirm({ select = true }),
+			["<CR>"] = cmp.mapping.confirm({ select = false }),
 			["<Tab>"] = cmp.mapping(function(fallback)
 				if cmp.visible() then
 					cmp.select_next_item()
@@ -107,6 +107,8 @@ M.setup = function()
 					luasnip.expand()
 				elseif luasnip.expand_or_jumpable() then
 					luasnip.expand_or_jump()
+				elseif has_words_before() then
+					cmp.complete()
 				else
 					fallback()
 				end
