@@ -169,15 +169,6 @@ return require("packer").startup({
 		})
 		-- }}}
 
-		-- Auto closes elements
-		use({
-			"windwp/nvim-autopairs",
-			after = "nvim-cmp",
-			config = function()
-				require("config.autopairs").setup()
-			end,
-		})
-
 		-- Highlight, edit, and navigate code using a fast incremental parsing library
 		use({
 			"nvim-treesitter/nvim-treesitter",
@@ -313,12 +304,21 @@ return require("packer").startup({
 		-- Format runner
 		-- use 'mhartington/formatter.nvim'
 
+		-- Installs snippets for multiple languages
+		use({
+			"rafamadriz/friendly-snippets",
+			module = { "cmp", "cmp_nvim_lsp" },
+			event = "InsertEnter",
+		})
+
 		-- Snippets plugin
 		use({
 			"L3MON4D3/LuaSnip",
-			require = {
-				{ "rafamadriz/friendly-snippets" },
-			},
+			config = function()
+				require("luasnip.loaders.from_vscode").lazy_load()
+			end,
+			wants = "friendly-snippets",
+			after = "nvim-cmp",
 		})
 
 		-- Autocompletion plugin
@@ -338,9 +338,18 @@ return require("packer").startup({
 				{ "hrsh7th/cmp-nvim-lsp-signature-help" },
 				{ "hrsh7th/cmp-path" },
 				{ "onsails/lspkind-nvim" },
-				{ "saadparwaiz1/cmp_luasnip" },
+				{ "saadparwaiz1/cmp_luasnip", after = "LuaSnip" },
 				{ "tzachar/cmp-tabnine", run = "./install.sh" },
 			},
+		})
+
+		-- Auto closes elements
+		use({
+			"windwp/nvim-autopairs",
+			after = "nvim-cmp",
+			config = function()
+				require("config.autopairs").setup()
+			end,
 		})
 
 		use({
@@ -352,9 +361,9 @@ return require("packer").startup({
 
 		-- Surround plugins
 		use({
-			"machakann/vim-sandwich",
+			"echasnovski/mini.surround",
 			config = function()
-				require("config.vim-sandwich").setup()
+				require("mini.surround").setup()
 			end,
 		})
 
