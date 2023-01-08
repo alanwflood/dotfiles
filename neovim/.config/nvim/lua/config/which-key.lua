@@ -79,6 +79,7 @@ local leader = {
 				"<cmd>lua require('telescope.builtin').tags { only_current_buffer = true }<CR>",
 				"Tags in current buffer",
 			},
+			u = { "<cmd>lua require('telescope').extensions.undo.undo()<CR>", "Undotree" },
 			[";"] = { "<cmd>lua require('telescope.builtin').colorscheme()<CR>", "Color Schemes" },
 			["+"] = { "<cmd>lua require('telescope.builtin').pickers()<CR>", "More Pickers" },
 			["?"] = { "<cmd>lua require('telescope.builtin').help_tags()<CR>", "Help tags" },

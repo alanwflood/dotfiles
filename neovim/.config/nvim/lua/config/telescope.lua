@@ -24,7 +24,6 @@ function M.setup()
 	local actions = require("telescope.actions")
 	local action_layout = require("telescope.actions.layout")
 	local sorters = require("telescope.sorters")
-	local has_trouble, trouble = pcall("trouble")
 
 	telescope.setup({
 		extensions = {
@@ -33,7 +32,7 @@ function M.setup()
 				override_generic_sorter = false, -- override the generic sorter
 				override_file_sorter = true, -- override the file sorter
 				case_mode = "smart_case",
-			},
+			}
 		},
 		defaults = {
 			selection_caret = "▶ ",
@@ -52,11 +51,9 @@ function M.setup()
 			mappings = {
 				n = {
 					["q"] = actions.close,
-					["<c-t>"] = has_trouble and trouble.open_with_trouble,
 					["<C-P>"] = action_layout.toggle_preview,
 				},
 				i = {
-					["<c-t>"] = has_trouble and trouble.open_with_trouble,
 					["<C-u>"] = false,
 					["<C-P>"] = action_layout.toggle_preview,
 				},
@@ -67,6 +64,7 @@ function M.setup()
 		},
 	})
 	telescope.load_extension("fzf")
+	telescope.load_extension("undo")
 end
 
 return M

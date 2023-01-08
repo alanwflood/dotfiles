@@ -87,6 +87,7 @@ return require("packer").startup({
 			module = "telescope",
 			requires = {
 				{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+				{ "debugloop/telescope-undo.nvim" }
 			},
 			config = function()
 				require("config.telescope").setup()
@@ -295,14 +296,6 @@ return require("packer").startup({
 				{ "b0o/SchemaStore.nvim" },
 			},
 		})
-
-		use({
-			"SmiteshP/nvim-navic",
-			requires = "neovim/nvim-lspconfig",
-		})
-
-		-- Format runner
-		-- use 'mhartington/formatter.nvim'
 
 		-- Installs snippets for multiple languages
 		use({
