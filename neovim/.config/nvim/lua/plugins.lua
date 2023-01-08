@@ -50,15 +50,6 @@ return require("packer").startup({
 			end,
 		})
 
-		-- Cursorhold fix
-		use({
-			"antoinemadec/FixCursorHold.nvim",
-			event = "BufRead",
-			config = function()
-				vim.g.cursorhold_updatetime = 100
-			end,
-		})
-
 		-- Better buffer closing
 		use({
 			"famiu/bufdelete.nvim",
@@ -84,7 +75,10 @@ return require("packer").startup({
 		use("tpope/vim-eunuch")
 
 		-- Lots of helpers for string manipulation
-		use("tpope/vim-abolish")
+		use({
+			"tpope/vim-abolish",
+			cmd = { "Abolish", "S", "Subvert" },
+		})
 
 		-- UI to select things (files, grep results, open buffers...)
 		use({
@@ -166,6 +160,13 @@ return require("packer").startup({
 				require("config.gitsigns").setup()
 			end,
 		})
+
+		use({
+			"akinsho/git-conflict.nvim",
+			config = function()
+				require("git-conflict").setup({})
+			end,
+		})
 		-- }}}
 
 		-- Auto closes elements
@@ -217,8 +218,7 @@ return require("packer").startup({
 		})
 
 		use({
-			"norcalli/nvim-colorizer.lua",
-			event = "BufReadPre",
+			"NvChad/nvim-colorizer.lua",
 			config = function()
 				require("colorizer").setup()
 			end,
@@ -272,7 +272,12 @@ return require("packer").startup({
 						})
 					end,
 				},
-				"folke/lua-dev.nvim",
+				{
+					"folke/neodev.nvim",
+					config = function()
+						require("neodev").setup()
+					end,
+				},
 				{
 					"folke/todo-comments.nvim",
 					requires = "nvim-lua/plenary.nvim",
@@ -300,6 +305,11 @@ return require("packer").startup({
 			},
 		})
 
+		use({
+			"SmiteshP/nvim-navic",
+			requires = "neovim/nvim-lspconfig",
+		})
+
 		-- Format runner
 		-- use 'mhartington/formatter.nvim'
 
@@ -318,17 +328,17 @@ return require("packer").startup({
 				require("config.completion").setup()
 			end,
 			requires = {
-				{ "hrsh7th/cmp-nvim-lsp" },
 				{ "andersevenrud/cmp-tmux" },
-				{ "saadparwaiz1/cmp_luasnip" },
-				{ "hrsh7th/cmp-path" },
-				{ "hrsh7th/cmp-buffer" },
-				{ "hrsh7th/cmp-cmdline" },
-				{ "hrsh7th/cmp-calc" },
-				{ "hrsh7th/cmp-emoji" },
 				{ "f3fora/cmp-spell" },
-				{ "onsails/lspkind-nvim" },
+				{ "hrsh7th/cmp-buffer" },
+				{ "hrsh7th/cmp-calc" },
+				{ "hrsh7th/cmp-cmdline" },
+				{ "hrsh7th/cmp-emoji" },
+				{ "hrsh7th/cmp-nvim-lsp" },
 				{ "hrsh7th/cmp-nvim-lsp-signature-help" },
+				{ "hrsh7th/cmp-path" },
+				{ "onsails/lspkind-nvim" },
+				{ "saadparwaiz1/cmp_luasnip" },
 				{ "tzachar/cmp-tabnine", run = "./install.sh" },
 			},
 		})

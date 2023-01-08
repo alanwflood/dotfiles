@@ -1,5 +1,6 @@
 -- LSP settings
 local nvim_lsp_exists, nvim_lsp = pcall(require, "lspconfig")
+local navic_exists, navic = pcall(require, "nvim-navic")
 
 -- Pulling out things from
 local diagnostic = vim.diagnostic
@@ -126,6 +127,10 @@ local on_attach = function(client, bufnr)
 			end,
 			buffer = 0,
 		})
+	end
+
+	if client.server_capabilities.documentSymbolProvider and navic_exists then
+		navic.attach(client, bufnr)
 	end
 end
 
