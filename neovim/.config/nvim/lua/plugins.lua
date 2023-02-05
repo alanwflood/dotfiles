@@ -87,7 +87,7 @@ return require("packer").startup({
 			module = "telescope",
 			requires = {
 				{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
-				{ "debugloop/telescope-undo.nvim" }
+				{ "debugloop/telescope-undo.nvim" },
 			},
 			config = function()
 				require("config.telescope").setup()
@@ -307,8 +307,14 @@ return require("packer").startup({
 		-- Snippets plugin
 		use({
 			"L3MON4D3/LuaSnip",
+			-- follow latest release.
+			tag = "v<CurrentMajor>.*",
+			-- install jsregexp (optional!:).
+			run = "make install_jsregexp",
 			config = function()
+				require("luasnip.loaders.from_lua").lazy_load()
 				require("luasnip.loaders.from_vscode").lazy_load()
+				require("luasnip.loaders.from_snipmate").lazy_load()
 			end,
 			wants = "friendly-snippets",
 			after = "nvim-cmp",

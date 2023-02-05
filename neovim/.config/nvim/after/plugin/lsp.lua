@@ -53,47 +53,62 @@ local on_attach = function(client, bufnr)
 
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-	local function buf_set_keymap(...)
-		vim.api.nvim_buf_set_keymap(bufnr, ...)
-	end
-
-	local opts = { noremap = true, silent = true }
-	buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-	buf_set_keymap("n", "C-k", "<cmd>lua vim.lsp.signature_help()", opts)
-	buf_set_keymap("n", "[d", '<cmd>lua vim.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', opts)
-	buf_set_keymap("n", "]d", '<cmd>lua vim.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', opts)
-	buf_set_keymap("n", "<leader>LD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-	buf_set_keymap("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-	buf_set_keymap("n", "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-	buf_set_keymap("n", "<leader>le", "<cmd>lua vim.diagnostic.open_float(0, { focusable = false })<CR>", opts)
-	buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-	buf_set_keymap("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-	buf_set_keymap("n", "<leader>ll", "<cmd>lua vim.lsp.diagnostic.setloclist()<CR>", opts)
-	buf_set_keymap("n", "<leader>lp", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-	buf_set_keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-	buf_set_keymap("n", "<leader>ls", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-	buf_set_keymap("n", "<leader>lwa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-	buf_set_keymap("n", "<leader>lwd", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-	buf_set_keymap(
-		"n",
-		"<leader>lwl",
-		"<cmd>lua <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
-		opts
-	)
-	buf_set_keymap("n", "<leader>sy", "", opts)
+	local opts = { noremap = true, silent = true, buffer = bufnr }
+	vim.keymap.set("n", "K", function()
+		vim.lsp.buf.hover()
+	end, opts)
+	vim.keymap.set("n", "C-k", function()
+		vim.lsp.signature_help()
+	end, opts)
+	vim.keymap.set("n", "[d", function()
+		vim.diagnostic.goto_next({ popup_opts = { border = "single" } })
+	end, opts)
+	vim.keymap.set("n", "]d", function()
+		vim.diagnostic.goto_prev({ popup_opts = { border = "single" } })
+	end, opts)
+	vim.keymap.set("n", "<leader>la", function()
+		vim.lsp.buf.code_action()
+	end, opts)
+	vim.keymap.set("n", "<leader>ld", function()
+		vim.lsp.buf.definition()
+	end, opts)
+	vim.keymap.set("n", "<leader>lD", function()
+		vim.lsp.buf.declaration()
+	end, opts)
+	vim.keymap.set("n", "<leader>le", function()
+		vim.diagnostic.open_float(0, { scope = "line", focusable = false })
+	end, opts)
+	vim.keymap.set("n", "<leader>lf", function()
+		vim.lsp.buf.formatting()
+	end, opts)
+	vim.keymap.set("n", "<leader>li", function()
+		vim.lsp.buf.implementation()
+	end, opts)
+	vim.keymap.set("n", "<leader>ll", function()
+		vim.lsp.diagnostic.setloclist()
+	end, opts)
+	vim.keymap.set("n", "<leader>lp", function()
+		vim.lsp.buf.type_definition()
+	end, opts)
+	vim.keymap.set("n", "<leader>lr", function()
+		vim.lsp.buf.rename()
+	end, opts)
+	vim.keymap.set("n", "<leader>ls", function()
+		vim.lsp.buf.references()
+	end, opts)
+	vim.keymap.set("n", "<leader>lwa", function()
+		vim.lsp.buf.add_workspace_folder()
+	end, opts)
+	vim.keymap.set("n", "<leader>lwd", function()
+		vim.lsp.buf.remove_workspace_folder()
+	end, opts)
+	vim.keymap.set("n", "<leader>lwl", function()
+		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+	end, opts)
 
 	vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, {})
 
 	vim.o.updatetime = 250
-
-	local lspLineDiagnosticsGroup = vim.api.nvim_create_augroup("LspLineDiagnostics", { clear = true })
-	vim.api.nvim_create_autocmd("CursorHold", {
-		group = lspLineDiagnosticsGroup,
-		pattern = "*",
-		callback = function()
-			vim.diagnostic.open_float(0, { scope = "line", focusable = false })
-		end,
-	})
 
 	if client.server_capabilities.documentHighlightProvider then
 		vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "SpecialKey" })
