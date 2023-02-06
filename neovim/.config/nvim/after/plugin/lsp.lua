@@ -57,7 +57,7 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "K", function()
 		vim.lsp.buf.hover()
 	end, opts)
-	vim.keymap.set("n", "C-k", function()
+	vim.keymap.set({ "n", "i" }, "C-k", function()
 		vim.lsp.signature_help()
 	end, opts)
 	vim.keymap.set("n", "[d", function()
@@ -110,6 +110,15 @@ local on_attach = function(client, bufnr)
 
 	vim.o.updatetime = 250
 
+	local lspFormatOnSaveGroup = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true })
+	vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+		group = lspFormatOnSaveGroup,
+		callback = function()
+			vim.lsp.buf.format()
+		end,
+		buffer = bufnr,
+	})
+
 	if client.server_capabilities.documentHighlightProvider then
 		vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "SpecialKey" })
 		vim.api.nvim_set_hl(0, "LspReferenceText", { link = "SpecialKey" })
@@ -121,14 +130,14 @@ local on_attach = function(client, bufnr)
 			callback = function()
 				vim.lsp.buf.document_highlight()
 			end,
-			buffer = 0,
+			buffer = bufnr,
 		})
 		vim.api.nvim_create_autocmd({ "CursorMoved" }, {
 			group = lspDocumentHighlightGroup,
 			callback = function()
 				vim.lsp.buf.clear_references()
 			end,
-			buffer = 0,
+			buffer = bufnr,
 		})
 	end
 
@@ -139,7 +148,7 @@ local on_attach = function(client, bufnr)
 			callback = function()
 				vim.lsp.codelens.refresh()
 			end,
-			buffer = 0,
+			buffer = bufnr,
 		})
 	end
 end
@@ -153,11 +162,11 @@ local server_settings = {
 	tsserver = {
 		root_dir = function(fname)
 			return not nvim_lsp.util.root_pattern(".flowconfig", "deno.json", "deno.jsonc")(fname)
-				and (
+					and (
 					nvim_lsp.util.root_pattern("tsconfig.json")(fname)
-					or nvim_lsp.util.root_pattern("package.json", "jsconfig.json", ".git")(fname)
-					or nvim_lsp.util.path.dirname(fname)
-				)
+							or nvim_lsp.util.root_pattern("package.json", "jsconfig.json", ".git")(fname)
+							or nvim_lsp.util.path.dirname(fname)
+					)
 		end,
 	},
 	denols = {
@@ -277,7 +286,7 @@ if mason_lspconfig_exists then
 			local config = make_config()
 			local has_settings = server_settings[server_name] ~= nil
 			local current_server_settings =
-				vim.tbl_deep_extend("force", has_settings and server_settings[server_name] or {}, config)
+			vim.tbl_deep_extend("force", has_settings and server_settings[server_name] or {}, config)
 
 			nvim_lsp[server_name].setup(current_server_settings)
 		end,
