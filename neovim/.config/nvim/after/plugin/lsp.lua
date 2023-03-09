@@ -273,7 +273,7 @@ if mason_lspconfig_exists then
 			"html",
 			"jsonls",
 			"rust_analyzer",
-			"sumneko_lua",
+			"lua_ls",
 			"tailwindcss",
 			"tsserver",
 			"vuels",
