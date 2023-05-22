@@ -162,11 +162,11 @@ local server_settings = {
 	tsserver = {
 		root_dir = function(fname)
 			return not nvim_lsp.util.root_pattern(".flowconfig", "deno.json", "deno.jsonc")(fname)
-					and (
+				and (
 					nvim_lsp.util.root_pattern("tsconfig.json")(fname)
-							or nvim_lsp.util.root_pattern("package.json", "jsconfig.json", ".git")(fname)
-							or nvim_lsp.util.path.dirname(fname)
-					)
+					or nvim_lsp.util.root_pattern("package.json", "jsconfig.json", ".git")(fname)
+					or nvim_lsp.util.path.dirname(fname)
+				)
 		end,
 	},
 	denols = {
@@ -286,7 +286,7 @@ if mason_lspconfig_exists then
 			local config = make_config()
 			local has_settings = server_settings[server_name] ~= nil
 			local current_server_settings =
-			vim.tbl_deep_extend("force", has_settings and server_settings[server_name] or {}, config)
+				vim.tbl_deep_extend("force", has_settings and server_settings[server_name] or {}, config)
 
 			nvim_lsp[server_name].setup(current_server_settings)
 		end,
