@@ -40,12 +40,11 @@ function installCorePackages {
 		nnn
 		reattach-to-user-namespace
 		ripgrep
-		rs/tap/curlie
 		sfnt2woff
 		sfnt2woff-zopfli
-		shellcheck
 		speedtest_cli
 		stow
+		tealdeer
 		tmux
 		trash
 		tree
@@ -56,7 +55,7 @@ function installCorePackages {
 	brew install "${CORE_PACKAGES[@]}"
 
 	# Setup fzf
-	$(brew --prefix)/opt/fzf/install --all
+	"$(brew --prefix)/opt/fzf/install --all"
 
 	# Install Tmux Plugin Manager
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -84,8 +83,8 @@ function installDevelopmentTools {
 		ccls
 		rustup
 		rust-analyzer
-		chruby
-		ruby-install
+                go # chruby
+		# ruby-install
 	)
 
 	# Development
@@ -138,19 +137,18 @@ function installCasks {
 		google-chrome
 		figma
 		imageoptim
-		macdown
-		miro
 		mpv
 		onyx
 		postman
-		sketch
 		spotify
 		the-unarchiver
-		virtualbox
 	)
 
 	brew install --cask "${CASKS[@]}"
 
+}
+
+function assignMpvFiletypes {
 	# Set associations for new apps
 	brew install duti
 	MPV_FILETYPES=(
@@ -170,7 +168,7 @@ function installCasks {
 		mkv
 	)
 
-	for filetype in $MPV_FILETYPES; do
+	for filetype in "${MPV_FILETYPES[@]}"; do
 		duti -s io.mpv "$filetype" all
 	done
 }
@@ -183,11 +181,9 @@ function installNpmPackages {
 	npm i -g \
 		lighthouse \
 		depcheck \
-		marked \
 		neovim \
 		npm-check-updates \
-		prettier \
-		tldr
+		prettier
 }
 
 function installPipPackages {
@@ -196,10 +192,9 @@ function installPipPackages {
 	# global python packages
 	pip3 install wakatime
 	pip3 install --user neovim
-	pip3 install proselint
 }
 
-function setupUpMachine {
+function setupMachine {
 	echo 'SETTING DEFAULTS'
 
 	# Show filename extensions by default
@@ -218,9 +213,10 @@ installNeovim
 # Remove outdated versions from the cellar.
 brew cleanup
 
-# installCasks
+installCasks
 installNpmPackages
 installPipPackages
+assignMpvFiletypes
 setupMachine
 
 echo 'FINITO SETTING UP WOOP WOOP 🎉'
