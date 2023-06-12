@@ -71,9 +71,6 @@ return require("packer").startup({
 			end,
 		})
 
-		-- Add's plenty of sugar syntax for unix commands like, :Move, :Rename, :Mkdir etc,
-		use("tpope/vim-eunuch")
-
 		-- Lots of helpers for string manipulation
 		use({
 			"tpope/vim-abolish",
@@ -83,6 +80,7 @@ return require("packer").startup({
 		-- UI to select things (files, grep results, open buffers...)
 		use({
 			"nvim-telescope/telescope.nvim",
+			tag = "0.1.1",
 			cmd = "Telescope",
 			module = "telescope",
 			requires = {
@@ -91,14 +89,6 @@ return require("packer").startup({
 			},
 			config = function()
 				require("config.telescope").setup()
-			end,
-		})
-
-		-- Terminal
-		use({
-			"akinsho/nvim-toggleterm.lua",
-			config = function()
-				require("config.toggleterm").setup()
 			end,
 		})
 
@@ -210,9 +200,36 @@ return require("packer").startup({
 		})
 
 		use({
-			"NvChad/nvim-colorizer.lua",
+			"echasnovski/mini.hipatterns",
 			config = function()
-				require("colorizer").setup()
+				local hipatterns = require("mini.hipatterns")
+				hipatterns.setup({
+					highlighters = {
+						fixme = {
+							pattern = "%f[%w]()FIXME()%f[%W]",
+							group = "MiniHipatternsFixme",
+						},
+						bug = {
+							pattern = "%f[%w]()BUG()%f[%W]",
+							group = "MiniHipatternsFixme",
+						},
+						hack = {
+							pattern = "%f[%w]()HACK()%f[%W]",
+							group = "MiniHipatternsHack",
+						},
+						todo = {
+							pattern = "%f[%w]()TODO()%f[%W]",
+							group = "MiniHipatternsTodo",
+						},
+						note = {
+							pattern = "%f[%w]()NOTE()%f[%W]",
+							group = "MiniHipatternsNote",
+						},
+
+						-- Highlight hex color strings (`#rrggbb`) using that color
+						hex_color = hipatterns.gen_highlighter.hex_color(),
+					},
+				})
 			end,
 		})
 
@@ -226,6 +243,7 @@ return require("packer").startup({
 		})
 		use({
 			"folke/trouble.nvim",
+			cmd = 'Trouble',
 			config = function()
 				require("trouble").setup()
 			end,
@@ -268,13 +286,6 @@ return require("packer").startup({
 					"folke/neodev.nvim",
 					config = function()
 						require("neodev").setup()
-					end,
-				},
-				{
-					"folke/todo-comments.nvim",
-					requires = "nvim-lua/plenary.nvim",
-					config = function()
-						require("todo-comments").setup()
 					end,
 				},
 				"jose-elias-alvarez/null-ls.nvim",
@@ -406,14 +417,6 @@ return require("packer").startup({
 		})
 
 		use({
-			"karb94/neoscroll.nvim",
-			event = { "BufRead", "BufNewFile" },
-			config = function()
-				require("neoscroll").setup()
-			end,
-		})
-
-		use({
 			"kyazdani42/nvim-tree.lua",
 			config = function()
 				require("config.nvim-tree").setup()
@@ -443,6 +446,7 @@ return require("packer").startup({
 
 		-- Themes
 		-- use("joshdick/onedark.vim") -- Theme inspired by Atom
+		use("sainnhe/everforest")
 		use("RRethy/nvim-base16")
 		use({ "ellisonleao/gruvbox.nvim", requires = { "rktjmp/lush.nvim" } }) -- Retro style
 		-- use({ "rose-pine/neovim", as = "rose-pine" })
