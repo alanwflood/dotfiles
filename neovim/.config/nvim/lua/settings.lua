@@ -74,3 +74,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- Sets :vimgrep to use ripgrep
 vim.opt.grepprg = "rg --hidden --vimgrep --smart-case --"
+
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldlevel = 99
+
