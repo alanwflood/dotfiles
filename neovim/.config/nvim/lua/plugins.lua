@@ -82,7 +82,8 @@ return require("packer").startup({
 
 		-- UI to select things (files, grep results, open buffers...)
 		use({
-			"nvim-telescope/telescope.nvim",
+			'nvim-telescope/telescope.nvim',
+			tag = '0.1.1',
 			cmd = "Telescope",
 			module = "telescope",
 			requires = {
@@ -295,6 +296,14 @@ return require("packer").startup({
 				-- JSON Schemas
 				{ "b0o/SchemaStore.nvim" },
 			},
+		})
+
+		-- Better LSP hover windows
+		use({
+			"Fildo7525/pretty_hover",
+			config = function()
+				require("pretty_hover").setup()
+			end,
 		})
 
 		-- Installs snippets for multiple languages
