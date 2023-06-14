@@ -26,7 +26,7 @@ function M.setup()
 	local sorters = require("telescope.sorters")
 
 	-- Fix code folding not working when entering a buffer from telescope
-	vim.api.nvim_create_autocmd({ "BufEnter" }, { pattern = { "*" }, command = "normal zx", })
+	vim.api.nvim_create_autocmd({ "BufEnter" }, { pattern = { "*" }, command = "normal zx" })
 
 	telescope.setup({
 		extensions = {

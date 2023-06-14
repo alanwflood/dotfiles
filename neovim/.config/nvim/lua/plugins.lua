@@ -79,8 +79,8 @@ return require("packer").startup({
 
 		-- UI to select things (files, grep results, open buffers...)
 		use({
-			'nvim-telescope/telescope.nvim',
-			tag = '0.1.1',
+			"nvim-telescope/telescope.nvim",
+			tag = "0.1.1",
 			cmd = "Telescope",
 			module = "telescope",
 			requires = {
@@ -243,7 +243,7 @@ return require("packer").startup({
 		})
 		use({
 			"folke/trouble.nvim",
-			cmd = 'Trouble',
+			cmd = "Trouble",
 			config = function()
 				require("trouble").setup()
 			end,
@@ -270,6 +270,7 @@ return require("packer").startup({
 				-- LSP loading status
 				{
 					"j-hui/fidget.nvim",
+					tag = "legacy",
 					config = function()
 						require("fidget").setup({
 							window = {
