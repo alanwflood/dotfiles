@@ -20,7 +20,6 @@ local function on_attach(bufnr)
 	vim.keymap.set("n", ">", api.node.navigate.sibling.next, opts("Next Sibling"))
 	vim.keymap.set("n", "<", api.node.navigate.sibling.prev, opts("Previous Sibling"))
 	vim.keymap.set("n", ".", api.node.run.cmd, opts("Run Command"))
-	vim.keymap.set("n", "-", api.tree.change_root_to_parent, opts("Up"))
 	vim.keymap.set("n", "a", api.fs.create, opts("Create"))
 	vim.keymap.set("n", "bmv", api.marks.bulk.move, opts("Move Bookmarked"))
 	vim.keymap.set("n", "B", api.tree.toggle_no_buffer_filter, opts("Toggle No Buffer"))
@@ -38,7 +37,7 @@ local function on_attach(bufnr)
 	vim.keymap.set("n", "f", api.live_filter.start, opts("Filter"))
 	vim.keymap.set("n", "g?", api.tree.toggle_help, opts("Help"))
 	vim.keymap.set("n", "gy", api.fs.copy.absolute_path, opts("Copy Absolute Path"))
-	vim.keymap.set("n", "H", api.tree.toggle_hidden_filter, opts("Toggle Dotfiles"))
+	vim.keymap.set("n", "t", api.tree.toggle_hidden_filter, opts("Toggle Dotfiles"))
 	vim.keymap.set("n", "I", api.tree.toggle_gitignore_filter, opts("Toggle Git Ignore"))
 	vim.keymap.set("n", "J", api.node.navigate.sibling.last, opts("Last Sibling"))
 	vim.keymap.set("n", "K", api.node.navigate.sibling.first, opts("First Sibling"))
@@ -58,7 +57,7 @@ local function on_attach(bufnr)
 	vim.keymap.set("n", "y", api.fs.copy.filename, opts("Copy Name"))
 	vim.keymap.set("n", "Y", api.fs.copy.relative_path, opts("Copy Relative Path"))
 	vim.keymap.set("n", "<2-LeftMouse>", api.node.open.edit, opts("Open"))
-	vim.keymap.set("n", "<2-RightMouse>", api.tree.change_root_to_node, opts("CD"))
+
 	vim.keymap.set("n", "l", api.node.open.edit, opts("Open"))
 	vim.keymap.set("n", "h", api.node.navigate.parent_close, opts("Close Directory"))
 	vim.keymap.set("n", "<2-RightMouse>", api.tree.change_root_to_node, opts("CD"))
@@ -70,8 +69,6 @@ end
 
 function M.setup()
 	vim.api.nvim_set_keymap("", "-", ":NvimTreeToggle<CR>", { silent = true })
-
-	local tree_cb = require("nvim-tree.config").nvim_tree_callback
 	require("nvim-tree").setup({
 		on_attach = on_attach,
 		renderer = { indent_markers = { enable = true } },

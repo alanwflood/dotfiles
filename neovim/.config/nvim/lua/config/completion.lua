@@ -55,7 +55,7 @@ M.setup = function()
 		formatting = {
 			format = require("lspkind").cmp_format({
 				with_text = true,
-				max_width = 100,
+				max_width = 120,
 				menu = menu,
 			}),
 		},

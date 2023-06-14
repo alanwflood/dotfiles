@@ -13,6 +13,14 @@
 #TERM: screen-256color
 
 window:
+  # Make `Option` key behave as `Alt` (macOS only):
+  #   - OnlyLeft
+  #   - OnlyRight
+  #   - Both
+  #   - None (default)
+  #option_as_alt: None
+  option_as_alt: Both
+
   # Allow terminal applications to change Alacritty's window title.
   dynamic_title: true
 
@@ -50,7 +58,6 @@ window:
 
   # Start Alacritty with Window: Windowed, Maximized, Fullscreen
   startup_mode: "Windowed"
-
 
   # Background opacity
   #
@@ -298,7 +305,6 @@ cursor:
   unfocused_hollow: true
   blink_interval: 500
 
-
 # Live config reload (changes require restart)
 live_config_reload: true
 
@@ -432,4 +438,3 @@ key_bindings:
   - { key: Q,      mods: Command, action: Quit             }
   - { key: W,      mods: Command, action: Quit             }
   - { key: Key3,   mods: Alt,     chars: "#"               }
-

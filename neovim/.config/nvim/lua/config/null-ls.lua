@@ -10,7 +10,7 @@ function M.setup()
 	null_ls_mason.setup({
 		ensure_installed = { "stylua", "markdownlint", "proselint", "codespell", "shellcheck" },
 		automatic_installation = false,
-		handlers = {}
+		handlers = {},
 	})
 
 	local null_ls_exists, null_ls = pcall(require, "null-ls")
