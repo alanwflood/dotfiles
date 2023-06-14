@@ -55,6 +55,10 @@ if type -q thefuck
 	thefuck --alias | source
 end
 
+if type -q zoxide
+	zoxide init fish | source
+end
+
 set -g theme_nerd_fonts yes
 set -g theme_display_date no
 set -g theme_color_scheme gruvbox
