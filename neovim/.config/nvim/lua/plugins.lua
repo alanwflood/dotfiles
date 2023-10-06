@@ -89,7 +89,8 @@ return require("lazy").setup({
 	-- Add indentation guides even on blank lines
 	{
 		"lukas-reineke/indent-blankline.nvim",
-		event = "BufReadPre",
+		main = "ibl",
+		event = "BufRead",
 		config = function()
 			require("config.indent-blankline").setup()
 		end,
