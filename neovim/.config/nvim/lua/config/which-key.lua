@@ -42,15 +42,11 @@ local leader = {
 		["<space>"] = { "<cmd>lua require('telescope.builtin').buffers { sort_lastused = true}<CR>", "Buffers" },
 		["<C-space>"] = { "<cmd>lua require('telescope.builtin').resume()<CR>", "Last Search" },
 		["R"] = { "<cmd>write | edit | TSBufEnable highlight<CR>", "Write & Redraw Buffer" },
-		p = {
-			name = "Packer",
-			C = { "<cmd>PackerClean<CR>", "Packer Clean" },
-			S = { "<cmd>PackerStatus<CR>", "Packer Status" },
-			c = { "<cmd>PackerCompile<CR>", "Packer Compile" },
-			i = { "<cmd>PackerInstall<CR>", "Packer Install" },
-			s = { "<cmd>PackerSync<CR>", "Packer Sync" },
-			u = { "<cmd>PackerUpdate<CR>", "Packer Update" },
-		},
+
+		y = { "Yank into system clipboard" },
+		p = { "Paste from system clipboard" },
+		d = { "Delete from system clipboard" },
+
 		s = {
 			-- Telescope
 			name = "Search",
@@ -121,13 +117,18 @@ local leader = {
 		g = {
 			name = "Git",
 			g = { "<cmd>Git<CR>", "Open Git Fugitive" },
-			b = { "Blame line" },
 			d = { "<cmd>DiffviewOpen<CR>", "Open Diffview" },
 			o = { "<cmd>lua require('telescope.builtin').git_status()<CR>", "Open changed file" },
-			B = { "<cmd>lua require('telescope.builtin').git_branches()<CR>", "Checkout branch" },
+			b = { "<cmd>lua require('telescope.builtin').git_branches()<CR>", "Checkout branch" },
 			c = { "<cmd>lua require('telescope.builtin').git_commits()<CR>", "Checkout commit" },
 			C = { "<cmd>lua require('telescope.builtin').git_bcommits()<CR>", "Checkout commit (for buffer)" },
 			s = { "<cmd>lua require('telescope.builtin').git_stash()<CR>", "Apply Stash" },
+			t = {
+				name = "Toggle",
+				b = { "Toggle Blame line" },
+				B = { "Toggle Full Blame line" },
+				D = { "Toggle Deleted view" },
+			},
 			h = {
 				-- Most of these are in gitsigns config file
 				name = "Hunk",
@@ -305,12 +306,16 @@ local other = {
 				},
 			},
 		},
-		-- vim-sandwich
+		-- mini-surround
 		["sd"] = { "delete surrounding" },
 		["sr"] = { "replace surrounding" },
+		["sh"] = { "highlight surrounding" },
+		["sf"] = { "find surrounding" },
 		["sa"] = {
 			name = "add surrounding",
-			s = "line",
+			f = "function",
+			t = "tag",
+			["?"] = "interactive",
 		},
 		-- vim-abolish
 		["c"] = {
@@ -334,7 +339,7 @@ local other = {
 	},
 }
 
-local visual = {
+local visualAndSelect = {
 	mappings = {
 		-- treesitter
 		["aC"] = { "conditional" },
@@ -348,7 +353,20 @@ local visual = {
 		["i%"] = { "block" },
 	},
 	opts = {
-		mode = "v", -- NORMAL mode
+		mode = "v", -- visual and select mode
+		silent = true, -- use `silent` when creating keymaps
+		noremap = true, -- use `noremap` when creating keymaps
+		nowait = true, -- use `nowait` when creating keymaps
+	},
+}
+
+local visual = {
+	mappings = {
+		-- treesitter
+		["p"] = { "Paste without overriding register" },
+	},
+	opts = {
+		mode = "x", -- visual mode
 		silent = true, -- use `silent` when creating keymaps
 		noremap = true, -- use `noremap` when creating keymaps
 		nowait = true, -- use `nowait` when creating keymaps
@@ -365,6 +383,7 @@ function M.setup()
 	wk.setup(setup)
 	wk.register(leader.mappings, leader.opts)
 	wk.register(other.mappings, other.opts)
+	wk.register(visualAndSelect.mappings, visualAndSelect.opts)
 	wk.register(visual.mappings, visual.opts)
 end
 

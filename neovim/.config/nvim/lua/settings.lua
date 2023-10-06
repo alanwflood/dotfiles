@@ -54,7 +54,7 @@ vim.o.termguicolors = true
 vim.g.onedark_terminal_italics = 2
 vim.o.background = "dark" -- or "light" for light mode
 
-local colorscheme = "gruvbox"
+local colorscheme = "kanagawa"
 if vim.tbl_contains(vim.fn.getcompletion("", "color"), colorscheme) then
 	vim.api.nvim_command(("colorscheme %s"):format(colorscheme))
 end

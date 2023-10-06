@@ -113,15 +113,6 @@ local on_attach = function(client, bufnr)
 
 	vim.o.updatetime = 250
 
-	--[[ local lspFormatOnSaveGroup = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true }) ]]
-	--[[ vim.api.nvim_create_autocmd({ "BufWritePre" }, { ]]
-	--[[ 	group = lspFormatOnSaveGroup, ]]
-	--[[ 	callback = function() ]]
-	--[[ 		vim.lsp.buf.format() ]]
-	--[[ 	end, ]]
-	--[[ 	buffer = bufnr, ]]
-	--[[ }) ]]
-
 	if client.server_capabilities.documentHighlightProvider then
 		vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "SpecialKey" })
 		vim.api.nvim_set_hl(0, "LspReferenceText", { link = "SpecialKey" })

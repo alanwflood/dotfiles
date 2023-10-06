@@ -15,7 +15,6 @@ function M.setup()
 			"fish",
 			"gitignore",
 			"go",
-			"help",
 			"html",
 			"java",
 			"javascript",
