@@ -29,6 +29,7 @@ function M.setup()
 
 	null_ls.setup({
 		-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
+		fallback_severity = vim.diagnostic.severity.HINT,
 		sources = {
 			code_actions.gitsigns,
 			formatting.prettier,

@@ -45,7 +45,7 @@ function M.setup()
 				width = 0.95,
 				prompt_position = "top",
 				horizontal = {
-					preview_width = 0.6,
+					preview_width = 0.5,
 				},
 				vertical = {
 					mirror = true,
@@ -54,7 +54,8 @@ function M.setup()
 			mappings = {
 				n = {
 					["q"] = actions.close,
-					["<C-P>"] = action_layout.toggle_preview,
+					["p"] = action_layout.toggle_preview,
+					["d"] = actions.delete_buffer
 				},
 				i = {
 					["<C-u>"] = false,
@@ -68,6 +69,7 @@ function M.setup()
 	})
 	telescope.load_extension("fzf")
 	telescope.load_extension("undo")
+	telescope.load_extension("harpoon")
 end
 
 return M

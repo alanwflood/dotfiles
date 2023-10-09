@@ -42,11 +42,9 @@ local leader = {
 		["<space>"] = { "<cmd>lua require('telescope.builtin').buffers { sort_lastused = true}<CR>", "Buffers" },
 		["<C-space>"] = { "<cmd>lua require('telescope.builtin').resume()<CR>", "Last Search" },
 		["R"] = { "<cmd>write | edit | TSBufEnable highlight<CR>", "Write & Redraw Buffer" },
-
 		y = { "Yank into system clipboard" },
 		p = { "Paste from system clipboard" },
 		d = { "Delete from system clipboard" },
-
 		s = {
 			-- Telescope
 			name = "Search",
@@ -251,7 +249,7 @@ local other = {
 			o = {
 				name = "+disable",
 				t = { "<cmd>TransparentDisable<CR>", "background transparency" },
-				b = { "background light" },
+				b = { "<cmd>set background=dark<CR>", "dark mode" },
 				c = { "cursorline" },
 				d = { "diff" },
 				h = { "hlsearch" },
@@ -281,7 +279,7 @@ local other = {
 			o = {
 				name = "+toggle",
 				t = { "<cmd>TransparentToggle<CR>", "background transparency" },
-				b = { "dark mode" },
+				b = { "<cmd>set background=light<CR>", "dark mode" },
 				c = { "cursorline" },
 				d = { "diff" },
 				h = { "hlsearch" },
