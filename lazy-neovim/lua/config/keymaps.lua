@@ -1,0 +1,25 @@
+-- Keymaps are automatically loaded on the VeryLazy event
+-- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- Add any additional keymaps here
+local map = vim.keymap.set
+local Util = require("lazyvim.util")
+
+-- nvim-tmux-navigator
+local has_nvim_tmux_nav, nvim_tmux_nav = pcall(require, "nvim-tmux-navigation")
+if os.getenv("TMUX") and has_nvim_tmux_nav then
+  map("n", "<C-h>", nvim_tmux_nav.NvimTmuxNavigateLeft)
+  map("n", "<C-j>", nvim_tmux_nav.NvimTmuxNavigateDown)
+  map("n", "<C-k>", nvim_tmux_nav.NvimTmuxNavigateUp)
+  map("n", "<C-l>", nvim_tmux_nav.NvimTmuxNavigateRight)
+  map("n", "<C-\\>", nvim_tmux_nav.NvimTmuxNavigateLastActive)
+end
+
+local has_neogit, neogit = pcall(require, "neogit")
+if has_neogit then
+  map("n", "<leader>gg", function()
+    neogit.open({ cwd = Util.root() })
+  end, { desc = "Open Neogit (root)" })
+  map("n", "<leader>gG", function()
+    neogit.open()
+  end, { desc = "Open Neogit (cwd)" })
+end
