@@ -4,6 +4,10 @@
 local map = vim.keymap.set
 local Util = require("lazyvim.util")
 
+local telescope_builtin = require("telescope.builtin")
+map("n", "<leader>sl", telescope_builtin.resume, { desc = "Last search" })
+map("n", "<leader>s/", telescope_builtin.search_history, { desc = "Last searches" })
+
 -- nvim-tmux-navigator
 local has_nvim_tmux_nav, nvim_tmux_nav = pcall(require, "nvim-tmux-navigation")
 if os.getenv("TMUX") and has_nvim_tmux_nav then
