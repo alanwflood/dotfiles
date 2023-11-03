@@ -21,9 +21,24 @@ end
 local has_neogit, neogit = pcall(require, "neogit")
 if has_neogit then
   map("n", "<leader>gg", function()
-    neogit.open({ cwd = Util.root() })
+    neogit.open({ cwd = Util.root(), kind = "auto" })
   end, { desc = "Open Neogit (root)" })
   map("n", "<leader>gG", function()
-    neogit.open()
+    neogit.open({ kind = "auto" })
   end, { desc = "Open Neogit (cwd)" })
+end
+
+local has_gitsigns, gitsigns = pcall(require, "gitsigns")
+if has_gitsigns then
+  map("n", "<leader>ghB", gitsigns.toggle_current_line_blame, { desc = "Toggle current blame line" })
+end
+
+local has_agitator, agitator = pcall(require, "agitator")
+if has_agitator then
+  map("n", "<leader>gt", function()
+    agitator.git_time_machine({
+      use_current_win = true,
+    })
+  end, { desc = "Open time machine" })
+  map("n", "<leader>gb", agitator.git_blame_toggle, { desc = "Toggle blame view" })
 end

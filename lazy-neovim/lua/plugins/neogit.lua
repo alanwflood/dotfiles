@@ -1,5 +1,8 @@
 return {
   {
+    "emmanueltouzery/agitator.nvim",
+  },
+  {
     "sindrets/diffview.nvim",
   },
   {
@@ -12,6 +15,7 @@ return {
     },
     config = function()
       require("neogit").setup({
+        disable_hint = true,
         integrations = {
           telescope = true,
           diffview = true,
