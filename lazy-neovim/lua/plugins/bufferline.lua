@@ -6,5 +6,8 @@ return {
         mode = "tabs",
       },
     },
+    keys = function()
+      return {}
+    end,
   },
 }
