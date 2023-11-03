@@ -5,7 +5,6 @@ local map = vim.keymap.set
 local Util = require("lazyvim.util")
 
 local telescope_builtin = require("telescope.builtin")
-map("n", "<leader>sl", telescope_builtin.resume, { desc = "Last search" })
 map("n", "<leader>s/", telescope_builtin.search_history, { desc = "Last searches" })
 
 -- nvim-tmux-navigator
