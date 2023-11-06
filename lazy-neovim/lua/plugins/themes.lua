@@ -5,7 +5,7 @@ return {
       require("kanagawa").setup({
         theme = "wave",
         background = {
-          dark = "dragon",
+          dark = "wave",
           light = "lotus",
         },
       })
