@@ -20,10 +20,10 @@ end
 local has_neogit, neogit = pcall(require, "neogit")
 if has_neogit then
   map("n", "<leader>gg", function()
-    neogit.open({ cwd = Util.root(), kind = "auto" })
+    neogit.open({ cwd = Util.root() })
   end, { desc = "Open Neogit (root)" })
   map("n", "<leader>gG", function()
-    neogit.open({ kind = "auto" })
+    neogit.open()
   end, { desc = "Open Neogit (cwd)" })
 end
 

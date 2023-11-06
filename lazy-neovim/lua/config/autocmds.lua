@@ -2,11 +2,12 @@
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
 local cmd = vim.api.nvim_create_user_command
+local Util = require("lazyvim.util")
 
 local has_neogit, neogit = pcall(require, "neogit")
 if has_neogit then
   cmd("G", function()
-    neogit.open({ kind = "auto" })
+    neogit.open({ cwd = Util.root() })
   end, { bang = true, desc = "Open Neogit" })
 end
 
