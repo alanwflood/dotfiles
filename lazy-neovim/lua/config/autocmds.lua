@@ -9,6 +9,14 @@ if has_neogit then
   cmd("G", function()
     neogit.open({ cwd = Util.root() })
   end, { bang = true, desc = "Open Neogit" })
+
+  cmd("Gr", function()
+    neogit.open({ cwd = Util.root(), kind = "replace" })
+  end, { bang = true, desc = "Open Neogit in current tab" })
+
+  cmd("Gt", function()
+    neogit.open({ cwd = Util.root(), kind = "tab" })
+  end, { bang = true, desc = "Open Neogit in new tab" })
 end
 
 -- Handle my most incorrect commands
