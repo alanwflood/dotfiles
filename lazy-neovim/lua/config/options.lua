@@ -12,3 +12,10 @@ vim.opt.undofile = true
 vim.opt.clipboard = ""
 
 vim.opt.relativenumber = false
+
+-- additional filetypes
+vim.filetype.add({
+  extension = {
+    templ = "templ",
+  },
+})
