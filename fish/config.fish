@@ -7,10 +7,10 @@ set -x LANG en_UK.UTF-8
 source $HOME/.config/fish/aliases.shared.fish
 
 function fish_greeting
-	if type -q fortune
-		and type -q lolcat
-	    fortune -s | lolcat
-	end
+    if type -q fortune
+        and type -q lolcat
+        fortune -s | lolcat
+    end
 end
 
 
@@ -28,7 +28,7 @@ switch (uname)
         set -gx PATH $PATH $ANDROID_HOME/tools
         set -gx PATH $PATH $ANDROID_HOME/tools/bin
         set -gx PATH $PATH $ANDROID_HOME/platform-tools
-        set -U fish_user_paths "/opt/homebrew/bin" $fish_user_paths
+        set -U fish_user_paths /opt/homebrew/bin $fish_user_paths
     case Linux
         set -Ux BROWSER /usr/bin/firefox-developer-edition
         source /usr/share/chruby/chruby.fish
@@ -49,14 +49,15 @@ set -gx PATH $PATH $HOME/.cargo/bin
 set -gx PATH $PATH $HOME/.emacs.d/bin
 # Volta node manager path
 set -gx VOLTA_HOME "$HOME/.volta"
+set -Ux VOLTA_FEATURE_PNPM 1
 set -gx PATH "$VOLTA_HOME/bin" $PATH
 # thefuck integration
 if type -q thefuck
-	thefuck --alias | source
+    thefuck --alias | source
 end
 
 if type -q zoxide
-	zoxide init fish | source
+    zoxide init fish | source
 end
 
 set -g theme_nerd_fonts yes
