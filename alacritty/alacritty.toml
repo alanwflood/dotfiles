@@ -1,3 +1,4 @@
+[general]
 import = [
     "~/.config/alacritty/themes/themes/kanagawa_wave.toml"
 ]
@@ -27,7 +28,7 @@ render_timer = false
 size = 16.0
 
 [font.bold]
-family = "Iosevka Fixed"
+family = "IosevkaTerm NF"
 style = "Bold"
 
 [font.glyph_offset]
@@ -35,11 +36,11 @@ x = 0
 y = 0
 
 [font.italic]
-family = "Iosevka Fixed"
+family = "IosevkaTerm NF"
 style = "Italic"
 
 [font.normal]
-family = "Iosevka Nerd Font Mono"
+family = "IosevkaTerm NF"
 
 [font.offset]
 x = 0
