@@ -5,10 +5,9 @@ return {
     dependencies = {
       { "nvim-tree/nvim-web-devicons", lazy = true },
     },
-
     keys = {
       {
-        "gdv",
+        "<leader>gdv",
         function()
           if next(require("diffview.lib").views) == nil then
             vim.cmd("DiffviewOpen")
